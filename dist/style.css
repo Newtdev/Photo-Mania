@@ -31176,6 +31176,25 @@ video {
           animation: bounce 1s infinite;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  --tw-bg-opacity: 1;
+  background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
+  min-height: 100vh;
+}
+
+.banner__image {
+  background: url("../dist/images/pexels-engin-akyurt-1437267.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

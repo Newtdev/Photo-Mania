@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Photo Mania</title>
+</head>
+<body>
+    <!-- HEADER FOR LOGO AND DARK MODE ICON -->
+    <header class="w-full h-12 bg-gray-900">
+        <nav class="flex h-full align-middle justify-between sm:justify-around items-center sm:mr-10 sm:mx-10">
+        <div class="logo w-40 h-2\.5 flex justify-center align-middle text-center">
+            <img src="../dist/images/iconfinder_camera-shutter_353402.png" class="h-8 alt="click">
+            <span class="">
+                <h1 class="text-2xl font-serif">Mania</h1>
+        </span>
+    </div>
+    <form class=" w-1\/2 px-1 sm:hidden" >
+        <input type="search" class="bg-white py-0.5 px-1 rounded " id=" mobile__search" placeholder="beautiful images" class="">
+        <button id="mobile__button" class="py-0.5 px-1.5 rounded-sm bg-red-700 text-white hover:bg-red-500 transition-all ">search</button>
+    </form>
+    <div class="theme">
+        <img src="../dist/images/iconfinder_camera_1814094.png" class="h-8 mr-10 hidden sm:block" alt="camera">
+    </div>
+        </nav>
+    </header>
+    <!-- SLIDER HERO BANNER -->
+    <section class="bg-red-700 h-80 mx-auto ">
+        <div class="banner__image flex bg-gradient-to-bl w-full h-full flex flex-col justify-center sm:justify-evenly items-center bg-center">
+            <div class="banner__text w-10\/12 h-2\.5 ">
+                <h1 class="sm:text-2xl text-lg">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde voluptas laudantium eligendi suscipit quos molestiae?</h1>
+            </div>
+            <form class=" w-96 px-1 sm:block hidden"  >
+                <input type="search" class="bg-white py-0.5 px-10 rounded" id=" mobile__search" placeholder="beautiful images" class="">
+                <button id="mobile__button" class="py-0.5 px-5 rounded-sm bg-red-700 text-white">search</button>
+            </form>
+        </div>
+    </section>
+    <!-- CSS GRID FOR THE LAYOUT -->
+</body>
+</html>
