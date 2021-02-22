@@ -10,34 +10,64 @@
 <body>
     <!-- HEADER FOR LOGO AND DARK MODE ICON -->
     <header class="w-full h-12 bg-gray-900">
-        <nav class="flex h-full align-middle justify-between sm:justify-around items-center sm:mr-10 sm:mx-10">
-        <div class="logo w-40 h-2\.5 flex justify-center align-middle text-center">
-            <img src="../dist/images/iconfinder_camera-shutter_353402.png" class="h-8 alt="click">
-            <span class="">
-                <h1 class="text-2xl font-serif">Mania</h1>
-        </span>
-    </div>
-    <form class=" w-1\/2 px-1 sm:hidden" >
-        <input type="search" class="bg-white py-0.5 px-1 rounded " id=" mobile__search" placeholder="beautiful images" class="">
-        <button id="mobile__button" class="py-0.5 px-1.5 rounded-sm bg-red-700 text-white hover:bg-red-500 transition-all ">search</button>
-    </form>
-    <div class="theme">
-        <img src="../dist/images/iconfinder_camera_1814094.png" class="h-8 mr-10 hidden sm:block" alt="camera">
-    </div>
-        </nav>
+        <article>   
+
+            <nav class="flex h-full align-middle justify-between sm:justify-around items-center sm:mr-10 sm:mx-10">
+            <div class="logo w-40 h-2\.5 flex justify-center align-middle text-center">
+                <img src="../dist/images/iconfinder_camera-shutter_353402.png" class="h-8" alt="click">
+                <span class="">
+                    <h1 class="text-3xl font-serif">Mania</h1>
+            </span>
+        </div>
+        <div class=" px-4 ml-auto mr-2">
+            
+        </div>
+        <div class="theme">
+            <img src="../dist/images/iconfinder_camera_1814094.png" class="h-8 mr-10 " alt="camera">
+        </div>
+            </nav>
+        </article>
     </header>
     <!-- SLIDER HERO BANNER -->
-    <section class="bg-red-700 h-80 mx-auto ">
-        <div class="banner__image flex bg-gradient-to-bl w-full h-full flex flex-col justify-center sm:justify-evenly items-center bg-center">
-            <div class="banner__text w-10\/12 h-2\.5 ">
-                <h1 class="sm:text-2xl text-lg">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde voluptas laudantium eligendi suscipit quos molestiae?</h1>
+    <section class="h-80 mx-auto " id="background__image">
+        <article>
+            <div class="banner__image flex bg-gradient-to-bl w-full h-full flex flex-col justify-evenly items-center ">
+                <div class="banner__text w-10\/12 h-2\.5">
+                    <h1 class="sm:text-5xl text-4xl font-serif font-bold text-white">  PHOTO<small class="text-red-600">MANIA</small>  </h1>
+                    <P class="text-2xl font-serif text-white text-center">
+                        Making Memory through the lense of a camera. 
+                    </P>
+                </div>
+                <form class="w-3/5 sm:w-3/6 flex justify-center py-2 items-center relative" >
+                    <input type="search" class="bg-white rounded w-full py-3 px-2 font-serif placeholder-gray-500" id=" mobile__search" placeholder="search for high quality images">
+                    <button id="mobile__button" class="py-1 px-5 rounded-sm bg-red-700 text-white hover:bg-red-500 transition-all text-lg absolute right-2 pointer-events-auto"> 
+                    <img src="./images/iconfinder_search_172546.png"  class="h-4" alt="">
+                    </button>
+                </form>
             </div>
-            <form class=" w-96 px-1 sm:block hidden"  >
-                <input type="search" class="bg-white py-0.5 px-10 rounded" id=" mobile__search" placeholder="beautiful images" class="">
-                <button id="mobile__button" class="py-0.5 px-5 rounded-sm bg-red-700 text-white">search</button>
-            </form>
-        </div>
+        </article>
     </section>
     <!-- CSS GRID FOR THE LAYOUT -->
+    <section class="bg-red-900 mt-10" id="image__container">
+        <article class="py-5 px-4" id="grid"> 
+            <div class="bg-blue-400">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, reprehenderit atque harum, sunt a nam fugiat, ut praesentium ipsam dolore totam nulla cumque aliquam dolor itaque iure porro eveniet accusantium?
+            </div>
+            <div class="bg-yellow-600">
+            </div>
+            <div class="bg-indigo-900"></div>
+            <div class="bg-green-500"></div>
+            <div class="bg-black"></div>
+            <div class="bg-white"></div>
+            <div class="bg-gray-800"></div>
+            <div class="bg-yellow-900"></div>
+        </article>
+    </section>
+    <div class="bg-white h-80 w-full flex" id="loader">
+        <div class="rounded-full bg-red-700 h-6 w-6 transform translate-x-16 transition-transform delay-20"></div>
+        <div class="rounded-full bg-red-700 h-6 w-6 transform translate-x-16 transition-transform delay-30"></div>
+        <div class="rounded-full bg-red-700 h-6 w-6 transform translate-x-16 transition-transform delay-40"></div>
+        <div class="rounded-full bg-red-700 h-6 w-6 animate-ping transform translate-x-16 transition-transform delay-0"></div>
+    </div>
 </body>
 </html>
