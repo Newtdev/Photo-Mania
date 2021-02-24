@@ -64,15 +64,13 @@ article {
   grid-row: span 2;
 }
 @media only screen and (max-width: 500px) {
-  #grid div:nth-child(2n) {
-    margin-top: 0;
-    grid-row: span 1;
+  #grid div:nth-child(2n + 1) {
+    margin-top: 0 !important;
+    grid-row: span 1 !important;
   }
-
-  #grid :nth-child(3n) {
-    margin-top: 10px;
-    grid-column: span 1;
-    grid-row: span 1;
+  #grid :nth-child(3n-1) {
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
   }
 }
 #loader {
@@ -127,34 +125,33 @@ article {
   }
 }
 
-#image__large {
-  position: absolute;
-  top: 60%;
+.image__large {
+  position: fixed;
+  top: 0;
   left: 0;
-  height: 60rem;
+  height: 100vh;
   visibility: hidden;
   transition: visibility 5ms cubic-bezier(0.075, 0.82, 0.165, 1);
 }
-.visible {
+.large__visible {
   visibility: visible;
 }
 #image__large article {
-  display: relative;
   margin: 0 auto;
+  position: relative;
 }
+
 #large__image {
-  height: 640px;
+  height: 34rem;
 }
 #large__image img {
-  height: 100rem;
+  height: 98rem;
   object-fit: contain;
 }
 
 #image__array {
-  position: absolute;
   max-width: 1387px;
-  bottom: 50px;
 }
 .active {
-  height: 11rem;
+  height: 7rem;
 }
