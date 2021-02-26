@@ -10,7 +10,7 @@
 body {
   @apply min-h-screen bg-gray-800;
 }
-body .light {
+.light {
   @apply min-h-screen bg-white;
 }
 article {
@@ -19,11 +19,11 @@ article {
   max-width: 1387px;
   margin: 0 auto;
 }
-#top__form {
+.top__form {
   visibility: hidden;
   transition: visibility 5ms ease-in;
 }
-.top__form .show {
+.show {
   visibility: visible;
 }
 
