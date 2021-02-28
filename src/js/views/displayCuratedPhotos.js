@@ -6,7 +6,7 @@ import { appElement } from './base'
 // }
 export const displayPhotos = (photos) => {
   const imageDiv = document.createElement('div');
-  let markup = `<img src="${photos.src.original}" alt="" />`
+  let markup = `<img src="${photos.src.original}" alt="" id=${photos.id} />`
   imageDiv.innerHTML = markup;
   appElement.gridContainer.appendChild(imageDiv)
 }

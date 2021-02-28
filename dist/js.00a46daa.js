@@ -1893,7 +1893,7 @@ var Pictures = /*#__PURE__*/function () {
     value: function fetchCuratedPhotos() {
       try {
         var value = client.photos.curated({
-          per_page: 10
+          per_page: 15
         });
         return value;
       } catch (error) {
@@ -1923,7 +1923,7 @@ var _base = require("./base");
 // }
 var displayPhotos = function displayPhotos(photos) {
   var imageDiv = document.createElement('div');
-  var markup = "<img src=\"".concat(photos.src.original, "\" alt=\"\" />");
+  var markup = "<img src=\"".concat(photos.src.original, "\" alt=\"\" id=").concat(photos.id, " />");
   imageDiv.innerHTML = markup;
 
   _base.appElement.gridContainer.appendChild(imageDiv);
@@ -3524,6 +3524,11 @@ module.exports = require('./lib/axios');
 },{"./lib/axios":"../node_modules/axios/lib/axios.js"}],"js/model/Search.js":[function(require,module,exports) {
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.fetchFunt = fetchFunt;
+
 var _axios = _interopRequireDefault(require("axios"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -3532,48 +3537,107 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+var url = 'https://api.pexels.com/v1/search?query=people';
 var key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
 
-var searchedImages = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var a;
+var searchedImages = function searchedImages() {
+  fetchFunt(url, key);
+};
+
+searchedImages();
+
+function fetchFunt(_x, _x2) {
+  return _fetchFunt.apply(this, arguments);
+}
+
+function _fetchFunt() {
+  _fetchFunt = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(url, key) {
+    var search_images;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return (0, _axios.default)('https://api.pexels.com/v1/search?query=people', {
+            return (0, _axios.default)("".concat(url), {
               headers: {
                 Authorization: key
               }
             });
 
           case 3:
-            a = _context.sent;
-            _context.next = 9;
-            break;
+            search_images = _context.sent;
+            return _context.abrupt("return", search_images);
 
-          case 6:
-            _context.prev = 6;
+          case 7:
+            _context.prev = 7;
             _context.t0 = _context["catch"](0);
             throw _context.t0;
 
-          case 9:
+          case 10:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 6]]);
+    }, _callee, null, [[0, 7]]);
+  }));
+  return _fetchFunt.apply(this, arguments);
+}
+},{"axios":"../node_modules/axios/index.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
+"use strict";
+
+var _axios = _interopRequireDefault(require("axios"));
+
+var _Search = require("./Search");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var url = "https://api.pexels.com/v1/photos/3483966";
+var key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+
+var fetchGetPhoto = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            (0, _Search.fetchFunt)(url, key);
+            _context.t0 = console;
+            _context.next = 4;
+            return (0, _Search.fetchFunt)(url, key);
+
+          case 4:
+            _context.t1 = _context.sent;
+
+            _context.t0.log.call(_context.t0, _context.t1);
+
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
   }));
 
-  return function searchedImages() {
+  return function fetchGetPhoto() {
     return _ref.apply(this, arguments);
   };
 }();
 
-searchedImages();
-},{"axios":"../node_modules/axios/index.js"}],"js/index.js":[function(require,module,exports) {
+fetchGetPhoto(); // searchedImages(url)
+// const fetchGetPhoto = async (id) => {
+//     try {
+//         console.log(getPhoto)
+//     } catch (error) {
+//         throw error
+//     }
+// }
+// fetchGetPhoto()
+},{"axios":"../node_modules/axios/index.js","./Search":"js/model/Search.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
@@ -3590,6 +3654,8 @@ var _displayCuratedPhotos = require("./views/displayCuratedPhotos");
 
 var _Search = _interopRequireDefault(require("./model/Search"));
 
+var _largeScreen = _interopRequireDefault(require("./model/largeScreen"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -3603,18 +3669,22 @@ var appState = {
   q: '',
   photoData: {
     curated__photos: [],
-    searched__photos: []
+    searched__photos: [],
+    large_photo: {}
   }
 }; // CURATED PHOTOS
 
-var picturesList = new _FetchData.Pictures();
+window.addEventListener('DOMContentLoaded', function () {
+  var picturesList = new _FetchData.Pictures();
+  getData(picturesList);
+});
 
-function getData() {
+function getData(_x) {
   return _getData.apply(this, arguments);
 }
 
 function _getData() {
-  _getData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+  _getData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(picturesList) {
     var data;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -3637,19 +3707,13 @@ function _getData() {
   return _getData.apply(this, arguments);
 }
 
-getData();
-
 var collectData = function collectData(data) {
   var fetchPhotosData = data.photos.map(function (curr) {
-    // const id = curr.id;
-    // const { original } = curr.src
-    // console.log(original);
-    // return id, original
-    console.log(curr);
-    (0, _displayCuratedPhotos.displayPhotos)(curr);
+    return curr; // appState.photoData.curated__photos = curr;
+    // displayPhotos(appState.photoData.curated__photos)
   });
-}; // // console.log(b.then(a => console.log(a)));
-},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+};
+},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -3677,7 +3741,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58350" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51669" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -5,6 +5,7 @@ import onsroll from './views/onscroll';
 import { Pictures } from './model/FetchData';
 import { displayPhotos } from './views/displayCuratedPhotos';;
 import Search from './model/Search';
+import largeScreen from './model/largeScreen';
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 
 // APP STATE
@@ -13,28 +14,30 @@ let appState = {
     photoData: {
         curated__photos: [],
         searched__photos: [],
+        large_photo: {}
     },
 }
 
 
 // CURATED PHOTOS
-const picturesList = new Pictures();
-async function getData() {
-    let data = await picturesList.fetchCuratedPhotos()
+window.addEventListener('DOMContentLoaded', () => {
+    const picturesList = new Pictures();
+
+    getData(picturesList)
+
+})
+
+async function getData(picturesList) {
+    let data = await picturesList.fetchCuratedPhotos();
     collectData(data)
 }
-getData()
 
 const collectData = (data) => {
     const fetchPhotosData = data.photos.map(curr => {
-        // const id = curr.id;
-        // const { original } = curr.src
-        // console.log(original);
-        // return id, original
-        console.log(curr)
-        displayPhotos(curr)
-
+        return curr;
+        // appState.photoData.curated__photos = curr;
+        // displayPhotos(appState.photoData.curated__photos)
     })
 }
 
-// // console.log(b.then(a => console.log(a)));
+
