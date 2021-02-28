@@ -18,14 +18,23 @@ let appState = {
 
 
 // CURATED PHOTOS
+const picturesList = new Pictures();
+async function getData() {
+    let data = await picturesList.fetchCuratedPhotos()
+    collectData(data)
+}
+getData()
 
 const collectData = (data) => {
-    console.log(data);
-    const { id } = data;
-    const originalImages = data.data.photos.src.original;
-    console.log(id, originalImages);
-    // appState.photoData.curated__photos =
-    // displayPhotos(appState.curated__photos);
+    const fetchPhotosData = data.photos.map(curr => {
+        // const id = curr.id;
+        // const { original } = curr.src
+        // console.log(original);
+        // return id, original
+        console.log(curr)
+        displayPhotos(curr)
+
+    })
 }
 
 // // console.log(b.then(a => console.log(a)));

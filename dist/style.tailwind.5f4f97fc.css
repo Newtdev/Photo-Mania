@@ -31240,7 +31240,8 @@ article {
 #grid img {
   height: 100%;
   width: 100%;
-  /* object-fit: cover; */
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 #grid div:nth-child(2n + 1) {
@@ -184125,4 +184126,4 @@ article {
 }
 
 
-/*# sourceMappingURL=/style.tailwind.5f4f97fc.css.map */
+/*# sourceMappingURL=/style.tailwind.5f4f97fc.css.map */    

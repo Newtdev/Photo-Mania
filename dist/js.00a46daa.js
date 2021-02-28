@@ -1879,8 +1879,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var client = (0, _pexels.createClient)('563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08'); // console.log(a)
-
-var query = 'food'; // a.photos.search({ query, per_page: 10 }).then(photos => { console.log(photos); });
+// a.photos.search({ query, per_page: 10 }).then(photos => { console.log(photos); });
 // client.photos.curated({ per_page: 1 }).then(photos => {...});
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 
@@ -1893,9 +1892,8 @@ var Pictures = /*#__PURE__*/function () {
     key: "fetchCuratedPhotos",
     value: function fetchCuratedPhotos() {
       try {
-        var value = client.photos.search({
-          query: query,
-          per_page: 1
+        var value = client.photos.curated({
+          per_page: 10
         });
         return value;
       } catch (error) {
@@ -1919,11 +1917,16 @@ exports.displayPhotos = void 0;
 var _base = require("./base");
 
 // "build": "tailwind build src/style.css -o dist/style.css",
+// export const displayPhotos = (photos) => {
+//   return `<div id= ${photos.id}>
+//         </div>`
+// }
 var displayPhotos = function displayPhotos(photos) {
-  var displayPics = photos.map(function (currPhoto) {
-    return "<div id= ".concat(currPhoto.id, ">\n       <img src=\"").concat(currPhoto.url, "\" alt=\"\" />\n        </div>");
-  }).join('');
-  _base.appElement.gridContainer.innerHTML = displayPics;
+  var imageDiv = document.createElement('div');
+  var markup = "<img src=\"".concat(photos.src.original, "\" alt=\"\" />");
+  imageDiv.innerHTML = markup;
+
+  _base.appElement.gridContainer.appendChild(imageDiv);
 };
 
 exports.displayPhotos = displayPhotos;
@@ -3589,6 +3592,10 @@ var _Search = _interopRequireDefault(require("./model/Search"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 ;
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 // APP STATE
@@ -3600,12 +3607,47 @@ var appState = {
   }
 }; // CURATED PHOTOS
 
+var picturesList = new _FetchData.Pictures();
+
+function getData() {
+  return _getData.apply(this, arguments);
+}
+
+function _getData() {
+  _getData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var data;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return picturesList.fetchCuratedPhotos();
+
+          case 2:
+            data = _context.sent;
+            collectData(data);
+
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _getData.apply(this, arguments);
+}
+
+getData();
+
 var collectData = function collectData(data) {
-  console.log(data);
-  var id = data.id;
-  var originalImages = data.data.photos.src.original;
-  console.log(id, originalImages); // appState.photoData.curated__photos =
-  // displayPhotos(appState.curated__photos);
+  var fetchPhotosData = data.photos.map(function (curr) {
+    // const id = curr.id;
+    // const { original } = curr.src
+    // console.log(original);
+    // return id, original
+    console.log(curr);
+    (0, _displayCuratedPhotos.displayPhotos)(curr);
+  });
 }; // // console.log(b.then(a => console.log(a)));
 },{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
