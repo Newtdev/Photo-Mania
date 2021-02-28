@@ -23,7 +23,7 @@ const collectData = (data) => {
     console.log(data);
     const { id } = data;
     const originalImages = data.data.photos.src.original;
-
+    console.log(id, originalImages);
     // appState.photoData.curated__photos =
     // displayPhotos(appState.curated__photos);
 }

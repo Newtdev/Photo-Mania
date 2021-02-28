@@ -883,13 +883,6 @@ var appElement = {
   form: document.querySelectorAll('form')
 };
 exports.appElement = appElement;
-appElement.form.forEach(function (item) {
-  item.addEventListener('click', function (e) {
-    e.preventDefault(); // GET THE QUERY RESULTS
-    // SEND TO THE APP STATE
-    // ADD TO THE DOM
-  });
-});
 },{}],"js/views/theme.js":[function(require,module,exports) {
 "use strict";
 
@@ -3610,7 +3603,8 @@ var appState = {
 var collectData = function collectData(data) {
   console.log(data);
   var id = data.id;
-  var originalImages = data.data.photos.src.original; // appState.photoData.curated__photos =
+  var originalImages = data.data.photos.src.original;
+  console.log(id, originalImages); // appState.photoData.curated__photos =
   // displayPhotos(appState.curated__photos);
 }; // // console.log(b.then(a => console.log(a)));
 },{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -3641,7 +3635,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52459" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58350" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
