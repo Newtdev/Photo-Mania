@@ -146,16 +146,14 @@ article {
 }
 
 #large__image {
-  height: 34rem;
+  height: calc(100% - 3rem);
+}
+#large__image div {
+  height: 100%;
+  width: 100%;
 }
 #large__image img {
-  height: 98rem;
-  object-fit: contain;
-}
-
-#image__array {
-  max-width: 1387px;
-}
-.active {
-  height: 7rem;
+  height: 90%;
+  width: 90%;
+  object-fit: cover;
 }
