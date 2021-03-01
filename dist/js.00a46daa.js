@@ -882,7 +882,9 @@ var appElement = {
   gridContainer: document.getElementById('grid'),
   form: document.querySelectorAll('form'),
   largeImage: document.getElementById('image__large'),
-  largeImageContainer: document.querySelector('#large__image div') // largeImageDiv: document.getElementById()
+  largeImageContainer: document.querySelector('#large__image div'),
+  imageContainer: document.getElementById('image__container'),
+  imageGrid: document.getElementById('grid') // largeImageDiv: document.getElementById()
 
 };
 exports.appElement = appElement;
@@ -902,17 +904,37 @@ _base.appElement.theme.addEventListener('click', function (e) {
 },{"./base":"js/views/base.js"}],"js/views/onscroll.js":[function(require,module,exports) {
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getHeight = void 0;
+
 var _base = require("./base");
 
-window.addEventListener('scroll', function () {
-  var scroll_To = window.pageYOffset;
+var getHeight = function getHeight() {
+  var container__height = _base.appElement.imageContainer.clientHeight;
 
-  if (scroll_To >= 320) {
+  if (value == container__height) {// ADD LOADER 
+    // REMOVE LOADER
+    // GET THE PRODUCT
+  }
+};
+
+exports.getHeight = getHeight;
+window.addEventListener('scroll', function () {
+  var scroll_To = window.pageYOffset; // console.log(scroll_To)
+
+  addSearchBar(scroll_To);
+}); // ADD THE TOP SEARCH BAR WHEN THE BODY SCROLL REACHES 320
+
+function addSearchBar(value) {
+  if (value >= 320) {
     addSearchInput();
   } else {
     removeSearchInput();
   }
-}); // ADD THE HEADER SEARCH INPUT
+} // ADD THE HEADER SEARCH INPUT
+
 
 var addSearchInput = function addSearchInput() {
   _base.appElement.topForm.classList.add('show');
@@ -3691,7 +3713,7 @@ var _base = require("./views/base");
 
 var _theme = _interopRequireDefault(require("./views/theme"));
 
-var _onscroll = _interopRequireDefault(require("./views/onscroll"));
+var _onscroll = _interopRequireWildcard(require("./views/onscroll"));
 
 var _FetchData = require("./model/FetchData");
 
@@ -3702,6 +3724,10 @@ var _Search = _interopRequireDefault(require("./model/Search"));
 var _largeScreen = require("./model/largeScreen");
 
 var _largerScreenViews = require("./views/largerScreenViews");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3795,8 +3821,9 @@ var getSelectedImage = /*#__PURE__*/function () {
 
 
             (0, _largerScreenViews.emptyImage)(appState.photoData.large__photo);
+            (0, _onscroll.getHeight)();
 
-          case 8:
+          case 9:
           case "end":
             return _context2.stop();
         }

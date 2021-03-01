@@ -5,6 +5,8 @@ export const appElement = {
     gridContainer: document.getElementById('grid'),
     form: document.querySelectorAll('form'),
     largeImage: document.getElementById('image__large'),
-    largeImageContainer: document.querySelector('#large__image div')
+    largeImageContainer: document.querySelector('#large__image div'),
+    imageContainer: document.getElementById('image__container'),
+    imageGrid: document.getElementById('grid')
     // largeImageDiv: document.getElementById()
 }

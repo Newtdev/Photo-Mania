@@ -1,13 +1,13 @@
 import 'regenerator-runtime/runtime';
 import { appElement } from './views/base';
 import theme from './views/theme';
-import onsroll from './views/onscroll';
+import onsroll, { getHeight } from './views/onscroll';
 import { Pictures } from './model/FetchData';
 import { displayPhotos } from './views/displayCuratedPhotos';;
 import Search from './model/Search';
 import { fetchGetPhoto } from './model/largeScreen';
 import { displayLargePhoto } from './views/largerScreenViews';
-import { emptyImage } from './views/largerScreenViews'
+import { emptyImage } from './views/largerScreenViews';
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 
 // APP STATE
@@ -72,6 +72,8 @@ const getSelectedImage = async (id) => {
     appElement.largeImage.classList.add('large__visible');
 
     // REMOVE THE CONTAINER IF THE IMAGE IS IN THE VIEW
-    emptyImage(appState.photoData.large__photo)
+    emptyImage(appState.photoData.large__photo);
+
+    getHeight()
 
 }
