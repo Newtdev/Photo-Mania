@@ -884,7 +884,8 @@ var appElement = {
   largeImage: document.getElementById('image__large'),
   largeImageContainer: document.querySelector('#large__image div'),
   imageContainer: document.getElementById('image__container'),
-  imageGrid: document.getElementById('grid') // largeImageDiv: document.getElementById()
+  imageGrid: document.getElementById('grid'),
+  loader: document.querySelector('.loader') // largeImageDiv: document.getElementById()
 
 };
 exports.appElement = appElement;
@@ -911,22 +912,36 @@ exports.getHeight = void 0;
 
 var _base = require("./base");
 
-var getHeight = function getHeight() {
-  var container__height = _base.appElement.imageContainer.clientHeight;
+// ADD LOADER
+function addLoader() {
+  _base.appElement.loader.classList.add('show');
 
-  if (value == container__height) {// ADD LOADER 
-    // REMOVE LOADER
-    // GET THE PRODUCT
-  }
+  setTimeout(function () {
+    _base.appElement.loader.classList.remove('show');
+  }, 5000);
+}
+
+addLoader(); // getHeight()
+
+var getHeight = function getHeight(height) {
+  window.addEventListener('scroll', function () {
+    var scroll_To = window.pageYOffset; // console.log(scroll_To);
+    // console.log(scroll_To)
+
+    addSearchBar(scroll_To);
+
+    if (scroll_To === height) {// ADD LOADER 
+      // addLoader()
+      // REMOVE LOADER
+      // GET THE PRODUCT
+    }
+  });
 };
 
 exports.getHeight = getHeight;
-window.addEventListener('scroll', function () {
-  var scroll_To = window.pageYOffset; // console.log(scroll_To)
+getHeight();
 
-  addSearchBar(scroll_To);
-}); // ADD THE TOP SEARCH BAR WHEN THE BODY SCROLL REACHES 320
-
+// ADD THE TOP SEARCH BAR WHEN THE BODY SCROLL REACHES 320
 function addSearchBar(value) {
   if (value >= 320) {
     addSearchInput();
@@ -1887,75 +1902,7 @@ function i(r) {
 }
 
 require("isomorphic-fetch");
-},{"isomorphic-fetch":"../node_modules/isomorphic-fetch/fetch-npm-browserify.js","process":"../node_modules/process/browser.js"}],"js/model/FetchData.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Pictures = void 0;
-
-var _pexels = require("pexels");
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var client = (0, _pexels.createClient)('563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08'); // console.log(a)
-// a.photos.search({ query, per_page: 10 }).then(photos => { console.log(photos); });
-// client.photos.curated({ per_page: 1 }).then(photos => {...});
-// const cors = 'https://cors-anywhere.herokuapp.com/'
-
-var Pictures = /*#__PURE__*/function () {
-  function Pictures() {
-    _classCallCheck(this, Pictures);
-  }
-
-  _createClass(Pictures, [{
-    key: "fetchCuratedPhotos",
-    value: function fetchCuratedPhotos() {
-      try {
-        var value = client.photos.curated({
-          per_page: 15
-        });
-        return value;
-      } catch (error) {
-        throw error;
-      }
-    }
-  }]);
-
-  return Pictures;
-}();
-
-exports.Pictures = Pictures;
-},{"pexels":"../node_modules/pexels/dist/main.module.js"}],"js/views/displayCuratedPhotos.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.displayPhotos = void 0;
-
-var _base = require("./base");
-
-// "build": "tailwind build src/style.css -o dist/style.css",
-// export const displayPhotos = (photos) => {
-//   return `<div id= ${photos.id}>
-//         </div>`
-// }
-var displayPhotos = function displayPhotos(photos) {
-  var imageDiv = document.createElement('div');
-  var markup = "<img src=\"".concat(photos.src.original, "\" alt=\"\" id=").concat(photos.id, " />");
-  imageDiv.innerHTML = markup;
-
-  _base.appElement.gridContainer.appendChild(imageDiv);
-};
-
-exports.displayPhotos = displayPhotos;
-},{"./base":"js/views/base.js"}],"../node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
+},{"isomorphic-fetch":"../node_modules/isomorphic-fetch/fetch-npm-browserify.js","process":"../node_modules/process/browser.js"}],"../node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -3608,7 +3555,85 @@ function _fetchFunt() {
   }));
   return _fetchFunt.apply(this, arguments);
 }
-},{"axios":"../node_modules/axios/index.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
+},{"axios":"../node_modules/axios/index.js"}],"js/model/FetchData.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Pictures = void 0;
+
+var _pexels = require("pexels");
+
+var _Search = require("./Search");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var client = (0, _pexels.createClient)('563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08');
+var url = "https://api.pexels.com/v1/curated?per_page=15&";
+var key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08"; // console.log(a)
+// a.photos.search({ query, per_page: 10 }).then(photos => { console.log(photos); });
+// client.photos.curated({ per_page: 1 }).then(photos => {...});
+// const cors = 'https://cors-anywhere.herokuapp.com/'
+
+var Pictures = /*#__PURE__*/function () {
+  function Pictures() {
+    _classCallCheck(this, Pictures);
+  }
+
+  _createClass(Pictures, [{
+    key: "fetchCuratedPhotos",
+    value: function fetchCuratedPhotos() {
+      try {
+        var value = client.photos.curated({
+          per_page: 15
+        });
+        return value;
+      } catch (error) {
+        throw error;
+      }
+    }
+  }]);
+
+  return Pictures;
+}();
+
+exports.Pictures = Pictures;
+
+var curatedData = function curatedData(url, key) {
+  console.log((0, _Search.fetchFunt)(url, key));
+};
+
+curatedData(url, key);
+},{"pexels":"../node_modules/pexels/dist/main.module.js","./Search":"js/model/Search.js"}],"js/views/displayCuratedPhotos.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.displayPhotos = void 0;
+
+var _base = require("./base");
+
+// "build": "tailwind build src/style.css -o dist/style.css",
+// export const displayPhotos = (photos) => {
+//   return `<div id= ${photos.id}>
+//         </div>`
+// }
+var displayPhotos = function displayPhotos(photos) {
+  var imageDiv = document.createElement('div');
+  var markup = "<img src=\"".concat(photos.src.original, "\" alt=\"\" id=").concat(photos.id, " />");
+  imageDiv.innerHTML = markup;
+
+  _base.appElement.gridContainer.appendChild(imageDiv);
+};
+
+exports.displayPhotos = displayPhotos;
+},{"./base":"js/views/base.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3743,7 +3768,8 @@ var appState = {
   photoData: {
     curated__photos: [],
     searched__photos: [],
-    large__photo: []
+    large__photo: [],
+    next__page: []
   }
 }; // CURATED PHOTOS
 
@@ -3821,9 +3847,8 @@ var getSelectedImage = /*#__PURE__*/function () {
 
 
             (0, _largerScreenViews.emptyImage)(appState.photoData.large__photo);
-            (0, _onscroll.getHeight)();
 
-          case 9:
+          case 8:
           case "end":
             return _context2.stop();
         }
@@ -3835,6 +3860,10 @@ var getSelectedImage = /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }();
+
+var container__height = _base.appElement.imageContainer.clientHeight;
+console.log(container__height);
+(0, _onscroll.getHeight)(height);
 },{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js","./views/largerScreenViews":"js/views/largerScreenViews.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -3863,7 +3892,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49682" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54418" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

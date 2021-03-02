@@ -77,11 +77,11 @@ article {
     grid-row: span 1 !important;
   }
 }
-#loader {
+.loader {
   visibility: hidden;
   transition: visibility 5ms ease-in;
 }
-#loader .show {
+.show {
   visibility: visible;
 }
 

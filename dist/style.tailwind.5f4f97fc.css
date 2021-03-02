@@ -31271,12 +31271,12 @@ article {
   }
 }
 
-#loader {
+.loader {
   visibility: hidden;
   transition: visibility 5ms ease-in;
 }
 
-#loader .show {
+.show {
   visibility: visible;
 }
 

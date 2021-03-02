@@ -16,7 +16,8 @@ let appState = {
     photoData: {
         curated__photos: [],
         searched__photos: [],
-        large__photo: []
+        large__photo: [],
+        next__page: []
     },
 }
 
@@ -46,7 +47,6 @@ const collectData = (data) => {
 appElement.gridContainer.addEventListener('click', (e) => {
     const targetedImage = e.target.id;
     if (targetedImage) {
-
         // GET THE IMAGE
         getSelectedImage(targetedImage);
     }
@@ -74,6 +74,9 @@ const getSelectedImage = async (id) => {
     // REMOVE THE CONTAINER IF THE IMAGE IS IN THE VIEW
     emptyImage(appState.photoData.large__photo);
 
-    getHeight()
 
 }
+const container__height = appElement.imageContainer.clientHeight;
+
+console.log(container__height)
+getHeight(height)
