@@ -881,6 +881,7 @@ var appElement = {
   topForm: document.querySelector('.top__form'),
   gridContainer: document.getElementById('grid'),
   form: document.querySelectorAll('form'),
+  formInput: document.querySelectorAll('form input'),
   largeImage: document.getElementById('image__large'),
   largeImageContainer: document.querySelector('#large__image div'),
   imageContainer: document.getElementById('image__container'),
@@ -930,9 +931,10 @@ var getHeight = function getHeight(height) {
 
     addSearchBar(scroll_To);
 
-    if (scroll_To === height) {// ADD LOADER 
-      // addLoader()
-      // REMOVE LOADER
+    if (height == scroll_To) {
+      // ADD LOADER 
+      console.log('reached');
+      addLoader(); // REMOVE LOADER
       // GET THE PRODUCT
     }
   });
@@ -3500,6 +3502,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.fetchFunt = fetchFunt;
+exports.searchedImages = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -3509,28 +3512,55 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var url = 'https://api.pexels.com/v1/search?query=people';
 var key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
 
-var searchedImages = function searchedImages() {
-  fetchFunt(url, key);
-};
-
-searchedImages();
-
-function fetchFunt(_x, _x2) {
-  return _fetchFunt.apply(this, arguments);
-}
-
-function _fetchFunt() {
-  _fetchFunt = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(url, key) {
-    var search_images;
+var searchedImages = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(query) {
+    var url;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            _context.next = 3;
+            url = "https://api.pexels.com/v1/search?query=".concat(query, "&per_page=5"); // "https://api.pexels.com/v1/search?query=nature&per_page=1"
+
+            _context.t0 = console;
+            _context.next = 4;
+            return fetchFunt(url, key);
+
+          case 4:
+            _context.t1 = _context.sent;
+
+            _context.t0.log.call(_context.t0, _context.t1);
+
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function searchedImages(_x) {
+    return _ref.apply(this, arguments);
+  };
+}(); // searchedImages();
+
+
+exports.searchedImages = searchedImages;
+
+function fetchFunt(_x2, _x3) {
+  return _fetchFunt.apply(this, arguments);
+}
+
+function _fetchFunt() {
+  _fetchFunt = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(url, key) {
+    var search_images;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.prev = 0;
+            _context2.next = 3;
             return (0, _axios.default)("".concat(url), {
               headers: {
                 Authorization: key
@@ -3538,20 +3568,20 @@ function _fetchFunt() {
             });
 
           case 3:
-            search_images = _context.sent;
-            return _context.abrupt("return", search_images);
+            search_images = _context2.sent;
+            return _context2.abrupt("return", search_images);
 
           case 7:
-            _context.prev = 7;
-            _context.t0 = _context["catch"](0);
-            throw _context.t0;
+            _context2.prev = 7;
+            _context2.t0 = _context2["catch"](0);
+            throw _context2.t0;
 
           case 10:
           case "end":
-            return _context.stop();
+            return _context2.stop();
         }
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee2, null, [[0, 7]]);
   }));
   return _fetchFunt.apply(this, arguments);
 }
@@ -3574,7 +3604,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var client = (0, _pexels.createClient)('563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08');
-var url = "https://api.pexels.com/v1/curated?per_page=15&";
+var url = "https://api.pexels.com/v1/curated?per_page=1";
 var key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08"; // console.log(a)
 // a.photos.search({ query, per_page: 10 }).then(photos => { console.log(photos); });
 // client.photos.curated({ per_page: 1 }).then(photos => {...});
@@ -3600,15 +3630,14 @@ var Pictures = /*#__PURE__*/function () {
   }]);
 
   return Pictures;
-}();
+}(); // const curatedData = (url, key) => {
+//     const curatedContainer = fetchFunt(url, key)
+//     return curatedContainer;
+// }
+// export { curatedData }
+
 
 exports.Pictures = Pictures;
-
-var curatedData = function curatedData(url, key) {
-  console.log((0, _Search.fetchFunt)(url, key));
-};
-
-curatedData(url, key);
 },{"pexels":"../node_modules/pexels/dist/main.module.js","./Search":"js/model/Search.js"}],"js/views/displayCuratedPhotos.js":[function(require,module,exports) {
 "use strict";
 
@@ -3618,6 +3647,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.displayPhotos = void 0;
 
 var _base = require("./base");
+
+var _onscroll = require("./onscroll");
 
 // "build": "tailwind build src/style.css -o dist/style.css",
 // export const displayPhotos = (photos) => {
@@ -3629,11 +3660,18 @@ var displayPhotos = function displayPhotos(photos) {
   var markup = "<img src=\"".concat(photos.src.original, "\" alt=\"\" id=").concat(photos.id, " />");
   imageDiv.innerHTML = markup;
 
-  _base.appElement.gridContainer.appendChild(imageDiv);
-};
+  _base.appElement.gridContainer.appendChild(imageDiv); // GETTING THE HEIGHT OF THE CONTAINER WHEN THE IMAGES ARE FULLY LOADED
+  // const container__height = appElement.imageContainer.getBoundingClientRect().height;
+  // setTimeout(() => {
+  //   console.log(appElement.imageContainer.getBoundingClientRect().height)
+  //   getHeight(container__height)
+  // }, 5000);
+
+}; // console.log(container__height)
+
 
 exports.displayPhotos = displayPhotos;
-},{"./base":"js/views/base.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
+},{"./base":"js/views/base.js","./onscroll":"js/views/onscroll.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3744,7 +3782,7 @@ var _FetchData = require("./model/FetchData");
 
 var _displayCuratedPhotos = require("./views/displayCuratedPhotos");
 
-var _Search = _interopRequireDefault(require("./model/Search"));
+var _Search = require("./model/Search");
 
 var _largeScreen = require("./model/largeScreen");
 
@@ -3764,7 +3802,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 // APP STATE
 var appState = {
-  q: '',
+  query: '',
   photoData: {
     curated__photos: [],
     searched__photos: [],
@@ -3859,11 +3897,31 @@ var getSelectedImage = /*#__PURE__*/function () {
   return function getSelectedImage(_x2) {
     return _ref2.apply(this, arguments);
   };
-}();
+}(); // // GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
 
-var container__height = _base.appElement.imageContainer.clientHeight;
-console.log(container__height);
-(0, _onscroll.getHeight)(height);
+
+_base.appElement.form.forEach(function (item) {
+  item.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    _base.appElement.formInput.forEach(function (input) {
+      // appState.query = input.value.trim('');
+      if (input.value.trim() == '') {
+        console.log('input value is empty');
+      } else {
+        // GET THE QUERY RESULTS
+        // SEND TO THE APP STATE
+        // REMOVE
+        // ADD TO THE DOM
+        console.log(input.value);
+        (0, _Search.searchedImages)(input.value);
+      }
+    });
+  });
+}); // appElement.topForm.addEventListener('submit', (e) => {
+//     e.preventDefault()
+//     console.log(appElement.topForm.value)
+// })
 },{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js","./views/largerScreenViews":"js/views/largerScreenViews.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -3892,7 +3950,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54418" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57792" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

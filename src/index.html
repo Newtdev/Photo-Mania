@@ -98,8 +98,17 @@
     </section>
     <!-- CSS GRID FOR THE LAYOUT --->
     <section class="bg-red-900 mt-10" id="image__container">
-      <article class="py-5 px-4" id="grid"></article>
+      <article class="py-5 px-4 relative" id="grid">
+        <div class="loader__container absolute top-0 left-0 flex w-full h-full bg-black opacity-2 items-center justify-center">
+          <div class="top__loader">Loading...</div>
+        </div>
+      </article>
     </section>
+    <div class="loader__more w-full flex h-13 justify-center item-center">
+        <button type="button" class="p-4 bg-red-900 mt-4 text-4"> 
+          Load More
+        </button>
+      </div>
     <!-- LOADER SECTION -->
     <div id="loader" class="flex items-center justify-center w-full h-20 loader">
       <div class="lds-facebook">
@@ -138,6 +147,7 @@
         </div>
       </article>
     </section>
+      
     <footer class="">
       <div class="copy__right">
         <span>Newt_Dev</span>

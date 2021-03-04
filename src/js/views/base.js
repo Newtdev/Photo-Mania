@@ -4,6 +4,7 @@ export const appElement = {
     topForm: document.querySelector('.top__form'),
     gridContainer: document.getElementById('grid'),
     form: document.querySelectorAll('form'),
+    formInput: document.querySelectorAll('form input'),
     largeImage: document.getElementById('image__large'),
     largeImageContainer: document.querySelector('#large__image div'),
     imageContainer: document.getElementById('image__container'),

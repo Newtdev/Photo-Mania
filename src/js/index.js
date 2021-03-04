@@ -2,9 +2,9 @@ import 'regenerator-runtime/runtime';
 import { appElement } from './views/base';
 import theme from './views/theme';
 import onsroll, { getHeight } from './views/onscroll';
-import { Pictures } from './model/FetchData';
+import { curatedData, Pictures } from './model/FetchData';
 import { displayPhotos } from './views/displayCuratedPhotos';;
-import Search from './model/Search';
+import { searchedImages } from './model/Search';
 import { fetchGetPhoto } from './model/largeScreen';
 import { displayLargePhoto } from './views/largerScreenViews';
 import { emptyImage } from './views/largerScreenViews';
@@ -12,7 +12,7 @@ import { emptyImage } from './views/largerScreenViews';
 
 // APP STATE
 let appState = {
-    q: '',
+    query: '',
     photoData: {
         curated__photos: [],
         searched__photos: [],
@@ -26,7 +26,7 @@ let appState = {
 window.addEventListener('DOMContentLoaded', () => {
     const picturesList = new Pictures();
     let a = picturesList.fetchCuratedPhotos();
-    getData(a)
+    getData(a);
 })
 
 const getData = async (promises) => {
@@ -39,6 +39,7 @@ const collectData = (data) => {
         appState.photoData.curated__photos = curr;
         displayPhotos(appState.photoData.curated__photos)
     })
+
 }
 
 
@@ -74,9 +75,32 @@ const getSelectedImage = async (id) => {
     // REMOVE THE CONTAINER IF THE IMAGE IS IN THE VIEW
     emptyImage(appState.photoData.large__photo);
 
-
 }
-const container__height = appElement.imageContainer.clientHeight;
 
-console.log(container__height)
-getHeight(height)
+
+// // GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
+appElement.form.forEach(item => {
+    item.addEventListener('submit', (e) => {
+        e.preventDefault();
+        appElement.formInput.forEach(input => {
+            // appState.query = input.value.trim('');
+            if (input.value.trim() == '') {
+                console.log('input value is empty')
+            } else {
+
+                // GET THE QUERY RESULTS
+                // SEND TO THE APP STATE
+                // REMOVE
+                // ADD TO THE DOM
+                console.log(input.value)
+                searchedImages(input.value)
+            }
+
+        })
+    })
+})
+
+// appElement.topForm.addEventListener('submit', (e) => {
+//     e.preventDefault()
+//     console.log(appElement.topForm.value)
+// })

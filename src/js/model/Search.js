@@ -1,12 +1,15 @@
 import axios from "axios";
 
-const url = 'https://api.pexels.com/v1/search?query=people';
 const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
 
-const searchedImages = () => {
-    fetchFunt(url, key)
+export const searchedImages = async (query) => {
+    const url = `https://api.pexels.com/v1/search?query=${query}&per_page=5`;
+    // "https://api.pexels.com/v1/search?query=nature&per_page=1"
+
+    console.log(await fetchFunt(url, key))
+
 }
-searchedImages();
+// searchedImages();
 export async function fetchFunt(url, key) {
     try {
         const search_images = await axios(`${url}`, {
@@ -22,4 +25,3 @@ export async function fetchFunt(url, key) {
     }
 
 }
-

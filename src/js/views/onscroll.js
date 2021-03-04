@@ -22,9 +22,10 @@ const getHeight = (height) => {
         // console.log(scroll_To)
         addSearchBar(scroll_To)
 
-        if (scroll_To === height) {
+        if (height == scroll_To) {
             // ADD LOADER 
-            // addLoader()
+            console.log('reached')
+            addLoader()
             // REMOVE LOADER
             // GET THE PRODUCT
         }
