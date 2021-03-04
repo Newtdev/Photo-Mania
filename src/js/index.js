@@ -3,11 +3,11 @@ import { appElement } from './views/base';
 import theme from './views/theme';
 import onsroll, { getHeight } from './views/onscroll';
 import { curatedData, Pictures } from './model/FetchData';
-import { displayPhotos } from './views/displayCuratedPhotos';;
+import { displayPhotos } from './views/displayCuratedPhotos';
 import { searchedImages } from './model/Search';
 import { fetchGetPhoto } from './model/largeScreen';
-import { displayLargePhoto } from './views/largerScreenViews';
-import { emptyImage } from './views/largerScreenViews';
+import { displayLargePhoto, emptyImage } from './views/largerScreenViews';
+import { addLoader } from './views/search_views';
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 
 // APP STATE
@@ -29,15 +29,44 @@ window.addEventListener('DOMContentLoaded', () => {
     getData(a);
 })
 
+
+// // GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
+appElement.form.forEach(item => {
+    item.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const searchedValue = item.children[0].value;
+        if (searchedValue.trim() == '') {
+            alert('Please input a searched term!')
+        } else {
+            // GET THE QUERY RESULTS
+            let c = searchedImages(searchedValue.trim()).then(resolve => {
+                console.log(resolve)
+                getData(resolve.data)
+            })
+            // INPUT SHOULD BE EMPTY STRING
+            // input.value = '';
+            // console.log(searchedImages()
+            // REMOVE
+            // input.focus = 
+            // ADD TO THE DOM
+            // console.log(input.value)
+        }
+    })
+})
+
 const getData = async (promises) => {
     const resolvePromise = await promises;
-    collectData(resolvePromise)
+    console.log(resolvePromise)
+    // collectData(resolvePromise)
 }
 
 const collectData = (data) => {
     data.photos.forEach(curr => {
+        // SAVE ALL TO APP STATE
         appState.photoData.curated__photos = curr;
-        displayPhotos(appState.photoData.curated__photos)
+
+        // ADD LOADER
+        addLoader(appState.photoData.curated__photos)
     })
 
 }
@@ -76,29 +105,6 @@ const getSelectedImage = async (id) => {
     emptyImage(appState.photoData.large__photo);
 
 }
-
-
-// // GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
-appElement.form.forEach(item => {
-    item.addEventListener('submit', (e) => {
-        e.preventDefault();
-        appElement.formInput.forEach(input => {
-            // appState.query = input.value.trim('');
-            if (input.value.trim() == '') {
-                console.log('input value is empty')
-            } else {
-
-                // GET THE QUERY RESULTS
-                // SEND TO THE APP STATE
-                // REMOVE
-                // ADD TO THE DOM
-                console.log(input.value)
-                searchedImages(input.value)
-            }
-
-        })
-    })
-})
 
 // appElement.topForm.addEventListener('submit', (e) => {
 //     e.preventDefault()

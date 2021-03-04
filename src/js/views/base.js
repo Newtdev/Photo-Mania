@@ -9,6 +9,8 @@ export const appElement = {
     largeImageContainer: document.querySelector('#large__image div'),
     imageContainer: document.getElementById('image__container'),
     imageGrid: document.getElementById('grid'),
-    loader: document.querySelector('.loader')
+    loader: document.querySelector('.loader'),
+    topLoader: document.querySelector('.loader__container')
     // largeImageDiv: document.getElementById()
 }
+console.log(appElement.topLoader);

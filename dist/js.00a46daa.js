@@ -886,10 +886,12 @@ var appElement = {
   largeImageContainer: document.querySelector('#large__image div'),
   imageContainer: document.getElementById('image__container'),
   imageGrid: document.getElementById('grid'),
-  loader: document.querySelector('.loader') // largeImageDiv: document.getElementById()
+  loader: document.querySelector('.loader'),
+  topLoader: document.querySelector('.loader__container') // largeImageDiv: document.getElementById()
 
 };
 exports.appElement = appElement;
+console.log(appElement.topLoader);
 },{}],"js/views/theme.js":[function(require,module,exports) {
 "use strict";
 
@@ -3523,16 +3525,9 @@ var searchedImages = /*#__PURE__*/function () {
           case 0:
             url = "https://api.pexels.com/v1/search?query=".concat(query, "&per_page=5"); // "https://api.pexels.com/v1/search?query=nature&per_page=1"
 
-            _context.t0 = console;
-            _context.next = 4;
-            return fetchFunt(url, key);
+            return _context.abrupt("return", fetchFunt(url, key));
 
-          case 4:
-            _context.t1 = _context.sent;
-
-            _context.t0.log.call(_context.t0, _context.t1);
-
-          case 6:
+          case 2:
           case "end":
             return _context.stop();
         }
@@ -3767,7 +3762,33 @@ var emptyImage = function emptyImage(large_photo) {
 };
 
 exports.emptyImage = emptyImage;
-},{"./base":"js/views/base.js"}],"js/index.js":[function(require,module,exports) {
+},{"./base":"js/views/base.js"}],"js/views/search_views.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addLoader = void 0;
+
+var _base = require("./base");
+
+var _displayCuratedPhotos = require("./displayCuratedPhotos");
+
+// ON CLICK OF THE SEARCH BUTTON
+_base.appElement.topLoader.classList.add('load');
+
+var addLoader = function addLoader(photos, display) {
+  setTimeout(function () {
+    _base.appElement.topLoader.classList.remove('load');
+
+    setTimeout(function () {// displayPhotos(photos)
+      // display
+    });
+  }, 4000);
+};
+
+exports.addLoader = addLoader;
+},{"./base":"js/views/base.js","./displayCuratedPhotos":"js/views/displayCuratedPhotos.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
@@ -3788,6 +3809,8 @@ var _largeScreen = require("./model/largeScreen");
 
 var _largerScreenViews = require("./views/largerScreenViews");
 
+var _search_views = require("./views/search_views");
+
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -3798,7 +3821,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-;
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 // APP STATE
 var appState = {
@@ -3815,6 +3837,29 @@ window.addEventListener('DOMContentLoaded', function () {
   var picturesList = new _FetchData.Pictures();
   var a = picturesList.fetchCuratedPhotos();
   getData(a);
+}); // // GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
+
+_base.appElement.form.forEach(function (item) {
+  item.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var searchedValue = item.children[0].value;
+
+    if (searchedValue.trim() == '') {
+      alert('Please input a searched term!');
+    } else {
+      // GET THE QUERY RESULTS
+      var c = (0, _Search.searchedImages)(searchedValue.trim()).then(function (resolve) {
+        console.log(resolve);
+        getData(resolve.data);
+      }); // INPUT SHOULD BE EMPTY STRING
+      // input.value = '';
+      // console.log(searchedImages()
+      // REMOVE
+      // input.focus = 
+      // ADD TO THE DOM
+      // console.log(input.value)
+    }
+  });
 });
 
 var getData = /*#__PURE__*/function () {
@@ -3829,7 +3874,7 @@ var getData = /*#__PURE__*/function () {
 
           case 2:
             resolvePromise = _context.sent;
-            collectData(resolvePromise);
+            console.log(resolvePromise); // collectData(resolvePromise)
 
           case 4:
           case "end":
@@ -3846,8 +3891,10 @@ var getData = /*#__PURE__*/function () {
 
 var collectData = function collectData(data) {
   data.photos.forEach(function (curr) {
-    appState.photoData.curated__photos = curr;
-    (0, _displayCuratedPhotos.displayPhotos)(appState.photoData.curated__photos);
+    // SAVE ALL TO APP STATE
+    appState.photoData.curated__photos = curr; // ADD LOADER
+
+    (0, _search_views.addLoader)(appState.photoData.curated__photos);
   });
 }; // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
 
@@ -3897,32 +3944,11 @@ var getSelectedImage = /*#__PURE__*/function () {
   return function getSelectedImage(_x2) {
     return _ref2.apply(this, arguments);
   };
-}(); // // GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
-
-
-_base.appElement.form.forEach(function (item) {
-  item.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    _base.appElement.formInput.forEach(function (input) {
-      // appState.query = input.value.trim('');
-      if (input.value.trim() == '') {
-        console.log('input value is empty');
-      } else {
-        // GET THE QUERY RESULTS
-        // SEND TO THE APP STATE
-        // REMOVE
-        // ADD TO THE DOM
-        console.log(input.value);
-        (0, _Search.searchedImages)(input.value);
-      }
-    });
-  });
-}); // appElement.topForm.addEventListener('submit', (e) => {
+}(); // appElement.topForm.addEventListener('submit', (e) => {
 //     e.preventDefault()
 //     console.log(appElement.topForm.value)
 // })
-},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js","./views/largerScreenViews":"js/views/largerScreenViews.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js","./views/largerScreenViews":"js/views/largerScreenViews.js","./views/search_views":"js/views/search_views.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

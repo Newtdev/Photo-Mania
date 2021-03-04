@@ -1,12 +1,17 @@
 import { appElement } from './base';
+import { displayPhotos } from "./displayCuratedPhotos"
 
 // ON CLICK OF THE SEARCH BUTTON
-appElement.form.forEach(item => {
-    item.addEventListener('click', (e) => {
-        e.preventDefault();
-        // GET THE QUERY RESULTS
-        // SEND TO THE APP STATE
-        // REMOVE
-        // ADD TO THE DOM
-    })
-})
+appElement.topLoader.classList.add('load');
+
+const addLoader = (photos, display) => {
+    setTimeout(() => {
+        appElement.topLoader.classList.remove('load')
+        setTimeout(() => {
+            // displayPhotos(photos)
+            // display
+        });
+
+    }, 4000);
+}
+export { addLoader }

@@ -31227,8 +31227,9 @@ article {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-auto-rows: minmax(200px, auto);
-  grid-template-columns: repeat(auto-fit, minmax(400px, auto));
+  /* grid-auto-rows: minmax(200px, auto); */
+  grid-auto-rows: 200px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
   grid-auto-flow: dense;
   grid-gap: 5px;
   max-width: 3188px !important;
@@ -31276,6 +31277,10 @@ article {
 .loader__container {
   visibility: hidden;
   transition: visibility 2ms ease;
+}
+
+.load {
+  visibility: visible;
 }
 
 .top__loader {

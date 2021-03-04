@@ -6,7 +6,7 @@ export const searchedImages = async (query) => {
     const url = `https://api.pexels.com/v1/search?query=${query}&per_page=5`;
     // "https://api.pexels.com/v1/search?query=nature&per_page=1"
 
-    console.log(await fetchFunt(url, key))
+    return fetchFunt(url, key)
 
 }
 // searchedImages();
