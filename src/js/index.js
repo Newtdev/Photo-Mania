@@ -34,36 +34,44 @@ window.addEventListener('DOMContentLoaded', () => {
 appElement.form.forEach(item => {
     item.addEventListener('submit', (e) => {
         e.preventDefault();
-        const searchedValue = item.children[0].value;
-        if (searchedValue.trim() == '') {
-            alert('Please input a searched term!')
-        } else {
-            // GET THE QUERY RESULTS
-            let c = searchedImages(searchedValue.trim()).then(resolve => {
-                console.log(resolve)
-                getData(resolve.data)
-            })
-            // INPUT SHOULD BE EMPTY STRING
-            // input.value = '';
-            // console.log(searchedImages()
-            // REMOVE
-            // input.focus = 
-            // ADD TO THE DOM
-            // console.log(input.value)
-        }
+        inputFunt(item);
     })
 })
 
+const inputFunt = (item) => {
+    // GET THE INPUT VALUE FROM EACH OF THE FORM INPUT
+    const searchedValue = item.children[0].value;
+
+    if (searchedValue == '') {
+        alert('Please input a searched term!')
+    } else {
+
+        // GET THE QUERY RESULTS
+        resolvedSearchedValue(searchedValue);
+
+        // INPUT VALUE SET TO EMPTY
+        item.children[0].value = '';
+
+    }
+
+}
+function resolvedSearchedValue(value) {
+    searchedImages(value).then(resolve => {
+        getData(resolve.data)
+    })
+
+}
 const getData = async (promises) => {
     const resolvePromise = await promises;
-    console.log(resolvePromise)
-    // collectData(resolvePromise)
+    console.log(resolvePromises)
+    // console.log(resolvePromise)
+    collectData(resolvePromise)
 }
 
 const collectData = (data) => {
     data.photos.forEach(curr => {
         // SAVE ALL TO APP STATE
-        appState.photoData.curated__photos = curr;
+        appState.photoData.curated__photos = [curr];
 
         // ADD LOADER
         addLoader(appState.photoData.curated__photos)
@@ -74,12 +82,14 @@ const collectData = (data) => {
 
 // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
 
-appElement.gridContainer.addEventListener('click', (e) => {
-    const targetedImage = e.target.id;
-    if (targetedImage) {
-        // GET THE IMAGE
-        getSelectedImage(targetedImage);
-    }
+appElement.gridContainer.forEach(grid => {
+    grid.addEventListener('click', (e) => {
+        const targetedImage = e.target.id;
+        if (targetedImage) {
+            // GET THE IMAGE
+            getSelectedImage(targetedImage);
+        }
+    })
 })
 
 
@@ -106,7 +116,3 @@ const getSelectedImage = async (id) => {
 
 }
 
-// appElement.topForm.addEventListener('submit', (e) => {
-//     e.preventDefault()
-//     console.log(appElement.topForm.value)
-// })

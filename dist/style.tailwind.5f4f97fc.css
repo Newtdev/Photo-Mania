@@ -31184,9 +31184,9 @@ video {
 }
 
 body {
+  min-height: 100vh;
   --tw-bg-opacity: 1;
   background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
-  min-height: 100vh;
 }
 
 .light {
@@ -31223,7 +31223,14 @@ article {
   width: 100%;
 }
 
-#grid {
+#search__container {
+  visibility: hidden;
+  min-height: 200vh;
+  width: 100%;
+}
+
+.grid div,
+#search__grid {
   height: 100%;
   width: 100%;
   display: grid;

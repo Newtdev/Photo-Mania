@@ -879,19 +879,17 @@ var appElement = {
   theme: document.querySelector('.theme__image'),
   body: document.querySelector('body'),
   topForm: document.querySelector('.top__form'),
-  gridContainer: document.getElementById('grid'),
+  gridContainer: document.querySelectorAll('grid'),
   form: document.querySelectorAll('form'),
-  formInput: document.querySelectorAll('form input'),
   largeImage: document.getElementById('image__large'),
   largeImageContainer: document.querySelector('#large__image div'),
   imageContainer: document.getElementById('image__container'),
-  imageGrid: document.getElementById('grid'),
+  imageGrid: document.querySelectorAll('grid div'),
   loader: document.querySelector('.loader'),
   topLoader: document.querySelector('.loader__container') // largeImageDiv: document.getElementById()
 
 };
 exports.appElement = appElement;
-console.log(appElement.topLoader);
 },{}],"js/views/theme.js":[function(require,module,exports) {
 "use strict";
 
@@ -3651,17 +3649,10 @@ var _onscroll = require("./onscroll");
 //         </div>`
 // }
 var displayPhotos = function displayPhotos(photos) {
-  var imageDiv = document.createElement('div');
-  var markup = "<img src=\"".concat(photos.src.original, "\" alt=\"\" id=").concat(photos.id, " />");
-  imageDiv.innerHTML = markup;
-
-  _base.appElement.gridContainer.appendChild(imageDiv); // GETTING THE HEIGHT OF THE CONTAINER WHEN THE IMAGES ARE FULLY LOADED
-  // const container__height = appElement.imageContainer.getBoundingClientRect().height;
-  // setTimeout(() => {
-  //   console.log(appElement.imageContainer.getBoundingClientRect().height)
-  //   getHeight(container__height)
-  // }, 5000);
-
+  var curatedPhotos = photos.map(function (photos) {
+    return "<img src=\"".concat(photos.src.original, "\" alt=\"\" id=").concat(photos.id, " />");
+  }).join('');
+  _base.appElement.imageGrid.innerHTML = curatedPhotos; // console.log(appElement.imageContainer.clientHeight)
 }; // console.log(container__height)
 
 
@@ -3842,25 +3833,29 @@ window.addEventListener('DOMContentLoaded', function () {
 _base.appElement.form.forEach(function (item) {
   item.addEventListener('submit', function (e) {
     e.preventDefault();
-    var searchedValue = item.children[0].value;
-
-    if (searchedValue.trim() == '') {
-      alert('Please input a searched term!');
-    } else {
-      // GET THE QUERY RESULTS
-      var c = (0, _Search.searchedImages)(searchedValue.trim()).then(function (resolve) {
-        console.log(resolve);
-        getData(resolve.data);
-      }); // INPUT SHOULD BE EMPTY STRING
-      // input.value = '';
-      // console.log(searchedImages()
-      // REMOVE
-      // input.focus = 
-      // ADD TO THE DOM
-      // console.log(input.value)
-    }
+    inputFunt(item);
   });
 });
+
+var inputFunt = function inputFunt(item) {
+  // GET THE INPUT VALUE FROM EACH OF THE FORM INPUT
+  var searchedValue = item.children[0].value;
+
+  if (searchedValue == '') {
+    alert('Please input a searched term!');
+  } else {
+    // GET THE QUERY RESULTS
+    resolvedSearchedValue(searchedValue); // INPUT VALUE SET TO EMPTY
+
+    item.children[0].value = '';
+  }
+};
+
+function resolvedSearchedValue(value) {
+  (0, _Search.searchedImages)(value).then(function (resolve) {
+    getData(resolve.data);
+  });
+}
 
 var getData = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(promises) {
@@ -3874,9 +3869,11 @@ var getData = /*#__PURE__*/function () {
 
           case 2:
             resolvePromise = _context.sent;
-            console.log(resolvePromise); // collectData(resolvePromise)
+            console.log(resolvePromises); // console.log(resolvePromise)
 
-          case 4:
+            collectData(resolvePromise);
+
+          case 5:
           case "end":
             return _context.stop();
         }
@@ -3892,20 +3889,22 @@ var getData = /*#__PURE__*/function () {
 var collectData = function collectData(data) {
   data.photos.forEach(function (curr) {
     // SAVE ALL TO APP STATE
-    appState.photoData.curated__photos = curr; // ADD LOADER
+    appState.photoData.curated__photos = [curr]; // ADD LOADER
 
     (0, _search_views.addLoader)(appState.photoData.curated__photos);
   });
 }; // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
 
 
-_base.appElement.gridContainer.addEventListener('click', function (e) {
-  var targetedImage = e.target.id;
+_base.appElement.gridContainer.forEach(function (grid) {
+  grid.addEventListener('click', function (e) {
+    var targetedImage = e.target.id;
 
-  if (targetedImage) {
-    // GET THE IMAGE
-    getSelectedImage(targetedImage);
-  }
+    if (targetedImage) {
+      // GET THE IMAGE
+      getSelectedImage(targetedImage);
+    }
+  });
 });
 
 var getSelectedImage = /*#__PURE__*/function () {
@@ -3944,10 +3943,7 @@ var getSelectedImage = /*#__PURE__*/function () {
   return function getSelectedImage(_x2) {
     return _ref2.apply(this, arguments);
   };
-}(); // appElement.topForm.addEventListener('submit', (e) => {
-//     e.preventDefault()
-//     console.log(appElement.topForm.value)
-// })
+}();
 },{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js","./views/largerScreenViews":"js/views/largerScreenViews.js","./views/search_views":"js/views/search_views.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -3976,7 +3972,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57792" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49676" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
