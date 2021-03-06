@@ -4,14 +4,16 @@ import { displayPhotos } from "./displayCuratedPhotos"
 // ON CLICK OF THE SEARCH BUTTON
 appElement.topLoader.classList.add('load');
 
-const addLoader = (photos, display) => {
+const addLoader = (photos) => {
     setTimeout(() => {
         appElement.topLoader.classList.remove('load')
         setTimeout(() => {
-            // displayPhotos(photos)
+            displayPhotos(photos)
+            // console.log(displayPhotos(photos))
             // display
         });
 
     }, 4000);
 }
 export { addLoader }
+

@@ -10,7 +10,7 @@ function addLoader() {
 
     }, 5000);
 }
-addLoader()
+// addLoader()
 
 // getHeight()
 

@@ -6,12 +6,23 @@ import { getHeight } from './onscroll';
 //         </div>`
 // }
 export const displayPhotos = (photos) => {
-  const curatedPhotos = photos.map(photos => {
-    return `<img src="${photos.src.original}" alt="" id=${photos.id} />`
-  }).join('');
 
-  appElement.imageGrid.innerHTML = curatedPhotos;
-  // console.log(appElement.imageContainer.clientHeight)
+  const photoGrid = photos.map(images => {
+
+    return `<div><img src="${images.src.original}" alt="" id=${images.id} /></div>`
+  }).join('')
+
+  // console.log(photoGrid)
+  appElement.imageGrid.innerHTML = photoGrid;
+
 }
 
-// console.log(container__height)
+
+/***export const displayPhotos = (photos) => {
+  const curatedPhotos = photos.map(photos => {
+    return `<img src="${photos.src.original}" alt="" id=${photos.id} />`
+  }).join('')
+
+  appElement.imageGrid.innerHTML = curatedPhotos
+  // console.log(appElement.imageContainer.clientHeight)
+} */

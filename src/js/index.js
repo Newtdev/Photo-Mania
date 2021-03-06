@@ -4,7 +4,7 @@ import theme from './views/theme';
 import onsroll, { getHeight } from './views/onscroll';
 import { curatedData, Pictures } from './model/FetchData';
 import { displayPhotos } from './views/displayCuratedPhotos';
-import { searchedImages } from './model/Search';
+import { fetchFunt, searchedImages } from './model/Search';
 import { fetchGetPhoto } from './model/largeScreen';
 import { displayLargePhoto, emptyImage } from './views/largerScreenViews';
 import { addLoader } from './views/search_views';
@@ -54,6 +54,7 @@ const inputFunt = (item) => {
 
     }
 
+
 }
 function resolvedSearchedValue(value) {
     searchedImages(value).then(resolve => {
@@ -62,34 +63,77 @@ function resolvedSearchedValue(value) {
 
 }
 const getData = async (promises) => {
+    // RESOLVED PROMISES OF CURATED PHOTOS
     const resolvePromise = await promises;
-    console.log(resolvePromises)
-    // console.log(resolvePromise)
-    collectData(resolvePromise)
+
+    // SAVED CURATED APP IN APPSTATE
+    const curatedArr = collectData(resolvePromise)
+
+    // ADD LOADER
+    addLoader(curatedArr)
+
+    // NEXT PAGE
+    LoadMore(resolvePromise.next_page, curatedArr)
 }
+
 
 const collectData = (data) => {
-    data.photos.forEach(curr => {
-        // SAVE ALL TO APP STATE
-        appState.photoData.curated__photos = [curr];
 
-        // ADD LOADER
-        addLoader(appState.photoData.curated__photos)
-    })
+    return appState.photoData.curated__photos = data.photos;
+    // console.log(appState.photoData.curated__photos)
+
+    // data.photos.forEach(curr => {
+    //     //     // SAVE ALL TO APP STATE
+    //     appState.photoData.curated__photos = curr;
+    //     // console.log(appState.photoData.curated__photos)
+
+    //     // ADD LOADER
+    //     console.log(appState)
+    // })
+    // console.log(appState.photoData.curated__photos)
 
 }
+
+// LOAD MORE FUNCTIONALITY
+const LoadMore = (more, state) => {
+    appElement.button.addEventListener('click', () => {
+        // CHECK IF THE NEXT IS AVAILABLE
+        if (more) {
+            // ADD THE BUTTON
+            // LOAD THE NEXT URL
+            loadURL(more, state);
+            // ADD TO THE APP STATE AND ADD TO THE DOM
+        }
+    })
+}
+
+const loadURL = async (next, state) => {
+    const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+    let next__data = await fetchFunt(next, key)
+    console.log(next)
+    const nextData = next__data.data.photos;
+    // addLoader(nextData)
+
+    // state = []
+    state.length > 0 ? state.length = 0 : state = nextData
+    // console.log(state)
+    // console.log(nextData)
+
+
+
+
+}
+
 
 
 // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
-
-appElement.gridContainer.forEach(grid => {
-    grid.addEventListener('click', (e) => {
-        const targetedImage = e.target.id;
-        if (targetedImage) {
-            // GET THE IMAGE
-            getSelectedImage(targetedImage);
-        }
-    })
+appElement.imageContainer.addEventListener('click', (e) => {
+    const targetedImage = e.target.id;
+    if (targetedImage) {
+        // console.log(targetedImage)
+        // GET THE IMAGE
+        getSelectedImage(targetedImage);
+    }
 })
 
 
@@ -115,4 +159,5 @@ const getSelectedImage = async (id) => {
     emptyImage(appState.photoData.large__photo);
 
 }
+
 

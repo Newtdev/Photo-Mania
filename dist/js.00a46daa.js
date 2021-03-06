@@ -879,14 +879,15 @@ var appElement = {
   theme: document.querySelector('.theme__image'),
   body: document.querySelector('body'),
   topForm: document.querySelector('.top__form'),
-  gridContainer: document.querySelectorAll('grid'),
+  gridContainer: document.getElementById('grid'),
   form: document.querySelectorAll('form'),
   largeImage: document.getElementById('image__large'),
   largeImageContainer: document.querySelector('#large__image div'),
-  imageContainer: document.getElementById('image__container'),
-  imageGrid: document.querySelectorAll('grid div'),
+  imageContainer: document.querySelector('.image__container'),
+  imageGrid: document.querySelector('.curated__grid'),
   loader: document.querySelector('.loader'),
-  topLoader: document.querySelector('.loader__container') // largeImageDiv: document.getElementById()
+  topLoader: document.querySelector('.loader__container'),
+  button: document.getElementById('load__more') // largeImageDiv: document.getElementById()
 
 };
 exports.appElement = appElement;
@@ -920,9 +921,9 @@ function addLoader() {
   setTimeout(function () {
     _base.appElement.loader.classList.remove('show');
   }, 5000);
-}
+} // addLoader()
+// getHeight()
 
-addLoader(); // getHeight()
 
 var getHeight = function getHeight(height) {
   window.addEventListener('scroll', function () {
@@ -3613,7 +3614,7 @@ var Pictures = /*#__PURE__*/function () {
     value: function fetchCuratedPhotos() {
       try {
         var value = client.photos.curated({
-          per_page: 15
+          per_page: 10
         });
         return value;
       } catch (error) {
@@ -3649,11 +3650,20 @@ var _onscroll = require("./onscroll");
 //         </div>`
 // }
 var displayPhotos = function displayPhotos(photos) {
-  var curatedPhotos = photos.map(function (photos) {
-    return "<img src=\"".concat(photos.src.original, "\" alt=\"\" id=").concat(photos.id, " />");
-  }).join('');
-  _base.appElement.imageGrid.innerHTML = curatedPhotos; // console.log(appElement.imageContainer.clientHeight)
-}; // console.log(container__height)
+  var photoGrid = photos.map(function (images) {
+    return "<div><img src=\"".concat(images.src.original, "\" alt=\"\" id=").concat(images.id, " /></div>");
+  }).join(''); // console.log(photoGrid)
+
+  _base.appElement.imageGrid.innerHTML = photoGrid;
+};
+/***export const displayPhotos = (photos) => {
+  const curatedPhotos = photos.map(photos => {
+    return `<img src="${photos.src.original}" alt="" id=${photos.id} />`
+  }).join('')
+
+  appElement.imageGrid.innerHTML = curatedPhotos
+  // console.log(appElement.imageContainer.clientHeight)
+} */
 
 
 exports.displayPhotos = displayPhotos;
@@ -3768,11 +3778,12 @@ var _displayCuratedPhotos = require("./displayCuratedPhotos");
 // ON CLICK OF THE SEARCH BUTTON
 _base.appElement.topLoader.classList.add('load');
 
-var addLoader = function addLoader(photos, display) {
+var addLoader = function addLoader(photos) {
   setTimeout(function () {
     _base.appElement.topLoader.classList.remove('load');
 
-    setTimeout(function () {// displayPhotos(photos)
+    setTimeout(function () {
+      (0, _displayCuratedPhotos.displayPhotos)(photos); // console.log(displayPhotos(photos))
       // display
     });
   }, 4000);
@@ -3859,7 +3870,7 @@ function resolvedSearchedValue(value) {
 
 var getData = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(promises) {
-    var resolvePromise;
+    var resolvePromise, curatedArr;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -3869,11 +3880,14 @@ var getData = /*#__PURE__*/function () {
 
           case 2:
             resolvePromise = _context.sent;
-            console.log(resolvePromises); // console.log(resolvePromise)
+            // SAVED CURATED APP IN APPSTATE
+            curatedArr = collectData(resolvePromise); // ADD LOADER
 
-            collectData(resolvePromise);
+            (0, _search_views.addLoader)(curatedArr); // NEXT PAGE
 
-          case 5:
+            LoadMore(resolvePromise.next_page, curatedArr);
+
+          case 6:
           case "end":
             return _context.stop();
         }
@@ -3887,41 +3901,88 @@ var getData = /*#__PURE__*/function () {
 }();
 
 var collectData = function collectData(data) {
-  data.photos.forEach(function (curr) {
-    // SAVE ALL TO APP STATE
-    appState.photoData.curated__photos = [curr]; // ADD LOADER
+  return appState.photoData.curated__photos = data.photos; // console.log(appState.photoData.curated__photos)
+  // data.photos.forEach(curr => {
+  //     //     // SAVE ALL TO APP STATE
+  //     appState.photoData.curated__photos = curr;
+  //     // console.log(appState.photoData.curated__photos)
+  //     // ADD LOADER
+  //     console.log(appState)
+  // })
+  // console.log(appState.photoData.curated__photos)
+}; // LOAD MORE FUNCTIONALITY
 
-    (0, _search_views.addLoader)(appState.photoData.curated__photos);
-  });
-}; // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
 
-
-_base.appElement.gridContainer.forEach(function (grid) {
-  grid.addEventListener('click', function (e) {
-    var targetedImage = e.target.id;
-
-    if (targetedImage) {
-      // GET THE IMAGE
-      getSelectedImage(targetedImage);
+var LoadMore = function LoadMore(more, state) {
+  _base.appElement.button.addEventListener('click', function () {
+    // CHECK IF THE NEXT IS AVAILABLE
+    if (more) {
+      // ADD THE BUTTON
+      // LOAD THE NEXT URL
+      loadURL(more, state); // ADD TO THE APP STATE AND ADD TO THE DOM
     }
   });
-});
+};
 
-var getSelectedImage = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(id) {
-    var getPhotoPromise, resolvedData;
+var loadURL = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(next, state) {
+    var key, next__data, nextData;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
+            key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+            _context2.next = 3;
+            return (0, _Search.fetchFunt)(next, key);
+
+          case 3:
+            next__data = _context2.sent;
+            console.log(next);
+            nextData = next__data.data.photos; // addLoader(nextData)
+            // state = []
+
+            state.length > 0 ? state.length = 0 : state = nextData; // console.log(state)
+            // console.log(nextData)
+
+          case 7:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function loadURL(_x2, _x3) {
+    return _ref2.apply(this, arguments);
+  };
+}(); // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
+
+
+_base.appElement.imageContainer.addEventListener('click', function (e) {
+  var targetedImage = e.target.id;
+
+  if (targetedImage) {
+    // console.log(targetedImage)
+    // GET THE IMAGE
+    getSelectedImage(targetedImage);
+  }
+});
+
+var getSelectedImage = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(id) {
+    var getPhotoPromise, resolvedData;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
             // CALL THE GET FUNCTION CONTAINING THE URL AND KEY
             getPhotoPromise = (0, _largeScreen.fetchGetPhoto)(id); // RESOLVE THE PROMISE AND GET THE DATA
 
-            _context2.next = 3;
+            _context3.next = 3;
             return getPhotoPromise;
 
           case 3:
-            resolvedData = _context2.sent;
+            resolvedData = _context3.sent;
             // SAVED RESOLVED DATA TO APPSTATE
             appState.photoData.large__photo = [resolvedData.data]; // SEND TO THE DOM
 
@@ -3934,14 +3995,14 @@ var getSelectedImage = /*#__PURE__*/function () {
 
           case 8:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
       }
-    }, _callee2);
+    }, _callee3);
   }));
 
-  return function getSelectedImage(_x2) {
-    return _ref2.apply(this, arguments);
+  return function getSelectedImage(_x4) {
+    return _ref3.apply(this, arguments);
   };
 }();
 },{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js","./views/largerScreenViews":"js/views/largerScreenViews.js","./views/search_views":"js/views/search_views.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -3972,7 +4033,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49676" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53577" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
