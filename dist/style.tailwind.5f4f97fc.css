@@ -31231,7 +31231,6 @@ article {
 
 .curated__grid,
 #search__grid {
-  min-height: 100%;
   width: 100%;
   display: grid;
   /* grid-auto-rows: minmax(200px, auto); */
@@ -31583,6 +31582,10 @@ article {
   width: 90%;
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.load__more {
+  display: none;
 }
 
 @media (min-width: 640px) {

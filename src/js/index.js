@@ -65,65 +65,28 @@ function resolvedSearchedValue(value) {
 const getData = async (promises) => {
     // RESOLVED PROMISES OF CURATED PHOTOS
     const resolvePromise = await promises;
+    console.log(resolvePromise);
 
+    nextPage(resolvePromise)
     // SAVED CURATED APP IN APPSTATE
-    const curatedArr = collectData(resolvePromise)
+    collectData(resolvePromise);
 
     // ADD LOADER
-    addLoader(curatedArr)
+    // addLoader(curatedArr)
+    // console.log(saved)
 
     // NEXT PAGE
-    LoadMore(resolvePromise.next_page, curatedArr)
 }
-
 
 const collectData = (data) => {
-
-    return appState.photoData.curated__photos = data.photos;
-    // console.log(appState.photoData.curated__photos)
-
-    // data.photos.forEach(curr => {
-    //     //     // SAVE ALL TO APP STATE
-    //     appState.photoData.curated__photos = curr;
-    //     // console.log(appState.photoData.curated__photos)
-
-    //     // ADD LOADER
-    //     console.log(appState)
-    // })
-    // console.log(appState.photoData.curated__photos)
-
+    // console.log(data);
+    appState.photoData.curated__photos = data.photos
 }
 
-// LOAD MORE FUNCTIONALITY
-const LoadMore = (more, state) => {
-    appElement.button.addEventListener('click', () => {
-        // CHECK IF THE NEXT IS AVAILABLE
-        if (more) {
-            // ADD THE BUTTON
-            // LOAD THE NEXT URL
-            loadURL(more, state);
-            // ADD TO THE APP STATE AND ADD TO THE DOM
-        }
-    })
-}
-
-const loadURL = async (next, state) => {
-    const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
-    let next__data = await fetchFunt(next, key)
-    console.log(next)
-    const nextData = next__data.data.photos;
-    // addLoader(nextData)
-
-    // state = []
-    state.length > 0 ? state.length = 0 : state = nextData
-    // console.log(state)
-    // console.log(nextData)
 
 
 
-
-}
-
+// let url = `https://api.pexels.com/v1/curated/?page=${next++}&per_page=10`;
 
 
 // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN

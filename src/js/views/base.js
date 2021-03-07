@@ -10,6 +10,8 @@ export const appElement = {
     imageGrid: document.querySelector('.curated__grid'),
     loader: document.querySelector('.loader'),
     topLoader: document.querySelector('.loader__container'),
-    button: document.getElementById('load__more')
+    prevBtn: document.getElementById('prev'),
+    nextBtn: document.getElementById('next'),
     // largeImageDiv: document.getElementById()
 }
+// appElement.button.style.display = 'none';

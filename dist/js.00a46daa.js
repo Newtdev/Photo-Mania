@@ -887,9 +887,11 @@ var appElement = {
   imageGrid: document.querySelector('.curated__grid'),
   loader: document.querySelector('.loader'),
   topLoader: document.querySelector('.loader__container'),
-  button: document.getElementById('load__more') // largeImageDiv: document.getElementById()
+  prevBtn: document.getElementById('prev'),
+  nextBtn: document.getElementById('next') // largeImageDiv: document.getElementById()
 
-};
+}; // appElement.button.style.display = 'none';
+
 exports.appElement = appElement;
 },{}],"js/views/theme.js":[function(require,module,exports) {
 "use strict";
@@ -3638,7 +3640,7 @@ exports.Pictures = Pictures;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.displayPhotos = void 0;
+exports.nextPage = exports.displayPhotos = void 0;
 
 var _base = require("./base");
 
@@ -3656,6 +3658,25 @@ var displayPhotos = function displayPhotos(photos) {
 
   _base.appElement.imageGrid.innerHTML = photoGrid;
 };
+
+exports.displayPhotos = displayPhotos;
+
+var nextPage = function nextPage(page) {
+  if (page.next_page || page.prev_page) {
+    page.prev_page ? addPage(_base.appElement.prevBtn) : removePage(_base.appElement.prevBtn);
+    page.next_page ? addPage(_base.appElement.next_page) : removePage(_base.appElement.next_page);
+  }
+};
+
+exports.nextPage = nextPage;
+
+function addPage(elem) {
+  elem.style.display = 'block';
+}
+
+function removePage(elem) {
+  elem.style.display = 'none';
+}
 /***export const displayPhotos = (photos) => {
   const curatedPhotos = photos.map(photos => {
     return `<img src="${photos.src.original}" alt="" id=${photos.id} />`
@@ -3664,9 +3685,6 @@ var displayPhotos = function displayPhotos(photos) {
   appElement.imageGrid.innerHTML = curatedPhotos
   // console.log(appElement.imageContainer.clientHeight)
 } */
-
-
-exports.displayPhotos = displayPhotos;
 },{"./base":"js/views/base.js","./onscroll":"js/views/onscroll.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
 "use strict";
 
@@ -3870,7 +3888,7 @@ function resolvedSearchedValue(value) {
 
 var getData = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(promises) {
-    var resolvePromise, curatedArr;
+    var resolvePromise;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -3880,12 +3898,13 @@ var getData = /*#__PURE__*/function () {
 
           case 2:
             resolvePromise = _context.sent;
-            // SAVED CURATED APP IN APPSTATE
-            curatedArr = collectData(resolvePromise); // ADD LOADER
+            console.log(resolvePromise);
+            nextPage(resolvePromise); // SAVED CURATED APP IN APPSTATE
 
-            (0, _search_views.addLoader)(curatedArr); // NEXT PAGE
-
-            LoadMore(resolvePromise.next_page, curatedArr);
+            collectData(resolvePromise); // ADD LOADER
+            // addLoader(curatedArr)
+            // console.log(saved)
+            // NEXT PAGE
 
           case 6:
           case "end":
@@ -3901,61 +3920,10 @@ var getData = /*#__PURE__*/function () {
 }();
 
 var collectData = function collectData(data) {
-  return appState.photoData.curated__photos = data.photos; // console.log(appState.photoData.curated__photos)
-  // data.photos.forEach(curr => {
-  //     //     // SAVE ALL TO APP STATE
-  //     appState.photoData.curated__photos = curr;
-  //     // console.log(appState.photoData.curated__photos)
-  //     // ADD LOADER
-  //     console.log(appState)
-  // })
-  // console.log(appState.photoData.curated__photos)
-}; // LOAD MORE FUNCTIONALITY
-
-
-var LoadMore = function LoadMore(more, state) {
-  _base.appElement.button.addEventListener('click', function () {
-    // CHECK IF THE NEXT IS AVAILABLE
-    if (more) {
-      // ADD THE BUTTON
-      // LOAD THE NEXT URL
-      loadURL(more, state); // ADD TO THE APP STATE AND ADD TO THE DOM
-    }
-  });
-};
-
-var loadURL = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(next, state) {
-    var key, next__data, nextData;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
-            _context2.next = 3;
-            return (0, _Search.fetchFunt)(next, key);
-
-          case 3:
-            next__data = _context2.sent;
-            console.log(next);
-            nextData = next__data.data.photos; // addLoader(nextData)
-            // state = []
-
-            state.length > 0 ? state.length = 0 : state = nextData; // console.log(state)
-            // console.log(nextData)
-
-          case 7:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-
-  return function loadURL(_x2, _x3) {
-    return _ref2.apply(this, arguments);
-  };
-}(); // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
+  // console.log(data);
+  appState.photoData.curated__photos = data.photos;
+}; // let url = `https://api.pexels.com/v1/curated/?page=${next++}&per_page=10`;
+// GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
 
 
 _base.appElement.imageContainer.addEventListener('click', function (e) {
@@ -3969,20 +3937,20 @@ _base.appElement.imageContainer.addEventListener('click', function (e) {
 });
 
 var getSelectedImage = /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(id) {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(id) {
     var getPhotoPromise, resolvedData;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context2.prev = _context2.next) {
           case 0:
             // CALL THE GET FUNCTION CONTAINING THE URL AND KEY
             getPhotoPromise = (0, _largeScreen.fetchGetPhoto)(id); // RESOLVE THE PROMISE AND GET THE DATA
 
-            _context3.next = 3;
+            _context2.next = 3;
             return getPhotoPromise;
 
           case 3:
-            resolvedData = _context3.sent;
+            resolvedData = _context2.sent;
             // SAVED RESOLVED DATA TO APPSTATE
             appState.photoData.large__photo = [resolvedData.data]; // SEND TO THE DOM
 
@@ -3995,14 +3963,14 @@ var getSelectedImage = /*#__PURE__*/function () {
 
           case 8:
           case "end":
-            return _context3.stop();
+            return _context2.stop();
         }
       }
-    }, _callee3);
+    }, _callee2);
   }));
 
-  return function getSelectedImage(_x4) {
-    return _ref3.apply(this, arguments);
+  return function getSelectedImage(_x2) {
+    return _ref2.apply(this, arguments);
   };
 }();
 },{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js","./views/largerScreenViews":"js/views/largerScreenViews.js","./views/search_views":"js/views/search_views.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -4033,7 +4001,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53577" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49674" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
