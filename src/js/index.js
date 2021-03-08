@@ -65,24 +65,41 @@ function resolvedSearchedValue(value) {
 const getData = async (promises) => {
     // RESOLVED PROMISES OF CURATED PHOTOS
     const resolvePromise = await promises;
-    console.log(resolvePromise);
 
-    nextPage(resolvePromise)
     // SAVED CURATED APP IN APPSTATE
     collectData(resolvePromise);
 
+
     // ADD LOADER
-    // addLoader(curatedArr)
     // console.log(saved)
 
     // NEXT PAGE
+    nextPage(resolvePromise)
 }
 
 const collectData = (data) => {
     // console.log(data);
     appState.photoData.curated__photos = data.photos
+    addLoader(appState.photoData.curated__photos)
 }
 
+const nextPage = (page) => {
+    if (page.prev_page || page.next_page) {
+        console.log(page.next_page);
+        appElement.loadMore.innerHTML = `
+        ${page.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" OnClick()> next</button>` : ''
+            }
+
+    ${page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev"> 
+        next
+        </button>` : ''
+            }
+        
+
+    `
+    }
+
+}
 
 
 

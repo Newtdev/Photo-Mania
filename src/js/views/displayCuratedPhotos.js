@@ -15,26 +15,10 @@ export const displayPhotos = (photos) => {
   // console.log(photoGrid)
   appElement.imageGrid.innerHTML = photoGrid;
 
-}
 
-const nextPage = (page) => {
-  if (page.next_page || page.prev_page) {
-    page.prev_page ? addPage(appElement.prevBtn) : removePage(appElement.prevBtn);
-
-    page.next_page ? addPage(appElement.next_page) : removePage(appElement.next_page)
-  }
 
 }
-export { nextPage }
 
-function addPage(elem) {
-  elem.style.display = 'block'
-
-}
-function removePage(elem) {
-  elem.style.display = 'none'
-
-}
 
 /***export const displayPhotos = (photos) => {
   const curatedPhotos = photos.map(photos => {

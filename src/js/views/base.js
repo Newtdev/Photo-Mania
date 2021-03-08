@@ -12,6 +12,7 @@ export const appElement = {
     topLoader: document.querySelector('.loader__container'),
     prevBtn: document.getElementById('prev'),
     nextBtn: document.getElementById('next'),
+    loadMore: document.querySelector('.container')
     // largeImageDiv: document.getElementById()
 }
 // appElement.button.style.display = 'none';

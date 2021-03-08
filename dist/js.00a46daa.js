@@ -888,7 +888,8 @@ var appElement = {
   loader: document.querySelector('.loader'),
   topLoader: document.querySelector('.loader__container'),
   prevBtn: document.getElementById('prev'),
-  nextBtn: document.getElementById('next') // largeImageDiv: document.getElementById()
+  nextBtn: document.getElementById('next'),
+  loadMore: document.querySelector('.container') // largeImageDiv: document.getElementById()
 
 }; // appElement.button.style.display = 'none';
 
@@ -3640,7 +3641,7 @@ exports.Pictures = Pictures;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.nextPage = exports.displayPhotos = void 0;
+exports.displayPhotos = void 0;
 
 var _base = require("./base");
 
@@ -3658,25 +3659,6 @@ var displayPhotos = function displayPhotos(photos) {
 
   _base.appElement.imageGrid.innerHTML = photoGrid;
 };
-
-exports.displayPhotos = displayPhotos;
-
-var nextPage = function nextPage(page) {
-  if (page.next_page || page.prev_page) {
-    page.prev_page ? addPage(_base.appElement.prevBtn) : removePage(_base.appElement.prevBtn);
-    page.next_page ? addPage(_base.appElement.next_page) : removePage(_base.appElement.next_page);
-  }
-};
-
-exports.nextPage = nextPage;
-
-function addPage(elem) {
-  elem.style.display = 'block';
-}
-
-function removePage(elem) {
-  elem.style.display = 'none';
-}
 /***export const displayPhotos = (photos) => {
   const curatedPhotos = photos.map(photos => {
     return `<img src="${photos.src.original}" alt="" id=${photos.id} />`
@@ -3685,6 +3667,9 @@ function removePage(elem) {
   appElement.imageGrid.innerHTML = curatedPhotos
   // console.log(appElement.imageContainer.clientHeight)
 } */
+
+
+exports.displayPhotos = displayPhotos;
 },{"./base":"js/views/base.js","./onscroll":"js/views/onscroll.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
 "use strict";
 
@@ -3898,15 +3883,14 @@ var getData = /*#__PURE__*/function () {
 
           case 2:
             resolvePromise = _context.sent;
-            console.log(resolvePromise);
-            nextPage(resolvePromise); // SAVED CURATED APP IN APPSTATE
-
+            // SAVED CURATED APP IN APPSTATE
             collectData(resolvePromise); // ADD LOADER
-            // addLoader(curatedArr)
             // console.log(saved)
             // NEXT PAGE
 
-          case 6:
+            nextPage(resolvePromise);
+
+          case 5:
           case "end":
             return _context.stop();
         }
@@ -3922,6 +3906,14 @@ var getData = /*#__PURE__*/function () {
 var collectData = function collectData(data) {
   // console.log(data);
   appState.photoData.curated__photos = data.photos;
+  (0, _search_views.addLoader)(appState.photoData.curated__photos);
+};
+
+var nextPage = function nextPage(page) {
+  if (page.prev_page || page.next_page) {
+    console.log(page.next_page);
+    _base.appElement.loadMore.innerHTML = "\n        ".concat(page.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\" OnClick()> next</button>" : '', "\n\n    ").concat(page.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\"> \n        next\n        </button>" : '', "\n        \n\n    ");
+  }
 }; // let url = `https://api.pexels.com/v1/curated/?page=${next++}&per_page=10`;
 // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
 
