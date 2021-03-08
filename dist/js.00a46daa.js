@@ -3910,13 +3910,57 @@ var collectData = function collectData(data) {
 };
 
 var nextPage = function nextPage(page) {
+  console.log(page);
+
   if (page.prev_page || page.next_page) {
-    console.log(page.next_page);
-    _base.appElement.loadMore.innerHTML = "\n        ".concat(page.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\" OnClick()> next</button>" : '', "\n\n    ").concat(page.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\"> \n        next\n        </button>" : '', "\n        \n\n    ");
-  }
-}; // let url = `https://api.pexels.com/v1/curated/?page=${next++}&per_page=10`;
+    _base.appElement.loadMore.innerHTML = "\n        ".concat(page.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" data-id=\"prev\" onclick ='handlePromise('".concat(page.prev_page, "')'> prev</button>") : '', "\n\n    ").concat(page.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" data-id='next' onclick ='handlePromise('".concat(page.next_page, "')'> \n        next\n        </button>") : '', "\n            \n            \n    "); //   ? `< button class="btn" onclick = "getMoreSongs('${data.prev}')" > Prev</button >`
+  } else {
+    _base.appElement.loadMore.innerHTML = '';
+  } // handlePromise(page)
+
+}; // const buttonFunction = (id) => {
+//     document.querySelectorAll('.load__more').forEach(btn => {
+//         btn.addEventListener('click', (e) => {
+//             const targetBtn = e.currentTarget.dataset.id;
+//             if (targetBtn) {
+//                 console.log(targetBtn)
+//             }
+//         })
+//     })
+// }
+
+
+function handlePromise() {
+  return _handlePromise.apply(this, arguments);
+} // let url = `https://api.pexels.com/v1/curated/?page=${next++}&per_page=10`;
 // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
 
+
+function _handlePromise() {
+  _handlePromise = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+    var key, resolved;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            console.log(link);
+            key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+            _context3.next = 4;
+            return (0, _Search.fetchFunt)(link, key);
+
+          case 4:
+            resolved = _context3.sent;
+            console.log(resolved);
+
+          case 6:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+  return _handlePromise.apply(this, arguments);
+}
 
 _base.appElement.imageContainer.addEventListener('click', function (e) {
   var targetedImage = e.target.id;

@@ -84,21 +84,44 @@ const collectData = (data) => {
 }
 
 const nextPage = (page) => {
+    console.log(page)
     if (page.prev_page || page.next_page) {
-        console.log(page.next_page);
+
         appElement.loadMore.innerHTML = `
-        ${page.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" OnClick()> next</button>` : ''
+        ${page.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" data-id="prev" onclick ='handlePromise('${page.prev_page}')'> prev</button>` : ''
             }
 
-    ${page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev"> 
+    ${page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" data-id='next' onclick ='handlePromise('${page.next_page}')'> 
         next
         </button>` : ''
             }
-        
-
+            
+            
     `
-    }
+        //   ? `< button class="btn" onclick = "getMoreSongs('${data.prev}')" > Prev</button >`
 
+    } else {
+        appElement.loadMore.innerHTML = '';
+    }
+    // handlePromise(page)
+
+}
+
+// const buttonFunction = (id) => {
+//     document.querySelectorAll('.load__more').forEach(btn => {
+//         btn.addEventListener('click', (e) => {
+//             const targetBtn = e.currentTarget.dataset.id;
+//             if (targetBtn) {
+//                 console.log(targetBtn)
+//             }
+//         })
+//     })
+// }
+async function handlePromise() {
+    console.log(link)
+    const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+    const resolved = await fetchFunt(link, key)
+    console.log(resolved)
 }
 
 
