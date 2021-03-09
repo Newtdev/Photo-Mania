@@ -885,16 +885,19 @@ var appElement = {
   largeImageContainer: document.querySelector('#large__image div'),
   imageContainer: document.querySelector('.image__container'),
   imageGrid: document.querySelector('.curated__grid'),
-  loader: document.querySelector('.loader'),
-  topLoader: document.querySelector('.loader__container'),
+  curatedLoader: document.querySelector('.loader'),
+  topLoader: document.querySelector('.image__container .loader__container'),
   prevBtn: document.getElementById('prev'),
   nextBtn: document.getElementById('next'),
-  loadMore: document.querySelector('.container') // button: document.querySelectorAll('.load__more')
-  // largeImageDiv: document.getElementById()
+  loadMore: document.querySelector('.container'),
+  searchedGrid: document.querySelector('.search__grid'),
+  searchedContainer: document.querySelector('.search__container'),
+  searchedLoader: document.querySelector('.search__container .loader__container'),
+  section: document.querySelectorAll('.section') // largeImageDiv: document.getElementById()
 
-}; // appElement.button.style.display = 'none';
-
+};
 exports.appElement = appElement;
+appElement.searchedLoader.style.display = 'none';
 },{}],"js/views/theme.js":[function(require,module,exports) {
 "use strict";
 
@@ -3526,7 +3529,7 @@ var searchedImages = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            url = "https://api.pexels.com/v1/search?query=".concat(query, "&per_page=5"); // "https://api.pexels.com/v1/search?query=nature&per_page=1"
+            url = "https://api.pexels.com/v1/search?query=".concat(query, "&per_page=100"); // "https://api.pexels.com/v1/search?query=nature&per_page=1"
 
             return _context.abrupt("return", fetchFunt(url, key));
 
@@ -3654,20 +3657,40 @@ var _onscroll = require("./onscroll");
 //         </div>`
 // }
 var displayPhotos = function displayPhotos(photos) {
-  var photoGrid = photos.map(function (images) {
-    return "<div class='relative'><img src=\"".concat(images.src.original, "\" alt=\"\" id=").concat(images.id, " /></div>\n    ");
+  var photoGrid = photos.photos.map(function (images) {
+    return "\n    <div class='relative'>\n    <img src=\"".concat(images.src.original, "\" alt=\"\" id=").concat(images.id, " />\n    </div>\n    ");
   }).join(''); // console.log(photoGrid)
 
   _base.appElement.imageGrid.innerHTML = photoGrid;
-};
-/***export const displayPhotos = (photos) => {
-  const curatedPhotos = photos.map(photos => {
-    return `<img src="${photos.src.original}" alt="" id=${photos.id} />`
-  }).join('')
 
-  appElement.imageGrid.innerHTML = curatedPhotos
-  // console.log(appElement.imageContainer.clientHeight)
-} */
+  if (photos.prev_page || photos.next_page) {
+    _base.appElement.loadMore.innerHTML = "\n        ".concat(photos.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\" onclick=\"logNext('".concat(photos.prev_page, "')\"> prev</button>") : '', "\n      \n      ").concat(photos.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id='next' onclick=\"logNext('".concat(photos.next_page, "')\"> \n        button\n        </button>") : '', "     \n      ");
+  }
+}; // const nextPage = (page) => {
+//   // console.log(page)
+//   if (page.prev_page || page.next_page) {
+//     appElement.loadMore.innerHTML = `
+//     ${page.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" onclick="logNext('${page.prev_page}')"> prev</button>` : ''
+//     }
+//     ${
+//       page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id='next' onclick="logNext('${page.next_page}')"> 
+//         button
+//         </button>` : ''
+//     }
+//     `;
+//   } else {
+//     appElement.loadMore.innerHTML = '';
+//   }
+//   // handlePromise(page)
+//   // logNext()
+// }
+// /***export const displayPhotos = (photos) => {
+//   const curatedPhotos = photos.map(photos => {
+//     return `< img src = "${photos.src.original}" alt = "" id = ${ photos.id } />`
+//   }).join('')
+//   appElement.imageGrid.innerHTML = curatedPhotos
+//   // console.log(appElement.imageContainer.clientHeight)
+// } * /
 
 
 exports.displayPhotos = displayPhotos;
@@ -3787,15 +3810,39 @@ var addLoader = function addLoader(photos) {
     _base.appElement.topLoader.classList.remove('load');
 
     setTimeout(function () {
-      // displayPhotos(photos)
-      // console.log(displayPhotos(photos))
-      console.log(photos);
+      (0, _displayCuratedPhotos.displayPhotos)(photos); // console.log(photos);
+      // photos
     });
   }, 4000);
 };
 
 exports.addLoader = addLoader;
-},{"./base":"js/views/base.js","./displayCuratedPhotos":"js/views/displayCuratedPhotos.js"}],"js/index.js":[function(require,module,exports) {
+},{"./base":"js/views/base.js","./displayCuratedPhotos":"js/views/displayCuratedPhotos.js"}],"js/views/displaySearched.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.displaySearchPhotos = void 0;
+
+var _base = require("./base");
+
+var _onscroll = require("./onscroll");
+
+var displaySearchPhotos = function displaySearchPhotos(photos) {
+  var photoGrid = photos.map(function (images) {
+    return "\n        <div class='relative'>\n        <img src=\"".concat(images.src.original, "\" alt=\"\" id=").concat(images.id, " />\n        </div>\n    ");
+  }).join(''); // console.log(photoGrid)
+
+  _base.appElement.searchedGrid.innerHTML = photoGrid;
+};
+
+exports.displaySearchPhotos = displaySearchPhotos;
+
+function getNext(page) {
+  if (page.prev_page || page.next_page) {}
+}
+},{"./base":"js/views/base.js","./onscroll":"js/views/onscroll.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
@@ -3818,6 +3865,8 @@ var _largerScreenViews = require("./views/largerScreenViews");
 
 var _search_views = require("./views/search_views");
 
+var _displaySearched = require("./views/displaySearched");
+
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -3838,13 +3887,7 @@ var appState = {
     large__photo: [],
     next__page: []
   }
-}; // CURATED PHOTOS
-
-window.addEventListener('DOMContentLoaded', function () {
-  var picturesList = new _FetchData.Pictures();
-  var picturePromise = picturesList.fetchCuratedPhotos();
-  getData(picturePromise);
-}); // // GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
+}; // GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
 
 _base.appElement.form.forEach(function (item) {
   item.addEventListener('submit', function (e) {
@@ -3883,9 +3926,16 @@ var resolvedSearchedValue = /*#__PURE__*/function () {
             searchedPhotos = saveImages.data; // SAVE TO APPSTATE
 
             appState.photoData.searched__photos = searchedPhotos.photos; // ADD LOADER AND DISPLAY RESULT
-            // return searchedPhotos;
 
-          case 5:
+            console.log(appState.photoData.searched__photos);
+            (0, _displaySearched.displaySearchPhotos)(appState.photoData.searched__photos); // ADD VISIBILITY TO THE SEARCHED CONTAINER
+
+            _base.appElement.imageContainer.style.display = 'none';
+
+            _base.appElement.searchedContainer.classList.add('appears'); // return searchedPhotos;
+
+
+          case 9:
           case "end":
             return _context.stop();
         }
@@ -3896,7 +3946,14 @@ var resolvedSearchedValue = /*#__PURE__*/function () {
   return function resolvedSearchedValue(_x) {
     return _ref.apply(this, arguments);
   };
-}();
+}(); // CURATED PHOTOS
+
+
+window.addEventListener('DOMContentLoaded', function () {
+  var picturesList = new _FetchData.Pictures();
+  var picturePromise = picturesList.fetchCuratedPhotos();
+  getData(picturePromise);
+});
 
 var getData = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(promises) {
@@ -3914,10 +3971,9 @@ var getData = /*#__PURE__*/function () {
             collectData(resolvePromise); // ADD LOADER
             // console.log(saved)
             // NEXT PAGE
+            // nextPage(resolvePromise)
 
-            nextPage(resolvePromise);
-
-          case 5:
+          case 4:
           case "end":
             return _context2.stop();
         }
@@ -3932,20 +3988,25 @@ var getData = /*#__PURE__*/function () {
 
 var collectData = function collectData(data) {
   // console.log(data);
-  appState.photoData.curated__photos = data.photos;
+  appState.photoData.curated__photos = data;
   (0, _search_views.addLoader)(appState.photoData.curated__photos);
-};
+}; // const nextPage = (page) => {
+//     console.log(page)
+//     if (page.prev_page || page.next_page) {
+//         appElement.loadMore.innerHTML = `
+//         ${page.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" onclick="handlePromise('${page.prev_page}')"> prev</button>` : ''
+//             }
+//     ${page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id='next' onclick=handlePromise(${page.next_page})> 
+//         button
+//         </button>` : ''
+//             }     
+//     `;
+//     } else {
+//         appElement.loadMore.innerHTML = '';
+//     }
+//     // handlePromise(page)
+// }
 
-var nextPage = function nextPage(page) {
-  console.log(page);
-
-  if (page.prev_page || page.next_page) {
-    _base.appElement.loadMore.innerHTML = "\n        ".concat(page.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\" onclick=\"handlePromise('".concat(page.prev_page, "')\"> prev</button>") : '', "\n\n    ").concat(page.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id='next' onclick=handlePromise(".concat(page.next_page, ")> \n        button\n        </button>") : '', "     \n    ");
-  } else {
-    _base.appElement.loadMore.innerHTML = '';
-  } // handlePromise(page)
-
-};
 
 function handlePromise(_x3) {
   return _handlePromise.apply(this, arguments);
@@ -3983,14 +4044,16 @@ function _handlePromise() {
   return _handlePromise.apply(this, arguments);
 }
 
-_base.appElement.imageContainer.addEventListener('click', function (e) {
-  var targetedImage = e.target.id;
+_base.appElement.section.forEach(function (cur) {
+  cur.addEventListener('click', function (e) {
+    var targetedImage = e.target.id;
 
-  if (targetedImage) {
-    // console.log(targetedImage)
-    // GET THE IMAGE
-    getSelectedImage(targetedImage);
-  }
+    if (targetedImage) {
+      // console.log(targetedImage)
+      // GET THE IMAGE
+      getSelectedImage(targetedImage);
+    }
+  });
 });
 
 var getSelectedImage = /*#__PURE__*/function () {
@@ -4030,7 +4093,7 @@ var getSelectedImage = /*#__PURE__*/function () {
     return _ref3.apply(this, arguments);
   };
 }();
-},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js","./views/largerScreenViews":"js/views/largerScreenViews.js","./views/search_views":"js/views/search_views.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js","./views/largerScreenViews":"js/views/largerScreenViews.js","./views/search_views":"js/views/search_views.js","./views/displaySearched":"js/views/displaySearched.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

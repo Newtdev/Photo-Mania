@@ -8,6 +8,7 @@ import { fetchFunt, searchedImages } from './model/Search';
 import { fetchGetPhoto } from './model/largeScreen';
 import { displayLargePhoto, emptyImage } from './views/largerScreenViews';
 import { addLoader } from './views/search_views';
+import { displaySearchPhotos } from './views/displaySearched'
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 
 // APP STATE
@@ -22,15 +23,7 @@ let appState = {
 }
 
 
-// CURATED PHOTOS
-window.addEventListener('DOMContentLoaded', () => {
-    const picturesList = new Pictures();
-    let picturePromise = picturesList.fetchCuratedPhotos();
-    getData(picturePromise);
-})
-
-
-// // GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
+// GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
 appElement.form.forEach(item => {
     item.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -67,10 +60,40 @@ const resolvedSearchedValue = async (value) => {
     // SAVE TO APPSTATE
     appState.photoData.searched__photos = searchedPhotos.photos
 
+
     // ADD LOADER AND DISPLAY RESULT
+    console.log(appState.photoData.searched__photos)
+    displaySearchPhotos(appState.photoData.searched__photos)
+
+
+
+
+    // ADD VISIBILITY TO THE SEARCHED CONTAINER
+    appElement.imageContainer.style.display = 'none';
+    appElement.searchedContainer.classList.add('appears');
+
     // return searchedPhotos;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+// CURATED PHOTOS
+window.addEventListener('DOMContentLoaded', () => {
+    const picturesList = new Pictures();
+    let picturePromise = picturesList.fetchCuratedPhotos();
+    getData(picturePromise);
+})
+
+
 const getData = async (promises) => {
     // RESOLVED PROMISES OF CURATED PHOTOS
     const resolvePromise = await promises;
@@ -83,36 +106,36 @@ const getData = async (promises) => {
     // console.log(saved)
 
     // NEXT PAGE
-    nextPage(resolvePromise)
+    // nextPage(resolvePromise)
 }
 
 const collectData = (data) => {
     // console.log(data);
-    appState.photoData.curated__photos = data.photos
+    appState.photoData.curated__photos = data
     addLoader(appState.photoData.curated__photos)
 }
 
-const nextPage = (page) => {
-    console.log(page)
-    if (page.prev_page || page.next_page) {
+// const nextPage = (page) => {
+//     console.log(page)
+//     if (page.prev_page || page.next_page) {
 
-        appElement.loadMore.innerHTML = `
-        ${page.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" onclick="handlePromise('${page.prev_page}')"> prev</button>` : ''
+//         appElement.loadMore.innerHTML = `
+//         ${page.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" onclick="handlePromise('${page.prev_page}')"> prev</button>` : ''
 
-            }
+//             }
 
-    ${page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id='next' onclick=handlePromise(${page.next_page})> 
-        button
-        </button>` : ''
-            }     
-    `;
+//     ${page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id='next' onclick=handlePromise(${page.next_page})> 
+//         button
+//         </button>` : ''
+//             }     
+//     `;
 
-    } else {
-        appElement.loadMore.innerHTML = '';
-    }
-    // handlePromise(page)
+//     } else {
+//         appElement.loadMore.innerHTML = '';
+//     }
+//     // handlePromise(page)
 
-}
+// }
 async function handlePromise(link) {
     console.log('hello')
     // const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
@@ -139,13 +162,15 @@ async function handlePromise(link) {
 
 
 // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
-appElement.imageContainer.addEventListener('click', (e) => {
-    const targetedImage = e.target.id;
-    if (targetedImage) {
-        // console.log(targetedImage)
-        // GET THE IMAGE
-        getSelectedImage(targetedImage);
-    }
+appElement.section.forEach(cur => {
+    cur.addEventListener('click', (e) => {
+        const targetedImage = e.target.id;
+        if (targetedImage) {
+            // console.log(targetedImage)
+            // GET THE IMAGE
+            getSelectedImage(targetedImage);
+        }
+    })
 })
 
 

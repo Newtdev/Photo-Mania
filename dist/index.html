@@ -14,12 +14,12 @@
         <nav class="flex h-full items-center justify-between sm:mr-10 sm:mx-10 w-full">
           <div class="logo w-40 h-2\.5 flex justify-center align-middle text-center ml-4 sm:ml-0">
             <img src="/iconfinder_camera-shutter_353402.381f0b74.png" class="h-10 px-2" alt="click">
-            <span class="">
-              <a class="text-4xl text-white font-serif">Mania</a>
+            <span class="w-2">
+              <a class="text-2xl sm:text-4xl text-white font-serif">Mania</a>
             </span>
           </div>
 
-          <form class="w-3/5 sm:w-3/6 flex justify-center items-center relative top__form">
+          <form class=" w-3/5 sm:w-3/6 flex justify-center items-center relative top__form">
             <input type="search" class="bg-white rounded w-full py-2 px-2 font-serif placeholder-gray-500" id=" mobile__search" placeholder="search for high quality images">
             <button id="mobile__button" class="py-1 px-5 rounded-sm bg-red-700 text-white hover:bg-red-500 transition-all text-lg absolute right-2 pointer-events-auto">
               <img src="/iconfinder_search_172546.1a2f9585.png" class="h-4" alt="camera image">
@@ -54,17 +54,17 @@
     </section>
 
     <!-- SEARCHED IMAGES VIEW CONTAINER -->
-    <section class="bg-green-900 mt-10 absolute top-0 w-full" id="search__container">
+    <section class="bg-green-900 mt-10 absolute top-0 w-full search__container section z-30">
       <!-- LOADER SECTION -->
-      <!-- <div class="loader__container absolute top-0 left-0 flex w-full h-screen bg-black items-center justify-center">
+      <div class="loader__container absolute top-0 left-0 flex w-full h-screen bg-black items-center justify-center">
         <div class="top__loader">Loading...</div>
-      </div> -->
-      <article class="py-5 px-4 grid" id="search__grid">
+      </div>
+      <article class="py-5 px-4 grid search__grid min-h-screen bg-red-300 w-full">
       </article>
     </section>
 
     <!-- CSS GRID FOR THE LAYOUT --->
-    <section class="bg-red-900 mt-10 relative image__container">
+    <section class="bg-red-900 mt-10 relative image__container section">
       <div class="loader__container absolute top-0 left-0 flex w-full h-full bg-black items-center justify-center">
         <div class="top__loader">Loading...</div>
       </div>

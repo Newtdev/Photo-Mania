@@ -8,12 +8,15 @@ export const appElement = {
     largeImageContainer: document.querySelector('#large__image div'),
     imageContainer: document.querySelector('.image__container'),
     imageGrid: document.querySelector('.curated__grid'),
-    loader: document.querySelector('.loader'),
-    topLoader: document.querySelector('.loader__container'),
+    curatedLoader: document.querySelector('.loader'),
+    topLoader: document.querySelector('.image__container .loader__container'),
     prevBtn: document.getElementById('prev'),
     nextBtn: document.getElementById('next'),
     loadMore: document.querySelector('.container'),
-    // button: document.querySelectorAll('.load__more')
+    searchedGrid: document.querySelector('.search__grid'),
+    searchedContainer: document.querySelector('.search__container'),
+    searchedLoader: document.querySelector('.search__container .loader__container'),
+    section: document.querySelectorAll('.section')
     // largeImageDiv: document.getElementById()
 }
-// appElement.button.style.display = 'none';
+appElement.searchedLoader.style.display = 'none';
