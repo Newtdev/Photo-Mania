@@ -9,7 +9,8 @@ export const displayPhotos = (photos) => {
 
   const photoGrid = photos.map(images => {
 
-    return `<div><img src="${images.src.original}" alt="" id=${images.id} /></div>`
+    return `<div class='relative'><img src="${images.src.original}" alt="" id=${images.id} /></div>
+    `;
   }).join('')
 
   // console.log(photoGrid)

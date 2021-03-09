@@ -8,9 +8,9 @@ const addLoader = (photos) => {
     setTimeout(() => {
         appElement.topLoader.classList.remove('load')
         setTimeout(() => {
-            displayPhotos(photos)
+            // displayPhotos(photos)
             // console.log(displayPhotos(photos))
-            // display
+            console.log(photos);
         });
 
     }, 4000);

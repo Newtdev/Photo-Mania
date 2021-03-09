@@ -25,8 +25,8 @@ let appState = {
 // CURATED PHOTOS
 window.addEventListener('DOMContentLoaded', () => {
     const picturesList = new Pictures();
-    let a = picturesList.fetchCuratedPhotos();
-    getData(a);
+    let picturePromise = picturesList.fetchCuratedPhotos();
+    getData(picturePromise);
 })
 
 
@@ -56,10 +56,19 @@ const inputFunt = (item) => {
 
 
 }
-function resolvedSearchedValue(value) {
-    searchedImages(value).then(resolve => {
-        getData(resolve.data)
-    })
+const resolvedSearchedValue = async (value) => {
+
+    // AWAIT THE PROMISE FROM THE RESULT OF THE VALUE
+    const saveImages = await searchedImages(value);
+
+    // GET THE DATA FROM THE PROMISE
+    const searchedPhotos = saveImages.data
+
+    // SAVE TO APPSTATE
+    appState.photoData.searched__photos = searchedPhotos.photos
+
+    // ADD LOADER AND DISPLAY RESULT
+    // return searchedPhotos;
 
 }
 const getData = async (promises) => {
@@ -88,17 +97,15 @@ const nextPage = (page) => {
     if (page.prev_page || page.next_page) {
 
         appElement.loadMore.innerHTML = `
-        ${page.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" data-id="prev" onclick ='handlePromise('${page.prev_page}')'> prev</button>` : ''
+        ${page.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" onclick="handlePromise('${page.prev_page}')"> prev</button>` : ''
+
             }
 
-    ${page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" data-id='next' onclick ='handlePromise('${page.next_page}')'> 
-        next
+    ${page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id='next' onclick=handlePromise(${page.next_page})> 
+        button
         </button>` : ''
-            }
-            
-            
-    `
-        //   ? `< button class="btn" onclick = "getMoreSongs('${data.prev}')" > Prev</button >`
+            }     
+    `;
 
     } else {
         appElement.loadMore.innerHTML = '';
@@ -106,23 +113,25 @@ const nextPage = (page) => {
     // handlePromise(page)
 
 }
+async function handlePromise(link) {
+    console.log('hello')
+    // const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+    // const resolved = await fetchFunt(link, key)
+    // console.log(resolved)
+}
+// const getBtn = (link) => {
+//     document.querySelectorAll('.load__more').forEach(cur => {
+//         const btn = cur.id;
+//         if (btn == 'next') {
+//             document.getElementById(btn).onclick = `${handlePromise(link.next_page)`
+//         } else if (btn == 'prev') {
+//             document.getElementById(btn).onclick = `${handlePromise(link.prev_page)}`
 
-// const buttonFunction = (id) => {
-//     document.querySelectorAll('.load__more').forEach(btn => {
-//         btn.addEventListener('click', (e) => {
-//             const targetBtn = e.currentTarget.dataset.id;
-//             if (targetBtn) {
-//                 console.log(targetBtn)
-//             }
-//         })
+//         }
 //     })
 // }
-async function handlePromise() {
-    console.log(link)
-    const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
-    const resolved = await fetchFunt(link, key)
-    console.log(resolved)
-}
+
+
 
 
 

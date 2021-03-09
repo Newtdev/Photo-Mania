@@ -9,6 +9,8 @@ export const searchedImages = async (query) => {
     return fetchFunt(url, key)
 
 }
+
+
 // searchedImages();
 export async function fetchFunt(url, key) {
     try {

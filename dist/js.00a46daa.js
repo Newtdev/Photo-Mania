@@ -889,7 +889,8 @@ var appElement = {
   topLoader: document.querySelector('.loader__container'),
   prevBtn: document.getElementById('prev'),
   nextBtn: document.getElementById('next'),
-  loadMore: document.querySelector('.container') // largeImageDiv: document.getElementById()
+  loadMore: document.querySelector('.container') // button: document.querySelectorAll('.load__more')
+  // largeImageDiv: document.getElementById()
 
 }; // appElement.button.style.display = 'none';
 
@@ -3654,7 +3655,7 @@ var _onscroll = require("./onscroll");
 // }
 var displayPhotos = function displayPhotos(photos) {
   var photoGrid = photos.map(function (images) {
-    return "<div><img src=\"".concat(images.src.original, "\" alt=\"\" id=").concat(images.id, " /></div>");
+    return "<div class='relative'><img src=\"".concat(images.src.original, "\" alt=\"\" id=").concat(images.id, " /></div>\n    ");
   }).join(''); // console.log(photoGrid)
 
   _base.appElement.imageGrid.innerHTML = photoGrid;
@@ -3786,8 +3787,9 @@ var addLoader = function addLoader(photos) {
     _base.appElement.topLoader.classList.remove('load');
 
     setTimeout(function () {
-      (0, _displayCuratedPhotos.displayPhotos)(photos); // console.log(displayPhotos(photos))
-      // display
+      // displayPhotos(photos)
+      // console.log(displayPhotos(photos))
+      console.log(photos);
     });
   }, 4000);
 };
@@ -3840,8 +3842,8 @@ var appState = {
 
 window.addEventListener('DOMContentLoaded', function () {
   var picturesList = new _FetchData.Pictures();
-  var a = picturesList.fetchCuratedPhotos();
-  getData(a);
+  var picturePromise = picturesList.fetchCuratedPhotos();
+  getData(picturePromise);
 }); // // GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
 
 _base.appElement.form.forEach(function (item) {
@@ -3865,30 +3867,23 @@ var inputFunt = function inputFunt(item) {
   }
 };
 
-function resolvedSearchedValue(value) {
-  (0, _Search.searchedImages)(value).then(function (resolve) {
-    getData(resolve.data);
-  });
-}
-
-var getData = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(promises) {
-    var resolvePromise;
+var resolvedSearchedValue = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(value) {
+    var saveImages, searchedPhotos;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return promises;
+            return (0, _Search.searchedImages)(value);
 
           case 2:
-            resolvePromise = _context.sent;
-            // SAVED CURATED APP IN APPSTATE
-            collectData(resolvePromise); // ADD LOADER
-            // console.log(saved)
-            // NEXT PAGE
+            saveImages = _context.sent;
+            // GET THE DATA FROM THE PROMISE
+            searchedPhotos = saveImages.data; // SAVE TO APPSTATE
 
-            nextPage(resolvePromise);
+            appState.photoData.searched__photos = searchedPhotos.photos; // ADD LOADER AND DISPLAY RESULT
+            // return searchedPhotos;
 
           case 5:
           case "end":
@@ -3898,8 +3893,40 @@ var getData = /*#__PURE__*/function () {
     }, _callee);
   }));
 
-  return function getData(_x) {
+  return function resolvedSearchedValue(_x) {
     return _ref.apply(this, arguments);
+  };
+}();
+
+var getData = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(promises) {
+    var resolvePromise;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return promises;
+
+          case 2:
+            resolvePromise = _context2.sent;
+            // SAVED CURATED APP IN APPSTATE
+            collectData(resolvePromise); // ADD LOADER
+            // console.log(saved)
+            // NEXT PAGE
+
+            nextPage(resolvePromise);
+
+          case 5:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function getData(_x2) {
+    return _ref2.apply(this, arguments);
   };
 }();
 
@@ -3913,51 +3940,45 @@ var nextPage = function nextPage(page) {
   console.log(page);
 
   if (page.prev_page || page.next_page) {
-    _base.appElement.loadMore.innerHTML = "\n        ".concat(page.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" data-id=\"prev\" onclick ='handlePromise('".concat(page.prev_page, "')'> prev</button>") : '', "\n\n    ").concat(page.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" data-id='next' onclick ='handlePromise('".concat(page.next_page, "')'> \n        next\n        </button>") : '', "\n            \n            \n    "); //   ? `< button class="btn" onclick = "getMoreSongs('${data.prev}')" > Prev</button >`
+    _base.appElement.loadMore.innerHTML = "\n        ".concat(page.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\" onclick=\"handlePromise('".concat(page.prev_page, "')\"> prev</button>") : '', "\n\n    ").concat(page.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id='next' onclick=handlePromise(".concat(page.next_page, ")> \n        button\n        </button>") : '', "     \n    ");
   } else {
     _base.appElement.loadMore.innerHTML = '';
   } // handlePromise(page)
 
-}; // const buttonFunction = (id) => {
-//     document.querySelectorAll('.load__more').forEach(btn => {
-//         btn.addEventListener('click', (e) => {
-//             const targetBtn = e.currentTarget.dataset.id;
-//             if (targetBtn) {
-//                 console.log(targetBtn)
-//             }
-//         })
+};
+
+function handlePromise(_x3) {
+  return _handlePromise.apply(this, arguments);
+} // const getBtn = (link) => {
+//     document.querySelectorAll('.load__more').forEach(cur => {
+//         const btn = cur.id;
+//         if (btn == 'next') {
+//             document.getElementById(btn).onclick = `${handlePromise(link.next_page)`
+//         } else if (btn == 'prev') {
+//             document.getElementById(btn).onclick = `${handlePromise(link.prev_page)}`
+//         }
 //     })
 // }
-
-
-function handlePromise() {
-  return _handlePromise.apply(this, arguments);
-} // let url = `https://api.pexels.com/v1/curated/?page=${next++}&per_page=10`;
+// let url = `https://api.pexels.com/v1/curated/?page=${next++}&per_page=10`;
 // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
 
 
 function _handlePromise() {
-  _handlePromise = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-    var key, resolved;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+  _handlePromise = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(link) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
-            console.log(link);
-            key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
-            _context3.next = 4;
-            return (0, _Search.fetchFunt)(link, key);
+            console.log('hello'); // const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+            // const resolved = await fetchFunt(link, key)
+            // console.log(resolved)
 
-          case 4:
-            resolved = _context3.sent;
-            console.log(resolved);
-
-          case 6:
+          case 1:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
       }
-    }, _callee3);
+    }, _callee4);
   }));
   return _handlePromise.apply(this, arguments);
 }
@@ -3973,20 +3994,20 @@ _base.appElement.imageContainer.addEventListener('click', function (e) {
 });
 
 var getSelectedImage = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(id) {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(id) {
     var getPhotoPromise, resolvedData;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch (_context3.prev = _context3.next) {
           case 0:
             // CALL THE GET FUNCTION CONTAINING THE URL AND KEY
             getPhotoPromise = (0, _largeScreen.fetchGetPhoto)(id); // RESOLVE THE PROMISE AND GET THE DATA
 
-            _context2.next = 3;
+            _context3.next = 3;
             return getPhotoPromise;
 
           case 3:
-            resolvedData = _context2.sent;
+            resolvedData = _context3.sent;
             // SAVED RESOLVED DATA TO APPSTATE
             appState.photoData.large__photo = [resolvedData.data]; // SEND TO THE DOM
 
@@ -3999,14 +4020,14 @@ var getSelectedImage = /*#__PURE__*/function () {
 
           case 8:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
       }
-    }, _callee2);
+    }, _callee3);
   }));
 
-  return function getSelectedImage(_x2) {
-    return _ref2.apply(this, arguments);
+  return function getSelectedImage(_x4) {
+    return _ref3.apply(this, arguments);
   };
 }();
 },{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js","./views/largerScreenViews":"js/views/largerScreenViews.js","./views/search_views":"js/views/search_views.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
