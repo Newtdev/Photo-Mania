@@ -13,7 +13,6 @@ import { displaySearchPhotos } from './views/displaySearched'
 
 // APP STATE
 let appState = {
-    query: '',
     photoData: {
         curated__photos: [],
         searched__photos: [],
@@ -63,6 +62,8 @@ const resolvedSearchedValue = async (value) => {
 
     // ADD LOADER AND DISPLAY RESULT
     console.log(appState.photoData.searched__photos)
+
+
     displaySearchPhotos(appState.photoData.searched__photos)
 
 
@@ -118,9 +119,9 @@ const collectData = (data) => {
 // const nextPage = (page) => {
 //     console.log(page)
 //     if (page.prev_page || page.next_page) {
-
+{/* <button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" onclick="handlePromise('${page.prev_page}')"> prev</button> */ }
 //         appElement.loadMore.innerHTML = `
-//         ${page.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" onclick="handlePromise('${page.prev_page}')"> prev</button>` : ''
+//         ${page.prev_page ? `` : ''
 
 //             }
 

@@ -888,7 +888,7 @@ var appElement = {
   curatedLoader: document.querySelector('.loader'),
   topLoader: document.querySelector('.image__container .loader__container'),
   prevBtn: document.getElementById('prev'),
-  nextBtn: document.getElementById('next'),
+  nextBtn: document.querySelector('.load__more'),
   loadMore: document.querySelector('.container'),
   searchedGrid: document.querySelector('.search__grid'),
   searchedContainer: document.querySelector('.search__container'),
@@ -3529,7 +3529,7 @@ var searchedImages = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            url = "https://api.pexels.com/v1/search?query=".concat(query, "&per_page=100"); // "https://api.pexels.com/v1/search?query=nature&per_page=1"
+            url = "https://api.pexels.com/v1/search?query=".concat(query, "&per_page=20"); // "https://api.pexels.com/v1/search?query=nature&per_page=1"
 
             return _context.abrupt("return", fetchFunt(url, key));
 
@@ -3621,7 +3621,7 @@ var Pictures = /*#__PURE__*/function () {
     value: function fetchCuratedPhotos() {
       try {
         var value = client.photos.curated({
-          per_page: 10
+          per_page: 100
         });
         return value;
       } catch (error) {
@@ -3651,50 +3651,129 @@ var _base = require("./base");
 
 var _onscroll = require("./onscroll");
 
-// "build": "tailwind build src/style.css -o dist/style.css",
-// export const displayPhotos = (photos) => {
-//   return `<div id= ${photos.id}>
-//         </div>`
-// }
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 var displayPhotos = function displayPhotos(photos) {
+  console.log(photos);
   var photoGrid = photos.photos.map(function (images) {
-    return "\n    <div class='relative'>\n    <img src=\"".concat(images.src.original, "\" alt=\"\" id=").concat(images.id, " />\n    </div>\n    ");
-  }).join(''); // console.log(photoGrid)
+    return "\n    <div class='relative'>\n    <img src=\"".concat(images.src.original, "\" id=").concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "' class=\"dynamic__images\" />\n    </div>\n    ");
+  }).join('');
+  _base.appElement.imageGrid.innerHTML += photoGrid;
+  var dynamic__images = document.querySelectorAll('.dynamic__images'); // console.log(b)
+  // const imageObserver = new IntersectionObserver(function (entries, observer) {
+  //   entries.forEach(function (entry) {
+  //     // console.log(entry)
+  //     if (entry.isIntersecting) {
+  //       let image = entry.target;
+  //       // console.log(image);
+  //       // image.style = '';
+  //       image.src = image.dataset.src;
+  //       // image.classList.remove("lazy");
+  //       imageObserver.unobserve(image);
+  //     }
+  //   });
+  // });
+  // dynamic__images.forEach((image) => {
+  //   imageObserver.observe(image);
+  // });
+  // appElement.imageGrid.addEventListener('scroll', (e) => {
+  //   if (appElement.imageGrid.scrollTop + appElement.imageGrid.clientHeight >= appElement.imageGrid.scrollHeight && photos.next_page) {
+  //     fetchTrial(photos.next_page)
+  //   }
+  //   // console.log(appElement.imageGrid.clientHeight)
+  //   // console.log(appElement.imageGrid.scrollTop)
+  //   // console.log(appElement.imageGrid.scrollHeight)
+  // })
 
-  _base.appElement.imageGrid.innerHTML = photoGrid;
+  if (photos.next_page) {
+    _base.appElement.loadMore.innerHTML = "\n    ".concat(photos.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"next\">Load More</button>" : '', "\n    "); // btn()
 
-  if (photos.prev_page || photos.next_page) {
-    _base.appElement.loadMore.innerHTML = "\n        ".concat(photos.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\" onclick=\"logNext('".concat(photos.prev_page, "')\"> prev</button>") : '', "\n      \n      ").concat(photos.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id='next' onclick=\"logNext('".concat(photos.next_page, "')\"> \n        button\n        </button>") : '', "     \n      ");
+    var a = document.getElementById('next'); // console.log(a);
+
+    btn(a, photos.next_page);
+  } else {
+    _base.appElement.loadMore.innerHTML = '';
   }
-}; // const nextPage = (page) => {
-//   // console.log(page)
-//   if (page.prev_page || page.next_page) {
-//     appElement.loadMore.innerHTML = `
-//     ${page.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" onclick="logNext('${page.prev_page}')"> prev</button>` : ''
-//     }
-//     ${
-//       page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id='next' onclick="logNext('${page.next_page}')"> 
-//         button
-//         </button>` : ''
-//     }
-//     `;
-//   } else {
-//     appElement.loadMore.innerHTML = '';
-//   }
-//   // handlePromise(page)
-//   // logNext()
-// }
-// /***export const displayPhotos = (photos) => {
-//   const curatedPhotos = photos.map(photos => {
-//     return `< img src = "${photos.src.original}" alt = "" id = ${ photos.id } />`
-//   }).join('')
-//   appElement.imageGrid.innerHTML = curatedPhotos
-//   // console.log(appElement.imageContainer.clientHeight)
-// } * /
-
+};
 
 exports.displayPhotos = displayPhotos;
-},{"./base":"js/views/base.js","./onscroll":"js/views/onscroll.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
+
+function btn(btn, photos) {
+  btn.addEventListener('click', function () {
+    fetchTrial(photos);
+  });
+}
+
+function fetchTrial(_x) {
+  return _fetchTrial.apply(this, arguments);
+}
+
+function _fetchTrial() {
+  _fetchTrial = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(url) {
+    var key, search_images;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+            _context2.prev = 1;
+            _context2.next = 4;
+            return (0, _axios.default)("".concat(url, " "), {
+              headers: {
+                Authorization: key
+              }
+            });
+
+          case 4:
+            search_images = _context2.sent;
+            nextPage(search_images);
+            _context2.next = 11;
+            break;
+
+          case 8:
+            _context2.prev = 8;
+            _context2.t0 = _context2["catch"](1);
+            throw _context2.t0;
+
+          case 11:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[1, 8]]);
+  }));
+  return _fetchTrial.apply(this, arguments);
+}
+
+var nextPage = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(page) {
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            displayPhotos(page.data); // console.log(page)
+
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function nextPage(_x2) {
+    return _ref.apply(this, arguments);
+  };
+}(); // const { scrollTop, clientheight, scrollHeight } = document.documentElement;
+// console.log(scrollHeight, scrollTop, clientheight)
+// lazyloadImages = document.querySelectorAll("div");
+},{"./base":"js/views/base.js","./onscroll":"js/views/onscroll.js","axios":"../node_modules/axios/index.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3880,7 +3959,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 // APP STATE
 var appState = {
-  query: '',
   photoData: {
     curated__photos: [],
     searched__photos: [],
@@ -3993,8 +4071,12 @@ var collectData = function collectData(data) {
 }; // const nextPage = (page) => {
 //     console.log(page)
 //     if (page.prev_page || page.next_page) {
-//         appElement.loadMore.innerHTML = `
-//         ${page.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" onclick="handlePromise('${page.prev_page}')"> prev</button>` : ''
+
+
+{
+  /* <button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" onclick="handlePromise('${page.prev_page}')"> prev</button> */
+} //         appElement.loadMore.innerHTML = `
+//         ${page.prev_page ? `` : ''
 //             }
 //     ${page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id='next' onclick=handlePromise(${page.next_page})> 
 //         button
@@ -4006,7 +4088,6 @@ var collectData = function collectData(data) {
 //     }
 //     // handlePromise(page)
 // }
-
 
 function handlePromise(_x3) {
   return _handlePromise.apply(this, arguments);
@@ -4121,7 +4202,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49674" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49690" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

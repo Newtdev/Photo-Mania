@@ -11,7 +11,7 @@ export const appElement = {
     curatedLoader: document.querySelector('.loader'),
     topLoader: document.querySelector('.image__container .loader__container'),
     prevBtn: document.getElementById('prev'),
-    nextBtn: document.getElementById('next'),
+    nextBtn: document.querySelector('.load__more'),
     loadMore: document.querySelector('.container'),
     searchedGrid: document.querySelector('.search__grid'),
     searchedContainer: document.querySelector('.search__container'),
