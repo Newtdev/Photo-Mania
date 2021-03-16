@@ -3621,7 +3621,7 @@ var Pictures = /*#__PURE__*/function () {
     value: function fetchCuratedPhotos() {
       try {
         var value = client.photos.curated({
-          per_page: 100
+          per_page: 50
         });
         return value;
       } catch (error) {
@@ -3645,11 +3645,10 @@ exports.Pictures = Pictures;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.fetchNextPage = fetchNextPage;
 exports.displayPhotos = void 0;
 
 var _base = require("./base");
-
-var _onscroll = require("./onscroll");
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -3660,62 +3659,38 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 var displayPhotos = function displayPhotos(photos) {
-  console.log(photos);
   var photoGrid = photos.photos.map(function (images) {
-    return "\n    <div class='relative'>\n    <img src=\"".concat(images.src.original, "\" id=").concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "' class=\"dynamic__images\" />\n    </div>\n    ");
+    return "\n    <div class='relative'>\n    <img  id=".concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "' class=\"dynamic__images\" />\n    </div>\n    ");
   }).join('');
-  _base.appElement.imageGrid.innerHTML += photoGrid;
-  var dynamic__images = document.querySelectorAll('.dynamic__images'); // console.log(b)
-  // const imageObserver = new IntersectionObserver(function (entries, observer) {
-  //   entries.forEach(function (entry) {
-  //     // console.log(entry)
-  //     if (entry.isIntersecting) {
-  //       let image = entry.target;
-  //       // console.log(image);
-  //       // image.style = '';
-  //       image.src = image.dataset.src;
-  //       // image.classList.remove("lazy");
-  //       imageObserver.unobserve(image);
-  //     }
-  //   });
-  // });
-  // dynamic__images.forEach((image) => {
-  //   imageObserver.observe(image);
-  // });
-  // appElement.imageGrid.addEventListener('scroll', (e) => {
-  //   if (appElement.imageGrid.scrollTop + appElement.imageGrid.clientHeight >= appElement.imageGrid.scrollHeight && photos.next_page) {
-  //     fetchTrial(photos.next_page)
-  //   }
-  //   // console.log(appElement.imageGrid.clientHeight)
-  //   // console.log(appElement.imageGrid.scrollTop)
-  //   // console.log(appElement.imageGrid.scrollHeight)
-  // })
+  _base.appElement.imageGrid.innerHTML = photoGrid;
 
   if (photos.next_page) {
-    _base.appElement.loadMore.innerHTML = "\n    ".concat(photos.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"next\">Load More</button>" : '', "\n    "); // btn()
+    _base.appElement.loadMore.innerHTML = "\n    ".concat(photos.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"next\">Load More</button>" : '', "\n    "); // GET THE BUTTON ELEMENT
 
-    var a = document.getElementById('next'); // console.log(a);
-
-    btn(a, photos.next_page);
+    var nextBtn = document.getElementById('next');
+    btn(nextBtn, photos.next_page);
   } else {
     _base.appElement.loadMore.innerHTML = '';
   }
-};
+}; // LINK TO NEXT PAGE AND THE BUTTON ELEMENT
+
 
 exports.displayPhotos = displayPhotos;
 
 function btn(btn, photos) {
   btn.addEventListener('click', function () {
-    fetchTrial(photos);
+    fetchNextPage(photos);
   });
-}
+} // NEXT PAGE DATA HANDLING
 
-function fetchTrial(_x) {
-  return _fetchTrial.apply(this, arguments);
-}
 
-function _fetchTrial() {
-  _fetchTrial = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(url) {
+function fetchNextPage(_x) {
+  return _fetchNextPage.apply(this, arguments);
+} // ADD TO THE DOM
+
+
+function _fetchNextPage() {
+  _fetchNextPage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(url) {
     var key, search_images;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
@@ -3748,7 +3723,7 @@ function _fetchTrial() {
       }
     }, _callee2, null, [[1, 8]]);
   }));
-  return _fetchTrial.apply(this, arguments);
+  return _fetchNextPage.apply(this, arguments);
 }
 
 var nextPage = /*#__PURE__*/function () {
@@ -3757,7 +3732,7 @@ var nextPage = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            displayPhotos(page.data); // console.log(page)
+            displayPhotos(page.data);
 
           case 1:
           case "end":
@@ -3772,8 +3747,8 @@ var nextPage = /*#__PURE__*/function () {
   };
 }(); // const { scrollTop, clientheight, scrollHeight } = document.documentElement;
 // console.log(scrollHeight, scrollTop, clientheight)
-// lazyloadImages = document.querySelectorAll("div");
-},{"./base":"js/views/base.js","./onscroll":"js/views/onscroll.js","axios":"../node_modules/axios/index.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
+// let dynamic__images = document.querySelectorAll('.dynamic__images')
+},{"./base":"js/views/base.js","axios":"../node_modules/axios/index.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3906,22 +3881,62 @@ exports.displaySearchPhotos = void 0;
 
 var _base = require("./base");
 
-var _onscroll = require("./onscroll");
+var _displayCuratedPhotos = require("./displayCuratedPhotos");
 
 var displaySearchPhotos = function displaySearchPhotos(photos) {
   var photoGrid = photos.map(function (images) {
-    return "\n        <div class='relative'>\n        <img src=\"".concat(images.src.original, "\" alt=\"\" id=").concat(images.id, " />\n        </div>\n    ");
+    return "\n        <div class='relative'>\n        <img data-src=\"".concat(images.src.original, "\" style=\"fliter:blur()\" id=").concat(images.id, " />\n        </div>\n    ");
   }).join(''); // console.log(photoGrid)
 
   _base.appElement.searchedGrid.innerHTML = photoGrid;
-};
+  lazyloadImages = document.querySelectorAll("div");
+  var imageObserver = new IntersectionObserver(function (entries, observer) {
+    entries.forEach(function (entry) {
+      // console.log(entry)
+      if (entry.isIntersecting) {
+        var image = entry.target; // console.log(image);
+        // image.style = '';
+
+        image.src = image.dataset.src; // image.classList.remove("lazy");
+
+        imageObserver.unobserve(image);
+      }
+    });
+  });
+  dynamic__images.forEach(function (image) {
+    imageObserver.observe(image);
+  }); // PAGINATION SECTION OF SEARCH PAGE
+
+  if (photos.prev_page || photos.next_page) {
+    _base.appElement.loadMore.innerHTML = "".concat(photos.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\">Prev</button>" : '', "\n\n        ").concat(photos.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"next\">Next</button>" : '', "\n        ");
+    allButton(load__more, photos);
+  } else _base.appElement.loadMore.innerHTML = '';
+}; // GET PREV OR NEXT BUTTON WHEN THE IMAGE LOADS
+
 
 exports.displaySearchPhotos = displaySearchPhotos;
 
-function getNext(page) {
-  if (page.prev_page || page.next_page) {}
-}
-},{"./base":"js/views/base.js","./onscroll":"js/views/onscroll.js"}],"js/index.js":[function(require,module,exports) {
+var allButton = function allButton(buttons, pageNumber) {
+  buttons.forEach(function (btns) {
+    btns.addEventListener('click', function (e) {
+      var targetButtons = e.currentTarget.id;
+
+      if (targetButtons === 'next') {
+        // GET THE NEXT PAGE
+        var NextPage = document.getElementById(targetButtons);
+        (0, _displayCuratedPhotos.fetchNextPage)(pageNumber.next_page);
+      } else {
+        // GET THE PREV PAGE
+        var PrevPage = document.getElementById(targetButtons);
+        (0, _displayCuratedPhotos.fetchNextPage)(pageNumber.prev_page);
+      }
+    });
+  });
+}; // DISPLAY TO THE DOM AND CONTINUE THE CIRCLE
+// const newPages = (page) => {
+//     displaySearchPhotos(page.data)
+// }
+},{"./base":"js/views/base.js","./displayCuratedPhotos":"js/views/displayCuratedPhotos.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
@@ -4202,7 +4217,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49690" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56212" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
