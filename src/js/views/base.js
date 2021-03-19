@@ -12,11 +12,12 @@ export const appElement = {
     topLoader: document.querySelector('.image__container .loader__container'),
     prevBtn: document.getElementById('prev'),
     nextBtn: document.querySelector('.load__more'),
+    pagniation: document.querySelector('.pagination'),
     loadMore: document.querySelector('.container'),
     searchedGrid: document.querySelector('.search__grid'),
     searchedContainer: document.querySelector('.search__container'),
     searchedLoader: document.querySelector('.search__container .loader__container'),
     section: document.querySelectorAll('.section')
     // largeImageDiv: document.getElementById()
-}
+};
 appElement.searchedLoader.style.display = 'none';

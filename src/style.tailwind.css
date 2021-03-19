@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,6 +14,9 @@ body {
 }
 .light {
   @apply min-h-screen bg-white;
+}
+a {
+  font-family: "Dancing Script", cursive;
 }
 article {
   width: 100%;
@@ -49,11 +54,11 @@ article {
 .grid {
   width: 100%;
   display: grid;
-  grid-auto-rows: 300px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, auto));
+  grid-auto-rows: 200px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
   grid-auto-flow: dense;
   grid-gap: 5px;
-  max-width: 1600px !important;
+  /* max-width: 1400px !important; */
 }
 
 .grid div img {
@@ -65,16 +70,15 @@ article {
 .grid div:nth-child(2n) {
   grid-row: span 2;
 }
-.grid :nth-child(3n-1) {
+/* .grid :nth-child(3n-1) {
   grid-column: span 2;
   grid-row: span 2;
-}
+} */
 .grid :nth-child(3n) {
   grid-column: span 2;
 }
 @media only screen and (max-width: 500px) {
   #grid div:nth-child(2n + 1) {
-    margin-top: 0 !important;
     grid-row: span 1 !important;
   }
   #grid :nth-child(3n-1) {
@@ -82,6 +86,26 @@ article {
     grid-row: span 1 !important;
   }
 }
+.overlay {
+  background: none;
+  transition: background 3ms ease-in;
+}
+
+.overlay a {
+  font-size: 20px;
+  font-weight: lighter;
+  text-decoration: underline;
+  text-transform: capitalize;
+  opacity: 0;
+  transition: opactiy 5ms ease;
+}
+.overlay:hover {
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+}
+.overlay:hover a {
+  opacity: 1;
+}
+
 /* TOP LOADER */
 .loader__container {
   visibility: hidden;

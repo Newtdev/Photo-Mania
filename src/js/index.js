@@ -8,7 +8,7 @@ import { fetchFunt, searchedImages } from './model/Search';
 import { fetchGetPhoto } from './model/largeScreen';
 import { displayLargePhoto, emptyImage } from './views/largerScreenViews';
 import { addLoader } from './views/search_views';
-import { displaySearchPhotos } from './views/displaySearched'
+import { displaySearchPhotos } from './views/displaySearched';
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 
 // APP STATE
@@ -19,7 +19,7 @@ let appState = {
         large__photo: [],
         next__page: []
     },
-}
+};
 
 
 // GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
@@ -27,15 +27,15 @@ appElement.form.forEach(item => {
     item.addEventListener('submit', (e) => {
         e.preventDefault();
         inputFunt(item);
-    })
-})
+    });
+});
 
 const inputFunt = (item) => {
     // GET THE INPUT VALUE FROM EACH OF THE FORM INPUT
     const searchedValue = item.children[0].value;
 
     if (searchedValue == '') {
-        alert('Please input a searched term!')
+        alert('Please input a searched term!');
     } else {
 
         // GET THE QUERY RESULTS
@@ -47,24 +47,24 @@ const inputFunt = (item) => {
     }
 
 
-}
+};
 const resolvedSearchedValue = async (value) => {
 
     // AWAIT THE PROMISE FROM THE RESULT OF THE VALUE
     const saveImages = await searchedImages(value);
 
     // GET THE DATA FROM THE PROMISE
-    const searchedPhotos = saveImages.data
+    const searchedPhotos = saveImages.data;
 
     // SAVE TO APPSTATE
-    appState.photoData.searched__photos = searchedPhotos.photos
+    appState.photoData.searched__photos = searchedPhotos.photos;
 
 
     // ADD LOADER AND DISPLAY RESULT
-    console.log(appState.photoData.searched__photos)
+    console.log(appState.photoData.searched__photos);
 
 
-    displaySearchPhotos(appState.photoData.searched__photos)
+    displaySearchPhotos(appState.photoData.searched__photos);
 
 
 
@@ -75,7 +75,7 @@ const resolvedSearchedValue = async (value) => {
 
     // return searchedPhotos;
 
-}
+};
 
 
 
@@ -92,7 +92,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const picturesList = new Pictures();
     let picturePromise = picturesList.fetchCuratedPhotos();
     getData(picturePromise);
-})
+});
 
 
 const getData = async (promises) => {
@@ -108,13 +108,14 @@ const getData = async (promises) => {
 
     // NEXT PAGE
     // nextPage(resolvePromise)
-}
+};
 
 const collectData = (data) => {
     // console.log(data);
-    appState.photoData.curated__photos = data
-    addLoader(appState.photoData.curated__photos)
-}
+    appState.photoData.curated__photos = data;
+    displayPhotos(appState.photoData.curated__photos);
+    // addLoader(appState.photoData.curated__photos);
+};
 
 // const nextPage = (page) => {
 //     console.log(page)
@@ -138,7 +139,7 @@ const collectData = (data) => {
 
 // }
 async function handlePromise(link) {
-    console.log('hello')
+    console.log('hello');
     // const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
     // const resolved = await fetchFunt(link, key)
     // console.log(resolved)
@@ -165,14 +166,14 @@ async function handlePromise(link) {
 // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
 appElement.section.forEach(cur => {
     cur.addEventListener('click', (e) => {
-        const targetedImage = e.target.id;
+        const targetedImage = e.target.parentElement.children[0].id;
         if (targetedImage) {
             // console.log(targetedImage)
             // GET THE IMAGE
             getSelectedImage(targetedImage);
         }
-    })
-})
+    });
+});
 
 
 
@@ -185,10 +186,10 @@ const getSelectedImage = async (id) => {
     const resolvedData = await getPhotoPromise;
 
     // SAVED RESOLVED DATA TO APPSTATE
-    appState.photoData.large__photo = [(resolvedData.data)]
+    appState.photoData.large__photo = [(resolvedData.data)];
 
     // SEND TO THE DOM
-    displayLargePhoto(appState.photoData.large__photo)
+    displayLargePhoto(appState.photoData.large__photo);
 
     // ADD THE CONTAINER TO THE VIEW
     appElement.largeImage.classList.add('large__visible');
@@ -196,6 +197,6 @@ const getSelectedImage = async (id) => {
     // REMOVE THE CONTAINER IF THE IMAGE IS IN THE VIEW
     emptyImage(appState.photoData.large__photo);
 
-}
+};
 
 

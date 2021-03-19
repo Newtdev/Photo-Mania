@@ -889,6 +889,7 @@ var appElement = {
   topLoader: document.querySelector('.image__container .loader__container'),
   prevBtn: document.getElementById('prev'),
   nextBtn: document.querySelector('.load__more'),
+  pagniation: document.querySelector('.pagination'),
   loadMore: document.querySelector('.container'),
   searchedGrid: document.querySelector('.search__grid'),
   searchedContainer: document.querySelector('.search__container'),
@@ -3529,7 +3530,7 @@ var searchedImages = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            url = "https://api.pexels.com/v1/search?query=".concat(query, "&per_page=20"); // "https://api.pexels.com/v1/search?query=nature&per_page=1"
+            url = "https://api.pexels.com/v1/search?query=".concat(query, "&per_page=10"); // "https://api.pexels.com/v1/search?query=nature&per_page=1"
 
             return _context.abrupt("return", fetchFunt(url, key));
 
@@ -3621,7 +3622,7 @@ var Pictures = /*#__PURE__*/function () {
     value: function fetchCuratedPhotos() {
       try {
         var value = client.photos.curated({
-          per_page: 50
+          per_page: 20
         });
         return value;
       } catch (error) {
@@ -3646,7 +3647,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.fetchNextPage = fetchNextPage;
-exports.displayPhotos = void 0;
+exports.nextPage = exports.displayPhotos = void 0;
 
 var _base = require("./base");
 
@@ -3660,18 +3661,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var displayPhotos = function displayPhotos(photos) {
   var photoGrid = photos.photos.map(function (images) {
-    return "\n    <div class='relative'>\n    <img  id=".concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "' class=\"dynamic__images\" />\n    </div>\n    ");
+    return "\n     <div class='relative'>\n     <img  id=".concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "\n      ' class=\"dynamic__images\" />\n\n      <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n     </div>\n    \n    ");
   }).join('');
-  _base.appElement.imageGrid.innerHTML = photoGrid;
+  _base.appElement.imageGrid.innerHTML += photoGrid;
+  window.addEventListener('scroll', function () {
+    // console.log(document.documentElement.offsetHeight);
+    // console.log(appElement.imageGrid.scrollHeight);
+    // console.log(appElement.imageGrid.clientHeight);
+    // console.log(document.documentElement.clientHeight);
+    // console.log(document.documentElement.scrollHeight);
+    var _document$documentEle = document.documentElement,
+        scrollTop = _document$documentEle.scrollTop,
+        scrollHeight = _document$documentEle.scrollHeight,
+        clientHeight = _document$documentEle.clientHeight;
+    var scroll__height = scrollHeight - 500; // console.log(scroll__height);
 
-  if (photos.next_page) {
-    _base.appElement.loadMore.innerHTML = "\n    ".concat(photos.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"next\">Load More</button>" : '', "\n    "); // GET THE BUTTON ELEMENT
+    if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
+      fetchNextPage(photos.next_page);
+      console.log(_base.appElement.imageGrid.clientHeight + 'this is the window scroll height');
+    } //else if (window.pageYOffset === appElement.imageGrid.clientHeight) {
+    //   console.log(appElement.imageGrid.clientHeight + 'this is the window client height');
+    // }
 
-    var nextBtn = document.getElementById('next');
-    btn(nextBtn, photos.next_page);
-  } else {
-    _base.appElement.loadMore.innerHTML = '';
-  }
+  }); // if (photos.next_page) {
+  //   appElement.loadMore.innerHTML = `
+  //   ${photos.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="next">Load More</button>` : ''
+  //     }
+  //   `;
+  //   // GET THE BUTTON ELEMENT
+  //   const nextBtn = document.getElementById('next');
+  //   btn(nextBtn, photos.next_page);
+  // } else {
+  //   appElement.loadMore.innerHTML = '';
+  // }
 }; // LINK TO NEXT PAGE AND THE BUTTON ELEMENT
 
 
@@ -3748,6 +3770,9 @@ var nextPage = /*#__PURE__*/function () {
 }(); // const { scrollTop, clientheight, scrollHeight } = document.documentElement;
 // console.log(scrollHeight, scrollTop, clientheight)
 // let dynamic__images = document.querySelectorAll('.dynamic__images')
+
+
+exports.nextPage = nextPage;
 },{"./base":"js/views/base.js","axios":"../node_modules/axios/index.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
 "use strict";
 
@@ -3857,11 +3882,11 @@ var _base = require("./base");
 var _displayCuratedPhotos = require("./displayCuratedPhotos");
 
 // ON CLICK OF THE SEARCH BUTTON
-_base.appElement.topLoader.classList.add('load');
+_base.appElement.curatedLoader.classList.add('show');
 
 var addLoader = function addLoader(photos) {
   setTimeout(function () {
-    _base.appElement.topLoader.classList.remove('load');
+    _base.appElement.curatedLoader.classList.remove('show');
 
     setTimeout(function () {
       (0, _displayCuratedPhotos.displayPhotos)(photos); // console.log(photos);
@@ -3885,32 +3910,33 @@ var _displayCuratedPhotos = require("./displayCuratedPhotos");
 
 var displaySearchPhotos = function displaySearchPhotos(photos) {
   var photoGrid = photos.map(function (images) {
-    return "\n        <div class='relative'>\n        <img data-src=\"".concat(images.src.original, "\" style=\"fliter:blur()\" id=").concat(images.id, " />\n        </div>\n    ");
-  }).join(''); // console.log(photoGrid)
+    return "\n        <div class='relative'>\n        <img  loading='lazy' style=\"background-color:".concat(images.avg_color, "\" id=").concat(images.id, " />\n        <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-2\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n        </div>\n    ");
+  }).join('');
+  console.log(); // console.log(photoGrid)
 
-  _base.appElement.searchedGrid.innerHTML = photoGrid;
-  lazyloadImages = document.querySelectorAll("div");
-  var imageObserver = new IntersectionObserver(function (entries, observer) {
-    entries.forEach(function (entry) {
-      // console.log(entry)
-      if (entry.isIntersecting) {
-        var image = entry.target; // console.log(image);
-        // image.style = '';
-
-        image.src = image.dataset.src; // image.classList.remove("lazy");
-
-        imageObserver.unobserve(image);
-      }
-    });
-  });
-  dynamic__images.forEach(function (image) {
-    imageObserver.observe(image);
-  }); // PAGINATION SECTION OF SEARCH PAGE
+  _base.appElement.searchedGrid.innerHTML = photoGrid; // lazyloadImages = document.querySelectorAll("div");
+  // const imageObserver = new IntersectionObserver(function (entries, observer) {
+  //     entries.forEach(function (entry) {
+  //         // console.log(entry)
+  //         if (entry.isIntersecting) {
+  //             let image = entry.target;
+  //             // console.log(image);
+  //             // image.style = '';
+  //             image.src = image.dataset.src;
+  //             // image.classList.remove("lazy");
+  //             imageObserver.unobserve(image);
+  //         }
+  //     });
+  // });
+  // dynamic__images.forEach((image) => {
+  //     imageObserver.observe(image);
+  // });
+  // PAGINATION SECTION OF SEARCH PAGE
 
   if (photos.prev_page || photos.next_page) {
     _base.appElement.loadMore.innerHTML = "".concat(photos.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\">Prev</button>" : '', "\n\n        ").concat(photos.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"next\">Next</button>" : '', "\n        ");
     allButton(load__more, photos);
-  } else _base.appElement.loadMore.innerHTML = '';
+  } else _base.appElement.pagniation.innerHTML = '';
 }; // GET PREV OR NEXT BUTTON WHEN THE IMAGE LOADS
 
 
@@ -3932,7 +3958,9 @@ var allButton = function allButton(buttons, pageNumber) {
       }
     });
   });
-}; // DISPLAY TO THE DOM AND CONTINUE THE CIRCLE
+};
+
+; // DISPLAY TO THE DOM AND CONTINUE THE CIRCLE
 // const newPages = (page) => {
 //     displaySearchPhotos(page.data)
 // }
@@ -4082,7 +4110,7 @@ var getData = /*#__PURE__*/function () {
 var collectData = function collectData(data) {
   // console.log(data);
   appState.photoData.curated__photos = data;
-  (0, _search_views.addLoader)(appState.photoData.curated__photos);
+  (0, _displayCuratedPhotos.displayPhotos)(appState.photoData.curated__photos); // addLoader(appState.photoData.curated__photos);
 }; // const nextPage = (page) => {
 //     console.log(page)
 //     if (page.prev_page || page.next_page) {
@@ -4142,7 +4170,7 @@ function _handlePromise() {
 
 _base.appElement.section.forEach(function (cur) {
   cur.addEventListener('click', function (e) {
-    var targetedImage = e.target.id;
+    var targetedImage = e.target.parentElement.children[0].id;
 
     if (targetedImage) {
       // console.log(targetedImage)
@@ -4217,7 +4245,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56212" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52793" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

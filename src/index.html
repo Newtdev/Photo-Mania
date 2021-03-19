@@ -15,7 +15,7 @@
           class="flex h-full items-center justify-between sm:mr-10 sm:mx-10 w-full"
         >
           <div
-            class="logo w-40 h-2\.5 flex justify-center align-middle text-center ml-4 sm:ml-0"
+            class="logo w-40 h-2\.5 flex justify-center items-center text-center ml-4 sm:ml-0"
           >
             <img
               src="./images/iconfinder_camera-shutter_353402.png"
@@ -28,7 +28,7 @@
           </div>
 
           <form
-            class=" w-3/5 sm:w-3/6 flex justify-center items-center relative top__form"
+            class=" w-3/5 sm:w-3/6 mx-2 flex justify-center items-center relative top__form"
           >
             <input
               type="search"
@@ -70,7 +70,7 @@
               PHOTO<small class="text-red-600">MANIA</small>
             </h1>
             <p class="text-2xl font-serif text-white text-center">
-              Making Memory through the lense of a camera.
+              Making Memory through the lense of a camera...
             </p>
           </div>
           <form
@@ -100,36 +100,25 @@
     <!-- SEARCHED IMAGES VIEW CONTAINER -->
     <section class="bg-green-900 mt-10 absolute top-0 w-full search__container section z-30">
       <!-- LOADER SECTION -->
-      <div class="loader__container absolute top-0 left-0 flex w-full h-screen bg-black items-center justify-center">
+      <div class="loader__container absolute top-0 left-0 flex w-full h-screen bg-black items-center justify-center m-auto">
         <div class="top__loader">Loading...</div>
       </div>
       <article class="py-5 px-4 grid search__grid min-h-screen bg-red-300 w-full">
       </article>
+      <div class="pagination w-full flex h-13 justify-center item-center">
+        <!--  -->
+      </div>
     </section>
 
     <!-- CSS GRID FOR THE LAYOUT --->
     <section class="bg-red-900 mt-10 relative image__container section">
-      <div class="loader__container absolute bottom-0 w-full flex bg-black items-center justify-center">
+      <!-- <div class="loader__container absolute bottom-0 w-full flex bg-black items-center justify-center">
         <div class="top__loader">Loading...</div>
-      </div>
+      </div> -->
       <article class="py-5 px-4 grid curated__grid min-h-screen">
-        <!-- <div class='relative'>
-          <img src="./images/pexels-fady-hany-1466845.jpg" alt="" />
-           <div class=''>
-                <a href=""></a>
-    </div>
-          <div class='overlay absolute top-0 r-0 h-screen w-full bg-red-600 z-10'></div>
-        </div> -->
+         
       </article>
-    </section>
-
-    
-        <!-- TOP LOADER SECTION -->
-        <div class="loader__more container w-full flex h-13 justify-center item-center">
-        <!--  -->
-      </div>
-    <!-- LOADER SECTION -->
-    <div id="loader" class="flex items-center justify-center w-full h-20 loader">
+      <div id="loader" class="flex items-center justify-center w-full h-20 loader">
       <div class="lds-facebook">
         <div></div>
         <div></div>
@@ -137,6 +126,14 @@
         <div></div>
       </div>
     </div>
+    </section>
+
+        <!-- TOP LOADER SECTION -->
+        <div class="loader__more container w-full flex h-13 justify-center item-center">
+        <!--  -->
+      </div>
+    <!-- LOADER SECTION -->
+    
 
     <section
       id="image__large"
@@ -160,7 +157,7 @@
           </div>
         </div>
 
-        <div id="large__image" class="w-full bg-black">
+        <div id="large__image" class="w-full bg-white">
           <div class="w-full flex items-center justify-center"></div>
         </div>
         </div>
