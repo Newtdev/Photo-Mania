@@ -888,8 +888,8 @@ var appElement = {
   curatedLoader: document.querySelector('.loader'),
   topLoader: document.querySelector('.image__container .loader__container'),
   prevBtn: document.getElementById('prev'),
-  nextBtn: document.querySelector('.load__more'),
-  pagniation: document.querySelector('.pagination'),
+  // nextBtn: document.querySelector('.load__more'),
+  pagination: document.querySelector('.search__loadMore'),
   loadMore: document.querySelector('.container'),
   searchedGrid: document.querySelector('.search__grid'),
   searchedContainer: document.querySelector('.search__container'),
@@ -3515,24 +3515,30 @@ exports.searchedImages = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
+var _pexels = require("pexels");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+var client = (0, _pexels.createClient)('563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08'); // const query = 'Nature';
+// const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
 
 var searchedImages = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(query) {
-    var url;
+    var images;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            url = "https://api.pexels.com/v1/search?query=".concat(query, "&per_page=10"); // "https://api.pexels.com/v1/search?query=nature&per_page=1"
+            images = client.photos.search({
+              query: query,
+              per_page: 10
+            }); // console.log(images);
 
-            return _context.abrupt("return", fetchFunt(url, key));
+            return _context.abrupt("return", images);
 
           case 2:
           case "end":
@@ -3587,7 +3593,7 @@ function _fetchFunt() {
   }));
   return _fetchFunt.apply(this, arguments);
 }
-},{"axios":"../node_modules/axios/index.js"}],"js/model/FetchData.js":[function(require,module,exports) {
+},{"axios":"../node_modules/axios/index.js","pexels":"../node_modules/pexels/dist/main.module.js"}],"js/model/FetchData.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3606,11 +3612,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var client = (0, _pexels.createClient)('563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08');
-var url = "https://api.pexels.com/v1/curated?per_page=1";
-var key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08"; // console.log(a)
-// a.photos.search({ query, per_page: 10 }).then(photos => { console.log(photos); });
-// client.photos.curated({ per_page: 1 }).then(photos => {...});
-// const cors = 'https://cors-anywhere.herokuapp.com/'
 
 var Pictures = /*#__PURE__*/function () {
   function Pictures() {
@@ -3632,15 +3633,37 @@ var Pictures = /*#__PURE__*/function () {
   }]);
 
   return Pictures;
-}(); // const curatedData = (url, key) => {
-//     const curatedContainer = fetchFunt(url, key)
-//     return curatedContainer;
-// }
-// export { curatedData }
-
+}();
 
 exports.Pictures = Pictures;
-},{"pexels":"../node_modules/pexels/dist/main.module.js","./Search":"js/model/Search.js"}],"js/views/displayCuratedPhotos.js":[function(require,module,exports) {
+},{"pexels":"../node_modules/pexels/dist/main.module.js","./Search":"js/model/Search.js"}],"js/views/search_views.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addLoader = void 0;
+
+var _base = require("./base");
+
+var _displayCuratedPhotos = require("./displayCuratedPhotos");
+
+// ON CLICK OF THE SEARCH BUTTON
+_base.appElement.curatedLoader.classList.add('show');
+
+var addLoader = function addLoader(photos) {
+  setTimeout(function () {
+    _base.appElement.curatedLoader.classList.remove('show');
+
+    setTimeout(function () {
+      (0, _displayCuratedPhotos.displayPhotos)(photos); // console.log(photos);
+      // photos
+    });
+  }, 4000);
+};
+
+exports.addLoader = addLoader;
+},{"./base":"js/views/base.js","./displayCuratedPhotos":"js/views/displayCuratedPhotos.js"}],"js/views/displayCuratedPhotos.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3653,6 +3676,8 @@ var _base = require("./base");
 
 var _axios = _interopRequireDefault(require("axios"));
 
+var _search_views = require("./search_views");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -3663,100 +3688,40 @@ var displayPhotos = function displayPhotos(photos) {
   var photoGrid = photos.photos.map(function (images) {
     return "\n     <div class='relative'>\n     <img  id=".concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "\n      ' class=\"dynamic__images\" />\n\n      <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n     </div>\n    \n    ");
   }).join('');
-  _base.appElement.imageGrid.innerHTML += photoGrid;
+  _base.appElement.imageGrid.innerHTML += photoGrid; // INFINITE SCROLL FUNCTIONALITY
+
   window.addEventListener('scroll', function () {
-    // console.log(document.documentElement.offsetHeight);
-    // console.log(appElement.imageGrid.scrollHeight);
-    // console.log(appElement.imageGrid.clientHeight);
-    // console.log(document.documentElement.clientHeight);
-    // console.log(document.documentElement.scrollHeight);
     var _document$documentEle = document.documentElement,
         scrollTop = _document$documentEle.scrollTop,
         scrollHeight = _document$documentEle.scrollHeight,
         clientHeight = _document$documentEle.clientHeight;
-    var scroll__height = scrollHeight - 500; // console.log(scroll__height);
 
     if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
-      fetchNextPage(photos.next_page);
-      console.log(_base.appElement.imageGrid.clientHeight + 'this is the window scroll height');
-    } //else if (window.pageYOffset === appElement.imageGrid.clientHeight) {
-    //   console.log(appElement.imageGrid.clientHeight + 'this is the window client height');
-    // }
-
-  }); // if (photos.next_page) {
-  //   appElement.loadMore.innerHTML = `
-  //   ${photos.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="next">Load More</button>` : ''
-  //     }
-  //   `;
-  //   // GET THE BUTTON ELEMENT
-  //   const nextBtn = document.getElementById('next');
-  //   btn(nextBtn, photos.next_page);
-  // } else {
-  //   appElement.loadMore.innerHTML = '';
-  // }
+      // fetchNextPage(photos.next_page)
+      handleFetchPage(photos.next_page);
+    }
+  });
 }; // LINK TO NEXT PAGE AND THE BUTTON ELEMENT
 
 
 exports.displayPhotos = displayPhotos;
 
-function btn(btn, photos) {
-  btn.addEventListener('click', function () {
-    fetchNextPage(photos);
-  });
-} // NEXT PAGE DATA HANDLING
-
-
-function fetchNextPage(_x) {
-  return _fetchNextPage.apply(this, arguments);
-} // ADD TO THE DOM
-
-
-function _fetchNextPage() {
-  _fetchNextPage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(url) {
-    var key, search_images;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
-            _context2.prev = 1;
-            _context2.next = 4;
-            return (0, _axios.default)("".concat(url, " "), {
-              headers: {
-                Authorization: key
-              }
-            });
-
-          case 4:
-            search_images = _context2.sent;
-            nextPage(search_images);
-            _context2.next = 11;
-            break;
-
-          case 8:
-            _context2.prev = 8;
-            _context2.t0 = _context2["catch"](1);
-            throw _context2.t0;
-
-          case 11:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2, null, [[1, 8]]);
-  }));
-  return _fetchNextPage.apply(this, arguments);
-}
-
-var nextPage = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(page) {
+var handleFetchPage = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(next) {
+    var data;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            displayPhotos(page.data);
+            _context.next = 2;
+            return fetchNextPage(next);
 
-          case 1:
+          case 2:
+            data = _context.sent;
+            // console.log(data);
+            (0, _search_views.addLoader)(data.data);
+
+          case 4:
           case "end":
             return _context.stop();
         }
@@ -3764,16 +3729,75 @@ var nextPage = /*#__PURE__*/function () {
     }, _callee);
   }));
 
-  return function nextPage(_x2) {
+  return function handleFetchPage(_x) {
     return _ref.apply(this, arguments);
   };
-}(); // const { scrollTop, clientheight, scrollHeight } = document.documentElement;
-// console.log(scrollHeight, scrollTop, clientheight)
-// let dynamic__images = document.querySelectorAll('.dynamic__images')
+}(); // NEXT PAGE DATA HANDLING
 
+
+function fetchNextPage(_x2) {
+  return _fetchNextPage.apply(this, arguments);
+} // ADD TO THE DOM
+
+
+function _fetchNextPage() {
+  _fetchNextPage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(url) {
+    var key, search_images;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+            _context3.prev = 1;
+            _context3.next = 4;
+            return (0, _axios.default)("".concat(url, " "), {
+              headers: {
+                Authorization: key
+              }
+            });
+
+          case 4:
+            search_images = _context3.sent;
+            return _context3.abrupt("return", search_images);
+
+          case 8:
+            _context3.prev = 8;
+            _context3.t0 = _context3["catch"](1);
+            throw _context3.t0;
+
+          case 11:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[1, 8]]);
+  }));
+  return _fetchNextPage.apply(this, arguments);
+}
+
+var nextPage = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(page) {
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            return _context2.abrupt("return", page);
+
+          case 1:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function nextPage(_x3) {
+    return _ref2.apply(this, arguments);
+  };
+}();
 
 exports.nextPage = nextPage;
-},{"./base":"js/views/base.js","axios":"../node_modules/axios/index.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
+},{"./base":"js/views/base.js","axios":"../node_modules/axios/index.js","./search_views":"js/views/search_views.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3869,34 +3893,7 @@ var emptyImage = function emptyImage(large_photo) {
 };
 
 exports.emptyImage = emptyImage;
-},{"./base":"js/views/base.js"}],"js/views/search_views.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.addLoader = void 0;
-
-var _base = require("./base");
-
-var _displayCuratedPhotos = require("./displayCuratedPhotos");
-
-// ON CLICK OF THE SEARCH BUTTON
-_base.appElement.curatedLoader.classList.add('show');
-
-var addLoader = function addLoader(photos) {
-  setTimeout(function () {
-    _base.appElement.curatedLoader.classList.remove('show');
-
-    setTimeout(function () {
-      (0, _displayCuratedPhotos.displayPhotos)(photos); // console.log(photos);
-      // photos
-    });
-  }, 4000);
-};
-
-exports.addLoader = addLoader;
-},{"./base":"js/views/base.js","./displayCuratedPhotos":"js/views/displayCuratedPhotos.js"}],"js/views/displaySearched.js":[function(require,module,exports) {
+},{"./base":"js/views/base.js"}],"js/views/displaySearched.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3906,14 +3903,15 @@ exports.displaySearchPhotos = void 0;
 
 var _base = require("./base");
 
-var _displayCuratedPhotos = require("./displayCuratedPhotos");
+var _axios = _interopRequireDefault(require("axios"));
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import { fetchNextPage } from './displayCuratedPhotos';
 var displaySearchPhotos = function displaySearchPhotos(photos) {
-  var photoGrid = photos.map(function (images) {
-    return "\n        <div class='relative'>\n        <img  loading='lazy' style=\"background-color:".concat(images.avg_color, "\" id=").concat(images.id, " />\n        <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-2\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n        </div>\n    ");
+  var photoGrid = photos.photos.map(function (images) {
+    return "\n        <div class='relative'>\n        <img  loading='lazy' style=\"background-color:".concat(images.avg_color, "\" id=").concat(images.id, " />\n        <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n        </div>\n    ");
   }).join('');
-  console.log(); // console.log(photoGrid)
-
   _base.appElement.searchedGrid.innerHTML = photoGrid; // lazyloadImages = document.querySelectorAll("div");
   // const imageObserver = new IntersectionObserver(function (entries, observer) {
   //     entries.forEach(function (entry) {
@@ -3933,10 +3931,11 @@ var displaySearchPhotos = function displaySearchPhotos(photos) {
   // });
   // PAGINATION SECTION OF SEARCH PAGE
 
-  if (photos.prev_page || photos.next_page) {
-    _base.appElement.loadMore.innerHTML = "".concat(photos.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\">Prev</button>" : '', "\n\n        ").concat(photos.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"next\">Next</button>" : '', "\n        ");
-    allButton(load__more, photos);
-  } else _base.appElement.pagniation.innerHTML = '';
+  if (photos.next_page || photos.prev_page) {
+    _base.appElement.pagination.innerHTML = "\n        ".concat(photos.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\">Prev</button>" : '', "\n        \n        ").concat(photos.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"next\">Next</button>" : '', "\n        \n        ");
+    var loadMore = document.querySelectorAll('.load__more');
+    allButton(loadMore, photos);
+  } else _base.appElement.pagination.innerHTML = '';
 }; // GET PREV OR NEXT BUTTON WHEN THE IMAGE LOADS
 
 
@@ -3949,22 +3948,18 @@ var allButton = function allButton(buttons, pageNumber) {
 
       if (targetButtons === 'next') {
         // GET THE NEXT PAGE
-        var NextPage = document.getElementById(targetButtons);
-        (0, _displayCuratedPhotos.fetchNextPage)(pageNumber.next_page);
-      } else {
-        // GET THE PREV PAGE
-        var PrevPage = document.getElementById(targetButtons);
-        (0, _displayCuratedPhotos.fetchNextPage)(pageNumber.prev_page);
+        // const NextPage = document.getElementById(targetButtons);
+        // console.log(pageNumber.next_page);
+        // handleSearchPag(pageNumber.next_page);
+        fetchPage(pageNumber);
+      } else {// GET THE PREV PAGE
+        // const PrevPage = document.getElementById(targetButtons);
+        // fetchNextPage(pageNumber.prev_page);
       }
     });
   });
 };
-
-; // DISPLAY TO THE DOM AND CONTINUE THE CIRCLE
-// const newPages = (page) => {
-//     displaySearchPhotos(page.data)
-// }
-},{"./base":"js/views/base.js","./displayCuratedPhotos":"js/views/displayCuratedPhotos.js"}],"js/index.js":[function(require,module,exports) {
+},{"./base":"js/views/base.js","axios":"../node_modules/axios/index.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
@@ -4005,8 +4000,7 @@ var appState = {
   photoData: {
     curated__photos: [],
     searched__photos: [],
-    large__photo: [],
-    next__page: []
+    large__photo: []
   }
 }; // GETTING THE SEARCHED INPUT FR0M THE SEARCHED BAR
 
@@ -4033,7 +4027,7 @@ var inputFunt = function inputFunt(item) {
 
 var resolvedSearchedValue = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(value) {
-    var saveImages, searchedPhotos;
+    var saveImages;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -4044,11 +4038,10 @@ var resolvedSearchedValue = /*#__PURE__*/function () {
           case 2:
             saveImages = _context.sent;
             // GET THE DATA FROM THE PROMISE
-            searchedPhotos = saveImages.data; // SAVE TO APPSTATE
+            // SAVE TO APPSTATE
+            appState.photoData.searched__photos = saveImages; // console.log(appState.photoData.searched__photos);
+            // ADD LOADER AND DISPLAY RESULT
 
-            appState.photoData.searched__photos = searchedPhotos.photos; // ADD LOADER AND DISPLAY RESULT
-
-            console.log(appState.photoData.searched__photos);
             (0, _displaySearched.displaySearchPhotos)(appState.photoData.searched__photos); // ADD VISIBILITY TO THE SEARCHED CONTAINER
 
             _base.appElement.imageContainer.style.display = 'none';
@@ -4056,7 +4049,7 @@ var resolvedSearchedValue = /*#__PURE__*/function () {
             _base.appElement.searchedContainer.classList.add('appears'); // return searchedPhotos;
 
 
-          case 9:
+          case 7:
           case "end":
             return _context.stop();
         }
@@ -4089,10 +4082,7 @@ var getData = /*#__PURE__*/function () {
           case 2:
             resolvePromise = _context2.sent;
             // SAVED CURATED APP IN APPSTATE
-            collectData(resolvePromise); // ADD LOADER
-            // console.log(saved)
-            // NEXT PAGE
-            // nextPage(resolvePromise)
+            collectData(resolvePromise);
 
           case 4:
           case "end":
@@ -4108,65 +4098,11 @@ var getData = /*#__PURE__*/function () {
 }();
 
 var collectData = function collectData(data) {
-  // console.log(data);
   appState.photoData.curated__photos = data;
-  (0, _displayCuratedPhotos.displayPhotos)(appState.photoData.curated__photos); // addLoader(appState.photoData.curated__photos);
-}; // const nextPage = (page) => {
-//     console.log(page)
-//     if (page.prev_page || page.next_page) {
-
-
-{
-  /* <button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" onclick="handlePromise('${page.prev_page}')"> prev</button> */
-} //         appElement.loadMore.innerHTML = `
-//         ${page.prev_page ? `` : ''
-//             }
-//     ${page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id='next' onclick=handlePromise(${page.next_page})> 
-//         button
-//         </button>` : ''
-//             }     
-//     `;
-//     } else {
-//         appElement.loadMore.innerHTML = '';
-//     }
-//     // handlePromise(page)
-// }
-
-function handlePromise(_x3) {
-  return _handlePromise.apply(this, arguments);
-} // const getBtn = (link) => {
-//     document.querySelectorAll('.load__more').forEach(cur => {
-//         const btn = cur.id;
-//         if (btn == 'next') {
-//             document.getElementById(btn).onclick = `${handlePromise(link.next_page)`
-//         } else if (btn == 'prev') {
-//             document.getElementById(btn).onclick = `${handlePromise(link.prev_page)}`
-//         }
-//     })
-// }
-// let url = `https://api.pexels.com/v1/curated/?page=${next++}&per_page=10`;
+  (0, _displayCuratedPhotos.displayPhotos)(appState.photoData.curated__photos);
+}; // let url = `https://api.pexels.com/v1/curated/?page=${next++}&per_page=10`;
 // GET ID AND IMAGE OF CLICK IMAGE TO THE LARGE SCREEN
 
-
-function _handlePromise() {
-  _handlePromise = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(link) {
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            console.log('hello'); // const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
-            // const resolved = await fetchFunt(link, key)
-            // console.log(resolved)
-
-          case 1:
-          case "end":
-            return _context4.stop();
-        }
-      }
-    }, _callee4);
-  }));
-  return _handlePromise.apply(this, arguments);
-}
 
 _base.appElement.section.forEach(function (cur) {
   cur.addEventListener('click', function (e) {
@@ -4213,7 +4149,7 @@ var getSelectedImage = /*#__PURE__*/function () {
     }, _callee3);
   }));
 
-  return function getSelectedImage(_x4) {
+  return function getSelectedImage(_x3) {
     return _ref3.apply(this, arguments);
   };
 }();

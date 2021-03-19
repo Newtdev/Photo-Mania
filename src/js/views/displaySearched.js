@@ -1,21 +1,21 @@
 
 import { appElement } from './base';
-import { fetchNextPage } from './displayCuratedPhotos';
+import axios from 'axios';
+// import { fetchNextPage } from './displayCuratedPhotos';
 
 export const displaySearchPhotos = (photos) => {
-    const photoGrid = photos.map(images => {
+
+    const photoGrid = photos.photos.map(images => {
         return `
         <div class='relative'>
         <img  loading='lazy' style="background-color:${images.avg_color}" id=${images.id} />
         <div class='absolute top-0 left-0 w-full h-full overlay'>
-            <a href="${images.photographer_url}" class="absolute bottom-2 left-2" target="blank">${images.photographer}</a>
+            <a href="${images.photographer_url}" class="absolute bottom-2 left-2 text-gray-100" target="blank">${images.photographer}</a>
               </div>
         </div>
     `;
     }).join('');
-    console.log();
 
-    // console.log(photoGrid)
     appElement.searchedGrid.innerHTML = photoGrid;
 
 
@@ -40,15 +40,21 @@ export const displaySearchPhotos = (photos) => {
     // });
 
     // PAGINATION SECTION OF SEARCH PAGE
+    if (photos.next_page || photos.prev_page) {
 
-    if (photos.prev_page || photos.next_page) {
-
-        appElement.loadMore.innerHTML = `${photos.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev">Prev</button>` : ''}
-
-        ${photos.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="next">Next</button>` : ''}
+        appElement.pagination.innerHTML = `
+        ${photos.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev">Prev</button>` : ''}
+        
+        ${photos.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="next">Next</button>` : ''}
+        
         `;
-        allButton(load__more, photos);
-    } else appElement.pagniation.innerHTML = '';
+        const loadMore = document.querySelectorAll('.load__more');
+
+        allButton(loadMore, photos);
+
+    } else appElement.pagination.innerHTML = '';
+
+
 };
 
 // GET PREV OR NEXT BUTTON WHEN THE IMAGE LOADS
@@ -59,24 +65,21 @@ const allButton = (buttons, pageNumber) => {
             if (targetButtons === 'next') {
                 // GET THE NEXT PAGE
 
-                const NextPage = document.getElementById(targetButtons);
-
-                fetchNextPage(pageNumber.next_page);
+                // const NextPage = document.getElementById(targetButtons);
+                // console.log(pageNumber.next_page);
+                // handleSearchPag(pageNumber.next_page);
+                fetchPage(pageNumber);
             } else {
 
 
                 // GET THE PREV PAGE
-                const PrevPage = document.getElementById(targetButtons);
+                // const PrevPage = document.getElementById(targetButtons);
 
-                fetchNextPage(pageNumber.prev_page);
+                // fetchNextPage(pageNumber.prev_page);
+
 
             }
         });
     });
 
-};;
-
-// DISPLAY TO THE DOM AND CONTINUE THE CIRCLE
-// const newPages = (page) => {
-//     displaySearchPhotos(page.data)
-// }
+};

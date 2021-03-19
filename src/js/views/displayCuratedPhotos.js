@@ -1,5 +1,6 @@
 import { appElement } from './base';
 import axios from 'axios';
+import { addLoader } from './search_views';
 
 
 export const displayPhotos = (photos) => {
@@ -20,53 +21,31 @@ export const displayPhotos = (photos) => {
   }).join('');
   appElement.imageGrid.innerHTML += photoGrid;
 
+  // INFINITE SCROLL FUNCTIONALITY
   window.addEventListener('scroll', () => {
-    // console.log(document.documentElement.offsetHeight);
-
-    // console.log(appElement.imageGrid.scrollHeight);
-    // console.log(appElement.imageGrid.clientHeight);
-    // console.log(document.documentElement.clientHeight);
-    // console.log(document.documentElement.scrollHeight);
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    let scroll__height = scrollHeight - 500;
-    // console.log(scroll__height);
 
     if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
 
-      fetchNextPage(photos.next_page);
+      // fetchNextPage(photos.next_page)
+      handleFetchPage(photos.next_page);
 
-      console.log(appElement.imageGrid.clientHeight + 'this is the window scroll height');
 
     }
-    //else if (window.pageYOffset === appElement.imageGrid.clientHeight) {
-    //   console.log(appElement.imageGrid.clientHeight + 'this is the window client height');
 
-
-    // }
   });
 
-  // if (photos.next_page) {
-  //   appElement.loadMore.innerHTML = `
-  //   ${photos.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="next">Load More</button>` : ''
-  //     }
-  //   `;
-  //   // GET THE BUTTON ELEMENT
-  //   const nextBtn = document.getElementById('next');
-
-  //   btn(nextBtn, photos.next_page);
-
-  // } else {
-  //   appElement.loadMore.innerHTML = '';
-  // }
 };
 
 // LINK TO NEXT PAGE AND THE BUTTON ELEMENT
-function btn(btn, photos) {
-  btn.addEventListener('click', () => {
-    fetchNextPage(photos);
-  });
-}
 
+const handleFetchPage = async (next) => {
+  const data = await fetchNextPage(next);
+  // console.log(data);
+  addLoader(data.data);
+
+
+};
 
 // NEXT PAGE DATA HANDLING
 async function fetchNextPage(url) {
@@ -79,7 +58,9 @@ async function fetchNextPage(url) {
       }
     });
 
-    nextPage(search_images);
+    // nextPage(search_images);
+    return search_images;
+
 
   } catch (error) {
     throw error;
@@ -90,14 +71,9 @@ async function fetchNextPage(url) {
 
 // ADD TO THE DOM
 const nextPage = async (page) => {
-  displayPhotos(page.data);
+  return page;
 
 };
 
 export { fetchNextPage, nextPage };
-// const { scrollTop, clientheight, scrollHeight } = document.documentElement;
-// console.log(scrollHeight, scrollTop, clientheight)
 
-
-
-// let dynamic__images = document.querySelectorAll('.dynamic__images')

@@ -17,7 +17,6 @@ let appState = {
         curated__photos: [],
         searched__photos: [],
         large__photo: [],
-        next__page: []
     },
 };
 
@@ -52,22 +51,15 @@ const resolvedSearchedValue = async (value) => {
 
     // AWAIT THE PROMISE FROM THE RESULT OF THE VALUE
     const saveImages = await searchedImages(value);
-
     // GET THE DATA FROM THE PROMISE
-    const searchedPhotos = saveImages.data;
 
     // SAVE TO APPSTATE
-    appState.photoData.searched__photos = searchedPhotos.photos;
+    appState.photoData.searched__photos = saveImages;
 
-
+    // console.log(appState.photoData.searched__photos);
     // ADD LOADER AND DISPLAY RESULT
-    console.log(appState.photoData.searched__photos);
-
 
     displaySearchPhotos(appState.photoData.searched__photos);
-
-
-
 
     // ADD VISIBILITY TO THE SEARCHED CONTAINER
     appElement.imageContainer.style.display = 'none';
@@ -76,6 +68,7 @@ const resolvedSearchedValue = async (value) => {
     // return searchedPhotos;
 
 };
+
 
 
 
@@ -102,59 +95,14 @@ const getData = async (promises) => {
     // SAVED CURATED APP IN APPSTATE
     collectData(resolvePromise);
 
-
-    // ADD LOADER
-    // console.log(saved)
-
-    // NEXT PAGE
-    // nextPage(resolvePromise)
 };
 
 const collectData = (data) => {
-    // console.log(data);
     appState.photoData.curated__photos = data;
+
     displayPhotos(appState.photoData.curated__photos);
-    // addLoader(appState.photoData.curated__photos);
 };
 
-// const nextPage = (page) => {
-//     console.log(page)
-//     if (page.prev_page || page.next_page) {
-{/* <button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id="prev" onclick="handlePromise('${page.prev_page}')"> prev</button> */ }
-//         appElement.loadMore.innerHTML = `
-//         ${page.prev_page ? `` : ''
-
-//             }
-
-//     ${page.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more" id='next' onclick=handlePromise(${page.next_page})> 
-//         button
-//         </button>` : ''
-//             }     
-//     `;
-
-//     } else {
-//         appElement.loadMore.innerHTML = '';
-//     }
-//     // handlePromise(page)
-
-// }
-async function handlePromise(link) {
-    console.log('hello');
-    // const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
-    // const resolved = await fetchFunt(link, key)
-    // console.log(resolved)
-}
-// const getBtn = (link) => {
-//     document.querySelectorAll('.load__more').forEach(cur => {
-//         const btn = cur.id;
-//         if (btn == 'next') {
-//             document.getElementById(btn).onclick = `${handlePromise(link.next_page)`
-//         } else if (btn == 'prev') {
-//             document.getElementById(btn).onclick = `${handlePromise(link.prev_page)}`
-
-//         }
-//     })
-// }
 
 
 

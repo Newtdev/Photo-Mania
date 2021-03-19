@@ -1,12 +1,22 @@
 import axios from "axios";
 
-const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+import { createClient } from 'pexels';
+
+const client = createClient('563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08');
+// const query = 'Nature';
+
+
+// const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
 
 export const searchedImages = async (query) => {
-    const url = `https://api.pexels.com/v1/search?query=${query}&per_page=10`;
-    // "https://api.pexels.com/v1/search?query=nature&per_page=1"
 
-    return fetchFunt(url, key);
+    const images = client.photos.search({ query, per_page: 10 });
+    // console.log(images);
+    return images;
+
+    // const url = `https://api.pexels.com/v1/search?query=${query}&per_page=10`;
+
+    // return fetchFunt(url, key);
 
 };
 
