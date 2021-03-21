@@ -886,6 +886,7 @@ var appElement = {
   imageContainer: document.querySelector('.image__container'),
   imageGrid: document.querySelector('.curated__grid'),
   curatedLoader: document.querySelector('.loader'),
+  LoaderChild: document.querySelectorAll('.lds-facebook div'),
   topLoader: document.querySelector('.image__container .loader__container'),
   prevBtn: document.getElementById('prev'),
   // nextBtn: document.querySelector('.load__more'),
@@ -3687,8 +3688,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var displayPhotos = function displayPhotos(photos) {
   var photoGrid = photos.photos.map(function (images) {
     return "\n     <div class='relative'>\n     <img src=\"".concat(images.src.original, "\" id=").concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "\n      ' class=\"dynamic__images\" />\n\n      <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n     </div>\n    \n    ");
-  }).join(''); // appElement.imageGrid.innerHTML += photoGrid;
-  // INFINITE SCROLL FUNCTIONALITY
+  }).join('');
+  _base.appElement.imageGrid.innerHTML += photoGrid; // INFINITE SCROLL FUNCTIONALITY
 
   window.addEventListener('scroll', function () {
     var _document$documentEle = document.documentElement,

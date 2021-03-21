@@ -19,7 +19,7 @@ export const displayPhotos = (photos) => {
     
     `;
   }).join('');
-  // appElement.imageGrid.innerHTML += photoGrid;
+  appElement.imageGrid.innerHTML += photoGrid;
 
   // INFINITE SCROLL FUNCTIONALITY
   window.addEventListener('scroll', () => {

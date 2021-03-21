@@ -7,4 +7,4 @@ appElement.theme.addEventListener('click', (e) => {
         appElement.body.classList.toggle('light');
     }
 
-})
+});

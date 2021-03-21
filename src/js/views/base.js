@@ -9,6 +9,7 @@ export const appElement = {
     imageContainer: document.querySelector('.image__container'),
     imageGrid: document.querySelector('.curated__grid'),
     curatedLoader: document.querySelector('.loader'),
+    LoaderChild: document.querySelectorAll('.lds-facebook div'),
     topLoader: document.querySelector('.image__container .loader__container'),
     prevBtn: document.getElementById('prev'),
     // nextBtn: document.querySelector('.load__more'),
