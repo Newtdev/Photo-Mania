@@ -1,6 +1,6 @@
-# PHOTOMANIA
+# **PHOTOMANIA**
 
-## TECHNOLOGY STACK:
+## **TECHNOLOGY STACK** :
 
 - HTML
 - CSS
@@ -9,7 +9,7 @@
 - Parcel Bundler
 - Pexels API
 
-## OVERVIEW:
+## **OVERVIEW**:
 
 **_PHOTOMAINA _** is a >Pexels half-clone. it is powered by Pexels API; but it does not clone Pexels website main functionality.
 
@@ -21,3 +21,4 @@ infinite scroll is built with an infinite scroll functionality that fetches **50
 **The Search Image Section** is an _aside_ page that is visible on click on the _submit_ button. It is laid out in Grid similar to _the Curated Images Section_. The Search Image Section shared most functionality and apprearance with the _Curated Images Section._ except it has a **NEXT AND PREV** pagination functionality; and its background does not change on the click of the camera icon.
 
 **The Large Image Section**: This section is hidden by default and bacomes visible only when a user clicks on image. The large shows a prominent version of the clicked image.
+![large image views](https://user-images.githubusercontent.com/60948736/111916175-e2a0fb00-8a36-11eb-9cd1-b6d817440b73.png)
