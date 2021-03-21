@@ -3535,7 +3535,7 @@ var searchedImages = /*#__PURE__*/function () {
           case 0:
             images = client.photos.search({
               query: query,
-              per_page: 10
+              per_page: 50
             }); // console.log(images);
 
             return _context.abrupt("return", images);
@@ -3623,7 +3623,7 @@ var Pictures = /*#__PURE__*/function () {
     value: function fetchCuratedPhotos() {
       try {
         var value = client.photos.curated({
-          per_page: 20
+          per_page: 50
         });
         return value;
       } catch (error) {
@@ -3686,9 +3686,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var displayPhotos = function displayPhotos(photos) {
   var photoGrid = photos.photos.map(function (images) {
-    return "\n     <div class='relative'>\n     <img  id=".concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "\n      ' class=\"dynamic__images\" />\n\n      <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n     </div>\n    \n    ");
-  }).join('');
-  _base.appElement.imageGrid.innerHTML += photoGrid; // INFINITE SCROLL FUNCTIONALITY
+    return "\n     <div class='relative'>\n     <img src=\"".concat(images.src.original, "\" id=").concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "\n      ' class=\"dynamic__images\" />\n\n      <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n     </div>\n    \n    ");
+  }).join(''); // appElement.imageGrid.innerHTML += photoGrid;
+  // INFINITE SCROLL FUNCTIONALITY
 
   window.addEventListener('scroll', function () {
     var _document$documentEle = document.documentElement,
@@ -3905,12 +3905,17 @@ var _base = require("./base");
 
 var _axios = _interopRequireDefault(require("axios"));
 
+var _displayCuratedPhotos = require("./displayCuratedPhotos");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import { fetchNextPage } from './displayCuratedPhotos';
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 var displaySearchPhotos = function displaySearchPhotos(photos) {
   var photoGrid = photos.photos.map(function (images) {
-    return "\n        <div class='relative'>\n        <img  loading='lazy' style=\"background-color:".concat(images.avg_color, "\" id=").concat(images.id, " />\n        <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n        </div>\n    ");
+    return "\n        <div class='relative'>\n        <img src='".concat(images.src.original, "' loading='lazy' style=\"background-color:").concat(images.avg_color, "\" id=").concat(images.id, " />\n        <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n        </div>\n    ");
   }).join('');
   _base.appElement.searchedGrid.innerHTML = photoGrid; // lazyloadImages = document.querySelectorAll("div");
   // const imageObserver = new IntersectionObserver(function (entries, observer) {
@@ -3932,7 +3937,7 @@ var displaySearchPhotos = function displaySearchPhotos(photos) {
   // PAGINATION SECTION OF SEARCH PAGE
 
   if (photos.next_page || photos.prev_page) {
-    _base.appElement.pagination.innerHTML = "\n        ".concat(photos.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"prev\">Prev</button>" : '', "\n        \n        ").concat(photos.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more\" id=\"next\">Next</button>" : '', "\n        \n        ");
+    _base.appElement.pagination.innerHTML = "\n        ".concat(photos.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more prev\">Prev</button>" : '', "\n        \n        ").concat(photos.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more next\">Next</button>" : '', "\n        \n        ");
     var loadMore = document.querySelectorAll('.load__more');
     allButton(loadMore, photos);
   } else _base.appElement.pagination.innerHTML = '';
@@ -3944,22 +3949,46 @@ exports.displaySearchPhotos = displaySearchPhotos;
 var allButton = function allButton(buttons, pageNumber) {
   buttons.forEach(function (btns) {
     btns.addEventListener('click', function (e) {
-      var targetButtons = e.currentTarget.id;
+      var targetButtons = e.currentTarget.classList;
 
-      if (targetButtons === 'next') {
+      if (targetButtons.contains('next')) {
         // GET THE NEXT PAGE
-        // const NextPage = document.getElementById(targetButtons);
-        // console.log(pageNumber.next_page);
-        // handleSearchPag(pageNumber.next_page);
-        fetchPage(pageNumber);
-      } else {// GET THE PREV PAGE
-        // const PrevPage = document.getElementById(targetButtons);
-        // fetchNextPage(pageNumber.prev_page);
+        getPage(pageNumber.next_page);
+      } else if (targetButtons.contains('prev')) {
+        // GET THE PREV PAGE
+        getPage(pageNumber.prev_page);
       }
     });
   });
 };
-},{"./base":"js/views/base.js","axios":"../node_modules/axios/index.js"}],"js/index.js":[function(require,module,exports) {
+
+var getPage = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(page) {
+    var pageData;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return (0, _displayCuratedPhotos.fetchNextPage)(page);
+
+          case 2:
+            pageData = _context.sent;
+            displaySearchPhotos(pageData.data);
+
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function getPage(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+},{"./base":"js/views/base.js","axios":"../node_modules/axios/index.js","./displayCuratedPhotos":"js/views/displayCuratedPhotos.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
@@ -4106,10 +4135,9 @@ var collectData = function collectData(data) {
 
 _base.appElement.section.forEach(function (cur) {
   cur.addEventListener('click', function (e) {
-    var targetedImage = e.target.parentElement.children[0].id;
+    var targetedImage = e.target.parentElement.children[0].id; // console.log(targetedImage);
 
     if (targetedImage) {
-      // console.log(targetedImage)
       // GET THE IMAGE
       getSelectedImage(targetedImage);
     }

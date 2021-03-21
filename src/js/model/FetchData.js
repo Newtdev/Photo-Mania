@@ -5,7 +5,7 @@ let client = createClient('563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784
 export class Pictures {
     fetchCuratedPhotos() {
         try {
-            const value = client.photos.curated({ per_page: 20 });
+            const value = client.photos.curated({ per_page: 50 });
             return value;
 
         } catch (error) {

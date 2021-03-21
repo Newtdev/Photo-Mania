@@ -9,7 +9,7 @@ export const displayPhotos = (photos) => {
 
     return `
      <div class='relative'>
-     <img  id=${images.id} loading="lazy" style='background-color:${images.avg_color}
+     <img src="${images.src.original}" id=${images.id} loading="lazy" style='background-color:${images.avg_color}
       ' class="dynamic__images" />
 
       <div class='absolute top-0 left-0 w-full h-full overlay'>
@@ -19,7 +19,7 @@ export const displayPhotos = (photos) => {
     
     `;
   }).join('');
-  appElement.imageGrid.innerHTML += photoGrid;
+  // appElement.imageGrid.innerHTML += photoGrid;
 
   // INFINITE SCROLL FUNCTIONALITY
   window.addEventListener('scroll', () => {

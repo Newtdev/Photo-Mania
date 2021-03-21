@@ -348,6 +348,8 @@ article {
 #image__large article {
   margin: 0 auto;
   position: relative;
+  max-width: 1150px !important;
+  box-shadow: 2px 10px 10px #ccc;
 }
 
 #large__image {
@@ -365,4 +367,23 @@ article {
 
 .load__more {
   display: block;
+}
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.pexel__links,
+.developer {
+  height: 50%;
+  width: 150px;
+  max-width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 20px;
+  text-transform: capitalize;
+  font-family: "Dancing Script", cursive;
 }

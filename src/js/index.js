@@ -115,8 +115,11 @@ const collectData = (data) => {
 appElement.section.forEach(cur => {
     cur.addEventListener('click', (e) => {
         const targetedImage = e.target.parentElement.children[0].id;
+        // console.log(targetedImage);
+
+
         if (targetedImage) {
-            // console.log(targetedImage)
+
             // GET THE IMAGE
             getSelectedImage(targetedImage);
         }
