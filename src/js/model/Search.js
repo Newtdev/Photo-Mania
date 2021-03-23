@@ -10,7 +10,7 @@ const client = createClient('563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f87
 
 export const searchedImages = async (query) => {
 
-    const images = client.photos.search({ query, per_page: 50 });
+    const images = client.photos.search({ query, per_page: 20 });
     // console.log(images);
     return images;
 

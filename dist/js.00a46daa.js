@@ -3536,7 +3536,7 @@ var searchedImages = /*#__PURE__*/function () {
           case 0:
             images = client.photos.search({
               query: query,
-              per_page: 50
+              per_page: 20
             }); // console.log(images);
 
             return _context.abrupt("return", images);
@@ -3624,7 +3624,7 @@ var Pictures = /*#__PURE__*/function () {
     value: function fetchCuratedPhotos() {
       try {
         var value = client.photos.curated({
-          per_page: 50
+          per_page: 20
         });
         return value;
       } catch (error) {
@@ -4093,7 +4093,7 @@ var resolvedSearchedValue = /*#__PURE__*/function () {
 }(); // CURATED PHOTOS
 
 
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('Load', function () {
   var picturesList = new _FetchData.Pictures();
   var picturePromise = picturesList.fetchCuratedPhotos();
   getData(picturePromise);
@@ -4210,7 +4210,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50757" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50165" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
