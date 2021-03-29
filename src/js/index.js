@@ -81,7 +81,7 @@ const resolvedSearchedValue = async (value) => {
 
 
 // CURATED PHOTOS
-window.addEventListener('Load', () => {
+window.addEventListener('load', () => {
     const picturesList = new Pictures();
     let picturePromise = picturesList.fetchCuratedPhotos();
     getData(picturePromise);

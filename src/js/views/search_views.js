@@ -8,10 +8,7 @@ const addLoader = (photos) => {
     setTimeout(() => {
         appElement.curatedLoader.classList.remove('show');
         setTimeout(() => {
-
             displayPhotos(photos);
-            // console.log(photos);
-            // photos
         });
 
     }, 4000);

@@ -2,10 +2,10 @@ import { appElement } from './base';
 import axios from 'axios';
 import { addLoader } from './search_views';
 
-
 export const displayPhotos = (photos) => {
 
   const photoGrid = photos.photos.map(images => {
+    // console.log(images);
 
     return `
      <div class='relative'>
@@ -13,7 +13,7 @@ export const displayPhotos = (photos) => {
       ' class="dynamic__images" />
 
       <div class='absolute top-0 left-0 w-full h-full overlay'>
-            <a href="${images.photographer_url}" class="absolute bottom-2 left-2 text-gray-100" target="blank">${images.photographer}</a>
+            <a href="${images.url}" class="absolute bottom-2 left-2 text-gray-100" target="blank">${images.photographer}</a>
               </div>
      </div>
     

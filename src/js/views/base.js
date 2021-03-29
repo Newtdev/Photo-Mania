@@ -21,4 +21,4 @@ export const appElement = {
     section: document.querySelectorAll('.section')
     // largeImageDiv: document.getElementById()
 };
-appElement.searchedLoader.style.display = 'none';
+// appElement.searchedLoader.style.display = 'none';

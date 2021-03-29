@@ -897,9 +897,9 @@ var appElement = {
   searchedLoader: document.querySelector('.search__container .loader__container'),
   section: document.querySelectorAll('.section') // largeImageDiv: document.getElementById()
 
-};
+}; // appElement.searchedLoader.style.display = 'none';
+
 exports.appElement = appElement;
-appElement.searchedLoader.style.display = 'none';
 },{}],"js/views/theme.js":[function(require,module,exports) {
 "use strict";
 
@@ -3657,8 +3657,7 @@ var addLoader = function addLoader(photos) {
     _base.appElement.curatedLoader.classList.remove('show');
 
     setTimeout(function () {
-      (0, _displayCuratedPhotos.displayPhotos)(photos); // console.log(photos);
-      // photos
+      (0, _displayCuratedPhotos.displayPhotos)(photos);
     });
   }, 4000);
 };
@@ -3687,7 +3686,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var displayPhotos = function displayPhotos(photos) {
   var photoGrid = photos.photos.map(function (images) {
-    return "\n     <div class='relative'>\n     <img src=\"".concat(images.src.original, "\" id=").concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "\n      ' class=\"dynamic__images\" />\n\n      <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n     </div>\n    \n    ");
+    // console.log(images);
+    return "\n     <div class='relative'>\n     <img src=\"".concat(images.src.original, "\" id=").concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "\n      ' class=\"dynamic__images\" />\n\n      <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n     </div>\n    \n    ");
   }).join('');
   _base.appElement.imageGrid.innerHTML += photoGrid; // INFINITE SCROLL FUNCTIONALITY
 
@@ -3904,11 +3904,9 @@ exports.displaySearchPhotos = void 0;
 
 var _base = require("./base");
 
-var _axios = _interopRequireDefault(require("axios"));
-
 var _displayCuratedPhotos = require("./displayCuratedPhotos");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _search_views = require("./search_views");
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -3916,7 +3914,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var displaySearchPhotos = function displaySearchPhotos(photos) {
   var photoGrid = photos.photos.map(function (images) {
-    return "\n        <div class='relative'>\n        <img src='".concat(images.src.original, "' loading='lazy' style=\"background-color:").concat(images.avg_color, "\" id=").concat(images.id, " />\n        <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n        </div>\n    ");
+    return "\n        <div class='relative'>\n        <img src=\"".concat(images.src.original, "\" loading='lazy' style=\"background-color:").concat(images.avg_color, "\" id=").concat(images.id, " />\n        <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n        </div>\n    ");
   }).join('');
   _base.appElement.searchedGrid.innerHTML = photoGrid; // lazyloadImages = document.querySelectorAll("div");
   // const imageObserver = new IntersectionObserver(function (entries, observer) {
@@ -3936,32 +3934,43 @@ var displaySearchPhotos = function displaySearchPhotos(photos) {
   //     imageObserver.observe(image);
   // });
   // PAGINATION SECTION OF SEARCH PAGE
+  // if (photos.next_page || photos.prev_page) {
+  //     appElement.pagination.innerHTML = `
+  //     ${photos.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more prev">Prev</button>` : ''}
+  //     ${photos.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more next">Next</button>` : ''}
+  //     `;
+  //     const loadMore = document.querySelectorAll('.load__more');
+  //     allButton(loadMore, photos);
+  // } else appElement.pagination.innerHTML = '';
 
-  if (photos.next_page || photos.prev_page) {
-    _base.appElement.pagination.innerHTML = "\n        ".concat(photos.prev_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more prev\">Prev</button>" : '', "\n        \n        ").concat(photos.next_page ? "<button type=\"button\" class=\"p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more next\">Next</button>" : '', "\n        \n        ");
-    var loadMore = document.querySelectorAll('.load__more');
-    allButton(loadMore, photos);
-  } else _base.appElement.pagination.innerHTML = '';
+  window.addEventListener('scroll', function () {
+    var _document$documentEle = document.documentElement,
+        scrollTop = _document$documentEle.scrollTop,
+        scrollHeight = _document$documentEle.scrollHeight,
+        clientHeight = _document$documentEle.clientHeight;
+
+    if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
+      // fetchNextPage(photos.next_page)
+      getPage(photos.next_page);
+    }
+  });
 }; // GET PREV OR NEXT BUTTON WHEN THE IMAGE LOADS
+// const allButton = (buttons, pageNumber) => {
+//     buttons.forEach(btns => {
+//         btns.addEventListener('click', (e) => {
+//             const targetButtons = e.currentTarget.classList;
+//             if (targetButtons.contains('next')) {
+//                 // GET THE NEXT PAGE
+//             } else if (targetButtons.contains('prev')) {
+//                 // GET THE PREV PAGE
+//                 getPage(pageNumber.prev_page);
+//             }
+//         });
+//     });
+// };
 
 
 exports.displaySearchPhotos = displaySearchPhotos;
-
-var allButton = function allButton(buttons, pageNumber) {
-  buttons.forEach(function (btns) {
-    btns.addEventListener('click', function (e) {
-      var targetButtons = e.currentTarget.classList;
-
-      if (targetButtons.contains('next')) {
-        // GET THE NEXT PAGE
-        getPage(pageNumber.next_page);
-      } else if (targetButtons.contains('prev')) {
-        // GET THE PREV PAGE
-        getPage(pageNumber.prev_page);
-      }
-    });
-  });
-};
 
 var getPage = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(page) {
@@ -3975,7 +3984,7 @@ var getPage = /*#__PURE__*/function () {
 
           case 2:
             pageData = _context.sent;
-            displaySearchPhotos(pageData.data);
+            console.log(pageData); // displaySearchPhotos(pageData.data);
 
           case 4:
           case "end":
@@ -3989,7 +3998,7 @@ var getPage = /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }();
-},{"./base":"js/views/base.js","axios":"../node_modules/axios/index.js","./displayCuratedPhotos":"js/views/displayCuratedPhotos.js"}],"js/index.js":[function(require,module,exports) {
+},{"./base":"js/views/base.js","./displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./search_views":"js/views/search_views.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
@@ -4093,7 +4102,7 @@ var resolvedSearchedValue = /*#__PURE__*/function () {
 }(); // CURATED PHOTOS
 
 
-window.addEventListener('Load', function () {
+window.addEventListener('load', function () {
   var picturesList = new _FetchData.Pictures();
   var picturePromise = picturesList.fetchCuratedPhotos();
   getData(picturePromise);
@@ -4210,7 +4219,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50165" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49967" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
