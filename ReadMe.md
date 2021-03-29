@@ -1,6 +1,6 @@
-# PHOTOMANIA
+# **PHOTOMANIA**
 
-## TECHNOLOGY STACK:
+## **TECHNOLOGIES**:
 
 - HTML
 - CSS
@@ -9,9 +9,9 @@
 - Parcel Bundler
 - Pexels API
 
-## OVERVIEW:
+## **OVERVIEW**:
 
-**_PHOTOMAINA _** is a >Pexels half-clone. it is powered by Pexels API; but it does not clone Pexels website main functionality.
+**_PHOTOMAINA _** is a Pexels half-clone. it is powered by Pexels API; but it does not clone Pexels website main functionality.
 
 **_PHOTOMANIA _** has three **3** main sections: The _Curated images_ section, the _searched images_ section and the _large image_ section. The search bar on the header is hidden by default. it is only visible when the page is scrolled almost pass the hero section. On click on the camera icon on the left side of the header, the background color changes from the light to Dark gray.
 
@@ -22,4 +22,4 @@ infinite scroll is built with an infinite scroll functionality that fetches **20
 
 **The Large Image Section**: This section is hidden by default and bacomes visible only when a user clicks on image. The large shows a prominent version of the clicked image.
 
-![]()
+![large image views](https://user-images.githubusercontent.com/60948736/112384916-349e8680-8cac-11eb-939b-7d94f4514d2b.png)
