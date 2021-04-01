@@ -3914,23 +3914,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var displaySearchPhotos = function displaySearchPhotos(photos) {
   var photoGrid = photos.photos.map(function (images) {
-    return "\n        <div class='relative'>\n        <img src=\"".concat(images.src.original, "\" loading='lazy' style=\"background-color:").concat(images.avg_color, "\" id=").concat(images.id, " />\n        <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n        </div>\n    ");
+    return "\n        <div class='relative'>\n        <img src=\"".concat(images.src.original, "\" loading=\"lazy\" style=\"background-color:").concat(images.avg_color, "\" id=").concat(images.id, " />\n        <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n        </div>\n    ");
   }).join('');
-  _base.appElement.searchedGrid.innerHTML = photoGrid; // lazyloadImages = document.querySelectorAll("div");
+  _base.appElement.searchedGrid.innerHTML = photoGrid; // let lazyloadImages = document.querySelectorAll(".relative");
   // const imageObserver = new IntersectionObserver(function (entries, observer) {
   //     entries.forEach(function (entry) {
-  //         // console.log(entry)
   //         if (entry.isIntersecting) {
   //             let image = entry.target;
-  //             // console.log(image);
-  //             // image.style = '';
   //             image.src = image.dataset.src;
   //             // image.classList.remove("lazy");
   //             imageObserver.unobserve(image);
   //         }
   //     });
   // });
-  // dynamic__images.forEach((image) => {
+  // lazyloadImages.forEach((image) => {
   //     imageObserver.observe(image);
   // });
   // PAGINATION SECTION OF SEARCH PAGE
@@ -4102,7 +4099,7 @@ var resolvedSearchedValue = /*#__PURE__*/function () {
 }(); // CURATED PHOTOS
 
 
-window.addEventListener('load', function () {
+window.addEventListener('DOMContentLoaded', function () {
   var picturesList = new _FetchData.Pictures();
   var picturePromise = picturesList.fetchCuratedPhotos();
   getData(picturePromise);
@@ -4219,7 +4216,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49967" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52267" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

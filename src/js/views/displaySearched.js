@@ -8,7 +8,7 @@ export const displaySearchPhotos = (photos) => {
     const photoGrid = photos.photos.map(images => {
         return `
         <div class='relative'>
-        <img src="${images.src.original}" loading='lazy' style="background-color:${images.avg_color}" id=${images.id} />
+        <img src="${images.src.original}" loading="lazy" style="background-color:${images.avg_color}" id=${images.id} />
         <div class='absolute top-0 left-0 w-full h-full overlay'>
             <a href="${images.url}" class="absolute bottom-2 left-2 text-gray-100" target="blank">${images.photographer}</a>
               </div>
@@ -19,15 +19,12 @@ export const displaySearchPhotos = (photos) => {
     appElement.searchedGrid.innerHTML = photoGrid;
 
 
-    // lazyloadImages = document.querySelectorAll("div");
+    // let lazyloadImages = document.querySelectorAll(".relative");
 
     // const imageObserver = new IntersectionObserver(function (entries, observer) {
     //     entries.forEach(function (entry) {
-    //         // console.log(entry)
     //         if (entry.isIntersecting) {
     //             let image = entry.target;
-    //             // console.log(image);
-    //             // image.style = '';
     //             image.src = image.dataset.src;
     //             // image.classList.remove("lazy");
     //             imageObserver.unobserve(image);
@@ -35,7 +32,7 @@ export const displaySearchPhotos = (photos) => {
     //     });
     // });
 
-    // dynamic__images.forEach((image) => {
+    // lazyloadImages.forEach((image) => {
     //     imageObserver.observe(image);
     // });
 
@@ -70,6 +67,7 @@ export const displaySearchPhotos = (photos) => {
 
 
 };
+
 
 // GET PREV OR NEXT BUTTON WHEN THE IMAGE LOADS
 // const allButton = (buttons, pageNumber) => {
