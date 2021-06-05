@@ -2,46 +2,57 @@ import { appElement } from './base';
 import axios from 'axios';
 import { addLoader } from './search_views';
 
-export const displayPhotos = (photos) => {
+export const displayPhotos = ({ photos }) => {
 
-  const photoGrid = photos.photos.map(images => {
+
+  const photoGrid = photos.map(images => {
     // console.log(images);
+    // 
 
     return `
      <div class='relative'>
-     <img src="${images.src.original}" id=${images.id} loading="lazy" style='background-color:${images.avg_color}
+     <img src = "${images.src.original}" id=${images.id} loading="lazy" style='background-color:${images.avg_color}
       ' class="dynamic__images" />
 
       <div class='absolute top-0 left-0 w-full h-full overlay'>
-            <a href="${images.url}" class="absolute bottom-2 left-2 text-gray-100" target="blank">${images.photographer}</a>
+            <a href="${images.potographer_url}" class="absolute bottom-2 left-4  text-gray-300" target="blank">${images.photographer}</a>
+            <a href="${images.url}" class="fa fa-download absolute bottom-2 right-4 text-red-500"></a>
               </div>
      </div>
     
     `;
+
   }).join('');
+
   appElement.imageGrid.innerHTML += photoGrid;
 
-  // INFINITE SCROLL FUNCTIONALITY
-  window.addEventListener('scroll', () => {
-    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-
-    if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
-
-      // fetchNextPage(photos.next_page)
-      handleFetchPage(photos.next_page);
-
-
-    }
-
-  });
 
 };
+
+// export {getHeight}
+// INFINITE SCROLL FUNCTIONALITY
+window.addEventListener('scroll', () => {
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+  if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
+
+    // fetchNextPage(photos.next_page)
+    handleFetchPage(photos.next_page);
+
+
+  }
+
+});
+
+
+
+
 
 // LINK TO NEXT PAGE AND THE BUTTON ELEMENT
 
 const handleFetchPage = async (next) => {
   const data = await fetchNextPage(next);
-  // console.log(data);
+
   addLoader(data.data);
 
 

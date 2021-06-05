@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 
 /*! tailwindcss v2.0.3 | MIT License | https://tailwindcss.com */
 
@@ -31187,18 +31187,18 @@ video {
 
 body {
   --tw-bg-opacity: 1;
-  background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
+  background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
   min-height: 100vh;
 }
 
 .light {
   --tw-bg-opacity: 1;
-  background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+  background-color: rgba(17, 24, 39, var(--tw-bg-opacity));
   min-height: 100vh;
 }
 
 a {
-  font-family: "Dancing Script", cursive;
+  font-family: 'Dancing Script', cursive;
 }
 
 article {
@@ -31206,6 +31206,15 @@ article {
   height: 100%;
   max-width: 1440px;
   margin: 0 auto;
+}
+
+header {
+  background-color: none;
+}
+
+.header__color {
+  --tw-bg-opacity: 1;
+  background-color: rgba(127, 29, 29, var(--tw-bg-opacity));
 }
 
 .top__form {
@@ -31218,7 +31227,13 @@ article {
 }
 
 #background__image {
-  background: url("/pexels-mengliu-di-3679525.b8e3cf38.jpg");
+  height: 36rem;
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.144)
+    ),
+    url('/pexels-pixabay-235621.423d644f.jpg');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -31241,11 +31256,16 @@ article {
 .grid {
   width: 100%;
   display: grid;
-  grid-auto-rows: 200px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
+  /* grid-auto-rows: 200px; */
+  grid-auto-rows: 10px;
+  /* grid-template-columns: repeat(auto-fit, minmax(200px, auto)); */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-auto-flow: dense;
-  grid-gap: 5px;
-  /* max-width: 1400px !important; */
+  grid-gap: 10px;
+}
+
+.grid div {
+  background-color: red;
 }
 
 .grid div img {
@@ -31256,20 +31276,18 @@ article {
   /* border-radius: 15px; */
 }
 
-@media only screen and (min-width: 500px) {
+/* @media only screen and (min-width: 500px) {
   .grid div:nth-child(2n) {
     grid-row: span 2;
   }
-
   /* .grid :nth-child(3n-1) {
   grid-column: span 2;
   grid-row: span 2;
-} */
-
+} 
   .grid :nth-child(3n) {
     grid-column: span 2;
   }
-}
+} */
 
 .overlay {
   background: none;
@@ -31286,7 +31304,10 @@ article {
 }
 
 .overlay:hover {
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+  background: linear-gradient(
+    to bottom rgba(0, 0, 0, 0.021),
+    rgba(0, 0, 0, 0.25)
+  );
 }
 
 .overlay:hover a {
@@ -31621,7 +31642,7 @@ footer {
   justify-content: space-evenly;
   font-size: 20px;
   text-transform: capitalize;
-  font-family: "Dancing Script", cursive;
+  font-family: 'Dancing Script', cursive;
 }
 
 @media (min-width: 640px){

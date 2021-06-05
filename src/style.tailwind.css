@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,19 +10,25 @@
   box-sizing: border-box;
 }
 body {
-  @apply min-h-screen bg-gray-800;
-}
-.light {
   @apply min-h-screen bg-white;
 }
+.light {
+  @apply min-h-screen bg-gray-900;
+}
 a {
-  font-family: "Dancing Script", cursive;
+  font-family: 'Dancing Script', cursive;
 }
 article {
   width: 100%;
   height: 100%;
   max-width: 1440px;
   margin: 0 auto;
+}
+header {
+  background-color: none;
+}
+.header__color {
+  @apply bg-red-900;
 }
 .top__form {
   opacity: 0;
@@ -33,7 +39,13 @@ article {
 }
 
 #background__image {
-  background: url("./images/pexels-mengliu-di-3679525.jpg");
+  height: 36rem;
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.144)
+    ),
+    url('./images/pexels-pixabay-235621.jpg');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -55,17 +67,19 @@ article {
   width: 100%;
   display: grid;
   grid-auto-rows: 200px;
+  grid-auto-rows: 10px;
   grid-template-columns: repeat(auto-fit, minmax(200px, auto));
+  /* grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); */
   grid-auto-flow: dense;
-  grid-gap: 5px;
-  /* max-width: 1400px !important; */
+  grid-gap: 10px;
 }
-
+.grid div {
+  background-color: red;
+}
 .grid div img {
   height: 100%;
   width: 100%;
   object-fit: cover;
-  /* border-radius: 15px; */
 }
 
 @media only screen and (min-width: 500px) {
@@ -75,10 +89,11 @@ article {
   /* .grid :nth-child(3n-1) {
   grid-column: span 2;
   grid-row: span 2;
-} */
+} 
   .grid :nth-child(3n) {
     grid-column: span 2;
   }
+  */
 }
 .overlay {
   background: none;
@@ -94,7 +109,10 @@ article {
   transition: opactiy 5ms ease;
 }
 .overlay:hover {
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+  background: linear-gradient(
+    to bottom rgba(0, 0, 0, 0.021),
+    rgba(0, 0, 0, 0.25)
+  );
 }
 .overlay:hover a {
   opacity: 1;
@@ -379,5 +397,5 @@ footer {
   justify-content: space-evenly;
   font-size: 20px;
   text-transform: capitalize;
-  font-family: "Dancing Script", cursive;
+  font-family: 'Dancing Script', cursive;
 }

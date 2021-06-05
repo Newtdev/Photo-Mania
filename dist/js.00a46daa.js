@@ -888,15 +888,16 @@ var appElement = {
   curatedLoader: document.querySelector('.loader'),
   LoaderChild: document.querySelectorAll('.lds-facebook div'),
   topLoader: document.querySelector('.image__container .loader__container'),
-  prevBtn: document.getElementById('prev'),
-  // nextBtn: document.querySelector('.load__more'),
+  grid: document.getElementById('grid'),
+  imageDiv: document.querySelectorAll('#grid div'),
+  nextBtn: document.querySelector('.load__more'),
   pagination: document.querySelector('.search__loadMore'),
   loadMore: document.querySelector('.container'),
   searchedGrid: document.querySelector('.search__grid'),
   searchedContainer: document.querySelector('.search__container'),
   searchedLoader: document.querySelector('.search__container .loader__container'),
-  section: document.querySelectorAll('.section') // largeImageDiv: document.getElementById()
-
+  section: document.querySelectorAll('.section'),
+  header: document.querySelector('header')
 }; // appElement.searchedLoader.style.display = 'none';
 
 exports.appElement = appElement;
@@ -965,11 +966,15 @@ function addSearchBar(value) {
 
 var addSearchInput = function addSearchInput() {
   _base.appElement.topForm.classList.add('show');
+
+  _base.appElement.header.classList.add('header__color');
 }; // REMOVE THE HEADER SEARCH INPUT
 
 
 var removeSearchInput = function removeSearchInput() {
   _base.appElement.topForm.classList.remove('show');
+
+  _base.appElement.header.classList.remove('header__color');
 };
 },{"./base":"js/views/base.js"}],"../node_modules/whatwg-fetch/fetch.js":[function(require,module,exports) {
 
@@ -3684,12 +3689,26 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var displayPhotos = function displayPhotos(photos) {
-  var photoGrid = photos.photos.map(function (images) {
+var displayPhotos = function displayPhotos(_ref) {
+  var photos = _ref.photos;
+  var photoGrid = photos.map(function (images) {
     // console.log(images);
-    return "\n     <div class='relative'>\n     <img src=\"".concat(images.src.original, "\" id=").concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "\n      ' class=\"dynamic__images\" />\n\n      <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n     </div>\n    \n    ");
+    // src = "${images.src.original}
+    getHeight(images.height);
+    return "\n     <div class='relative'>\n     <img\" id=".concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "\n      ' class=\"dynamic__images\" />\n\n      <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.potographer_url, "\" class=\"absolute bottom-2 left-4  text-gray-300\" target=\"blank\">").concat(images.photographer, "</a>\n            <a href=\"").concat(images.url, "\" class=\"fa fa-download absolute bottom-2 right-4 text-red-500\"></a>\n              </div>\n     </div>\n    \n    ");
   }).join('');
-  _base.appElement.imageGrid.innerHTML += photoGrid; // INFINITE SCROLL FUNCTIONALITY
+  _base.appElement.imageGrid.innerHTML += photoGrid;
+  console.log(_base.appElement.grid);
+
+  var getHeight = function getHeight(height) {
+    var gridheight = height / 10;
+
+    _base.appElement.imageDiv.forEach(function (cur) {
+      cur.style.gridRowEnd = "span ".concat(gridheight);
+    });
+  }; // export {getHeight}
+  // INFINITE SCROLL FUNCTIONALITY
+
 
   window.addEventListener('scroll', function () {
     var _document$documentEle = document.documentElement,
@@ -3708,7 +3727,7 @@ var displayPhotos = function displayPhotos(photos) {
 exports.displayPhotos = displayPhotos;
 
 var handleFetchPage = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(next) {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(next) {
     var data;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -3731,7 +3750,7 @@ var handleFetchPage = /*#__PURE__*/function () {
   }));
 
   return function handleFetchPage(_x) {
-    return _ref.apply(this, arguments);
+    return _ref2.apply(this, arguments);
   };
 }(); // NEXT PAGE DATA HANDLING
 
@@ -3777,7 +3796,7 @@ function _fetchNextPage() {
 }
 
 var nextPage = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(page) {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(page) {
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -3793,7 +3812,7 @@ var nextPage = /*#__PURE__*/function () {
   }));
 
   return function nextPage(_x3) {
-    return _ref2.apply(this, arguments);
+    return _ref3.apply(this, arguments);
   };
 }();
 
@@ -3914,7 +3933,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var displaySearchPhotos = function displaySearchPhotos(photos) {
   var photoGrid = photos.photos.map(function (images) {
-    return "\n        <div class='relative'>\n        <img src=\"".concat(images.src.original, "\" loading=\"lazy\" style=\"background-color:").concat(images.avg_color, "\" id=").concat(images.id, " />\n        <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.url, "\" class=\"absolute bottom-2 left-2 text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n              </div>\n        </div>\n    ");
+    return "\n        <div class='relative'>\n        <img src=\"".concat(images.src.original, "\" loading=\"lazy\" style=\"background-color:").concat(images.avg_color, "\" id=").concat(images.id, " />\n        <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.potographer_url, "\" class=\"absolute bottom-2 left-4  text-gray-300\" target=\"blank\">").concat(images.photographer, "</a>\n            <a href=\"").concat(images.url, "\" class=\"fa fa-download absolute bottom-2 right-4 text-red-500\"></a>\n              </div>\n     </div>\n        </div>\n    ");
   }).join('');
   _base.appElement.searchedGrid.innerHTML = photoGrid; // let lazyloadImages = document.querySelectorAll(".relative");
   // const imageObserver = new IntersectionObserver(function (entries, observer) {
@@ -4216,7 +4235,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53279" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49754" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -184,12 +184,12 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"style.tailwind.css":[function(require,module,exports) {
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"font-awesome-4.7.0/css/font-awesome.min.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./images\\pexels-pixabay-235621.jpg":[["pexels-pixabay-235621.423d644f.jpg","images/pexels-pixabay-235621.jpg"],"images/pexels-pixabay-235621.jpg"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./..\\fonts\\fontawesome-webfont.eot":[["fontawesome-webfont.4656fcef.eot","font-awesome-4.7.0/fonts/fontawesome-webfont.eot"],"font-awesome-4.7.0/fonts/fontawesome-webfont.eot"],"./..\\fonts\\fontawesome-webfont.woff2":[["fontawesome-webfont.3a80971e.woff2","font-awesome-4.7.0/fonts/fontawesome-webfont.woff2"],"font-awesome-4.7.0/fonts/fontawesome-webfont.woff2"],"./..\\fonts\\fontawesome-webfont.woff":[["fontawesome-webfont.87828cbd.woff","font-awesome-4.7.0/fonts/fontawesome-webfont.woff"],"font-awesome-4.7.0/fonts/fontawesome-webfont.woff"],"./..\\fonts\\fontawesome-webfont.ttf":[["fontawesome-webfont.533af11a.ttf","font-awesome-4.7.0/fonts/fontawesome-webfont.ttf"],"font-awesome-4.7.0/fonts/fontawesome-webfont.ttf"],"./..\\fonts\\fontawesome-webfont.svg":[["fontawesome-webfont.18e2f764.svg","font-awesome-4.7.0/fonts/fontawesome-webfont.svg"],"font-awesome-4.7.0/fonts/fontawesome-webfont.svg"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -394,4 +394,4 @@ function hmrAcceptRun(bundle, id) {
   }
 }
 },{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/style.tailwind.5f4f97fc.js.map
+//# sourceMappingURL=/font-awesome.min.80bdcae2.js.map

@@ -11,14 +11,15 @@ export const appElement = {
     curatedLoader: document.querySelector('.loader'),
     LoaderChild: document.querySelectorAll('.lds-facebook div'),
     topLoader: document.querySelector('.image__container .loader__container'),
-    prevBtn: document.getElementById('prev'),
-    // nextBtn: document.querySelector('.load__more'),
+    grid: document.getElementById('grid'),
+    imageDiv: document.querySelectorAll('#grid div'),
+    nextBtn: document.querySelector('.load__more'),
     pagination: document.querySelector('.search__loadMore'),
     loadMore: document.querySelector('.container'),
     searchedGrid: document.querySelector('.search__grid'),
     searchedContainer: document.querySelector('.search__container'),
     searchedLoader: document.querySelector('.search__container .loader__container'),
-    section: document.querySelectorAll('.section')
-    // largeImageDiv: document.getElementById()
+    section: document.querySelectorAll('.section'),
+    header: document.querySelector('header')
 };
 // appElement.searchedLoader.style.display = 'none';

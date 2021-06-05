@@ -10,8 +10,10 @@ export const displaySearchPhotos = (photos) => {
         <div class='relative'>
         <img src="${images.src.original}" loading="lazy" style="background-color:${images.avg_color}" id=${images.id} />
         <div class='absolute top-0 left-0 w-full h-full overlay'>
-            <a href="${images.url}" class="absolute bottom-2 left-2 text-gray-100" target="blank">${images.photographer}</a>
+            <a href="${images.potographer_url}" class="absolute bottom-2 left-4  text-gray-300" target="blank">${images.photographer}</a>
+            <a href="${images.url}" class="fa fa-download absolute bottom-2 right-4 text-red-500"></a>
               </div>
+     </div>
         </div>
     `;
     }).join('');
@@ -93,9 +95,4 @@ export const displaySearchPhotos = (photos) => {
 
 const getPage = async (page) => {
     const pageData = await fetchNextPage(page);
-    console.log(pageData);
-
-    // displaySearchPhotos(pageData.data);
-
-
 };

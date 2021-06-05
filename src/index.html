@@ -5,11 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.tailwind.css" />
+    <link rel="stylesheet" href="./font-awesome-4.7.0/css/font-awesome.min.css">
     <title>Photo Mania</title>
   </head>
   <body>
     <!-- HEADER FOR LOGO AND DARK MODE ICON  -->
-    <header class="w-screen h-14 bg-gray-900 fixed top-0 bg-transparent z-50">
+    <header class="w-screen h-14  fixed top-0 bg-0 z-50">
       <article>
         <nav
           class="flex h-full items-center justify-between sm:mr-10 sm:mx-10 w-full"
@@ -23,7 +24,7 @@
               alt="click"
             />
   
-            <a href="index.html"class="text-2xs sm:text-4xl text-white font-serif">Mania</a>
+            <a href="index.html"class="text-4xs sm:text-4xl text-white font-serif">Mania</a>
             
           </div>
 
@@ -58,16 +59,16 @@
       </article>
     </header>
     <!-- SLIDER HERO BANNER -->
-    <section class="h-96 mx-auto mt-14" id="background__image">
+    <section class="sm:h-screen mx-auto" id="background__image">
       <article>
         <div
           class="banner__image flex bg-gradient-to-bl w-full h-full flex flex-col justify-evenly items-center"
         >
           <div class="banner__text w-10\/12 h-2\.5">
             <h1
-              class="sm:text-6xl text-4xl font-serif font-bold text-center text-white"
+              class="sm:text-4xl text-2xl font-serif font-bold text-center text-white"
             >
-              PHOTO<small class="text-red-600">MANIA</small>
+              PHOTO<small class="text-red-600 text-6xl text-4xl">MANIA</small>
             </h1>
             <p class="text-2xl font-serif text-white text-center">
               Making Memory through the lense of a camera...
@@ -78,7 +79,7 @@
           >
             <input
               type="search"
-              class="bg-white rounded w-full py-2 sm:py-6 px-2 font-serif placeholder-gray-500"
+              class="bg-white rounded w-full py-2 sm:py-6 px-2 text-2xl font-serif placeholder-gray-500"
               id=" mobile__search active:outline-red-900"
               placeholder="search for high quality images..."
             />
@@ -102,6 +103,7 @@
       <!-- LOADER SECTION -->
       
       <article class="py-5 px-4 grid search__grid min-h-screen w-full">
+        
       </article>
   
     </section>
@@ -117,10 +119,10 @@
       </article>
       <div id="loader" class="flex items-center justify-center w-full h-20 loader">
       <div class="lds-facebook">
-        <div class="bg-gray-500"></div>
-        <div class="bg-gray-500"></div>
-        <div class="bg-gray-500"></div>
-        <div class="bg-gray-500"></div>
+        <div class="bg-red-500"></div>
+        <div class="bg-red-500"></div>
+        <div class="bg-red-500"></div>
+        <div class="bg-red-500"></div>
       </div>
     </div>
     </section>    
@@ -155,11 +157,10 @@
     </section>
       
     <footer class="w-26">
-
-        <a class="pexel__links text-gray-400" href="https://www.pexels.com">
+        <a class="pexel__links text-red-900" href="https://www.pexels.com">
           powered by <img src="https://images.pexels.com/lib/api/pexels-white.png" height="60px" width="60px" class=""/>
 </a> 
- <span class="developer text-gray-400">
+ <span class="developer text-red-900">
    newt_dev&copy;                                        
  </span>
     </footer>
