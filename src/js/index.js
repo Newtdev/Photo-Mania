@@ -56,8 +56,6 @@ const resolvedSearchedValue = async (value) => {
     // SAVE TO APPSTATE
     appState.photoData.searched__photos = saveImages;
 
-    // console.log(appState.photoData.searched__photos);
-    // ADD LOADER AND DISPLAY RESULT
 
     displaySearchPhotos(appState.photoData.searched__photos);
 
@@ -65,11 +63,8 @@ const resolvedSearchedValue = async (value) => {
     appElement.imageContainer.style.display = 'none';
     appElement.searchedContainer.classList.add('appears');
 
-    // return searchedPhotos;
 
 };
-
-
 
 
 

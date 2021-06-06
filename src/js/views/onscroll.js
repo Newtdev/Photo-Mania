@@ -1,5 +1,5 @@
 import { appElement } from './base';
-// ADD LOADER
+
 
 function addLoader() {
     appElement.loader.classList.add('show');
@@ -10,24 +10,19 @@ function addLoader() {
 
     }, 5000);
 }
-// addLoader()
 
-// getHeight()
 
 const getHeight = (height) => {
 
     window.addEventListener('scroll', () => {
         const scroll_To = window.pageYOffset;
-        // console.log(scroll_To);
-        // console.log(scroll_To)
         addSearchBar(scroll_To);
 
         if (height == scroll_To) {
             // ADD LOADER 
-            console.log('reached');
+
             addLoader();
-            // REMOVE LOADER
-            // GET THE PRODUCT
+
         }
 
     });

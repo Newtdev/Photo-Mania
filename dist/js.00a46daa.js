@@ -924,29 +924,22 @@ exports.getHeight = void 0;
 
 var _base = require("./base");
 
-// ADD LOADER
 function addLoader() {
   _base.appElement.loader.classList.add('show');
 
   setTimeout(function () {
     _base.appElement.loader.classList.remove('show');
   }, 5000);
-} // addLoader()
-// getHeight()
-
+}
 
 var getHeight = function getHeight(height) {
   window.addEventListener('scroll', function () {
-    var scroll_To = window.pageYOffset; // console.log(scroll_To);
-    // console.log(scroll_To)
-
+    var scroll_To = window.pageYOffset;
     addSearchBar(scroll_To);
 
     if (height == scroll_To) {
       // ADD LOADER 
-      console.log('reached');
-      addLoader(); // REMOVE LOADER
-      // GET THE PRODUCT
+      addLoader();
     }
   });
 };
@@ -3529,8 +3522,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var client = (0, _pexels.createClient)('563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08'); // const query = 'Nature';
-// const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+var client = (0, _pexels.createClient)('563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08');
 
 var searchedImages = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(query) {
@@ -3542,8 +3534,7 @@ var searchedImages = /*#__PURE__*/function () {
             images = client.photos.search({
               query: query,
               per_page: 20
-            }); // console.log(images);
-
+            });
             return _context.abrupt("return", images);
 
           case 2:
@@ -3689,45 +3680,31 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var displayPhotos = function displayPhotos(_ref) {
-  var photos = _ref.photos;
-  var photoGrid = photos.map(function (images) {
+var displayPhotos = function displayPhotos(photos) {
+  var photoGrid = photos.photos.map(function (images) {
     // console.log(images);
-    // src = "${images.src.original}
-    getHeight(images.height);
-    return "\n     <div class='relative'>\n     <img\" id=".concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "\n      ' class=\"dynamic__images\" />\n\n      <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.potographer_url, "\" class=\"absolute bottom-2 left-4  text-gray-300\" target=\"blank\">").concat(images.photographer, "</a>\n            <a href=\"").concat(images.url, "\" class=\"fa fa-download absolute bottom-2 right-4 text-red-500\"></a>\n              </div>\n     </div>\n    \n    ");
+    // 
+    return "\n     <div class='relative'>\n     <img src = \"".concat(images.src.original, "\" id=").concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "\n      ' class=\"dynamic__images\" />\n\n      <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.potographer_url, "\" class=\"absolute bottom-2 left-4  text-gray-300\" target=\"blank\">").concat(images.photographer, "</a>\n            <a href=\"").concat(images.url, "\" class=\"fa fa-download absolute bottom-2 right-4 text-red-500\"></a>\n              </div>\n     </div>\n    \n    ");
   }).join('');
   _base.appElement.imageGrid.innerHTML += photoGrid;
-  console.log(_base.appElement.grid);
-
-  var getHeight = function getHeight(height) {
-    var gridheight = height / 10;
-
-    _base.appElement.imageDiv.forEach(function (cur) {
-      cur.style.gridRowEnd = "span ".concat(gridheight);
-    });
-  }; // export {getHeight}
-  // INFINITE SCROLL FUNCTIONALITY
-
-
-  window.addEventListener('scroll', function () {
-    var _document$documentEle = document.documentElement,
-        scrollTop = _document$documentEle.scrollTop,
-        scrollHeight = _document$documentEle.scrollHeight,
-        clientHeight = _document$documentEle.clientHeight;
-
-    if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
-      // fetchNextPage(photos.next_page)
-      handleFetchPage(photos.next_page);
-    }
-  });
-}; // LINK TO NEXT PAGE AND THE BUTTON ELEMENT
+}; // INFINITE SCROLL FUNCTIONALITY
 
 
 exports.displayPhotos = displayPhotos;
+window.addEventListener('scroll', function () {
+  var _document$documentEle = document.documentElement,
+      scrollTop = _document$documentEle.scrollTop,
+      scrollHeight = _document$documentEle.scrollHeight,
+      clientHeight = _document$documentEle.clientHeight;
+
+  if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
+    // fetchNextPage(photos.next_page)
+    handleFetchPage(photos.next_page);
+  }
+}); // LINK TO NEXT PAGE AND THE BUTTON ELEMENT
 
 var handleFetchPage = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(next) {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(next) {
     var data;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -3738,7 +3715,6 @@ var handleFetchPage = /*#__PURE__*/function () {
 
           case 2:
             data = _context.sent;
-            // console.log(data);
             (0, _search_views.addLoader)(data.data);
 
           case 4:
@@ -3750,7 +3726,7 @@ var handleFetchPage = /*#__PURE__*/function () {
   }));
 
   return function handleFetchPage(_x) {
-    return _ref2.apply(this, arguments);
+    return _ref.apply(this, arguments);
   };
 }(); // NEXT PAGE DATA HANDLING
 
@@ -3796,7 +3772,7 @@ function _fetchNextPage() {
 }
 
 var nextPage = /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(page) {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(page) {
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -3812,7 +3788,7 @@ var nextPage = /*#__PURE__*/function () {
   }));
 
   return function nextPage(_x3) {
-    return _ref3.apply(this, arguments);
+    return _ref2.apply(this, arguments);
   };
 }();
 
@@ -4000,9 +3976,8 @@ var getPage = /*#__PURE__*/function () {
 
           case 2:
             pageData = _context.sent;
-            console.log(pageData); // displaySearchPhotos(pageData.data);
 
-          case 4:
+          case 3:
           case "end":
             return _context.stop();
         }
@@ -4094,15 +4069,12 @@ var resolvedSearchedValue = /*#__PURE__*/function () {
             saveImages = _context.sent;
             // GET THE DATA FROM THE PROMISE
             // SAVE TO APPSTATE
-            appState.photoData.searched__photos = saveImages; // console.log(appState.photoData.searched__photos);
-            // ADD LOADER AND DISPLAY RESULT
-
+            appState.photoData.searched__photos = saveImages;
             (0, _displaySearched.displaySearchPhotos)(appState.photoData.searched__photos); // ADD VISIBILITY TO THE SEARCHED CONTAINER
 
             _base.appElement.imageContainer.style.display = 'none';
 
-            _base.appElement.searchedContainer.classList.add('appears'); // return searchedPhotos;
-
+            _base.appElement.searchedContainer.classList.add('appears');
 
           case 7:
           case "end":
@@ -4235,7 +4207,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49754" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51096" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

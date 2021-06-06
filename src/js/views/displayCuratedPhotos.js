@@ -2,10 +2,10 @@ import { appElement } from './base';
 import axios from 'axios';
 import { addLoader } from './search_views';
 
-export const displayPhotos = ({ photos }) => {
+export const displayPhotos = (photos) => {
 
 
-  const photoGrid = photos.map(images => {
+  const photoGrid = photos.photos.map(images => {
     // console.log(images);
     // 
 
@@ -29,7 +29,7 @@ export const displayPhotos = ({ photos }) => {
 
 };
 
-// export {getHeight}
+
 // INFINITE SCROLL FUNCTIONALITY
 window.addEventListener('scroll', () => {
   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
