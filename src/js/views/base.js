@@ -22,4 +22,4 @@ export const appElement = {
     section: document.querySelectorAll('.section'),
     header: document.querySelector('header')
 };
-// appElement.searchedLoader.style.display = 'none';
+

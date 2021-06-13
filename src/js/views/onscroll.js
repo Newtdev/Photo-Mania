@@ -16,6 +16,7 @@ const getHeight = (height) => {
 
     window.addEventListener('scroll', () => {
         const scroll_To = window.pageYOffset;
+
         addSearchBar(scroll_To);
 
         if (height == scroll_To) {
@@ -53,6 +54,18 @@ const removeSearchInput = () => {
     appElement.topForm.classList.remove('show');
     appElement.header.classList.remove('header__color');
 
+};
+
+
+export const InfiniteScroll = (page) => {
+    window.addEventListener('scroll', () => {
+        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+        if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
+            return page;
+        }
+
+    });
 };
 
 

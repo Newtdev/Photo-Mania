@@ -898,78 +898,9 @@ var appElement = {
   searchedLoader: document.querySelector('.search__container .loader__container'),
   section: document.querySelectorAll('.section'),
   header: document.querySelector('header')
-}; // appElement.searchedLoader.style.display = 'none';
-
+};
 exports.appElement = appElement;
-},{}],"js/views/theme.js":[function(require,module,exports) {
-"use strict";
-
-var _base = require("./base");
-
-// CHANGE BODY BACKGROUND COLOR FROM DARK TO LIGHT
-_base.appElement.theme.addEventListener('click', function (e) {
-  var curr = e.currentTarget;
-
-  if (curr) {
-    _base.appElement.body.classList.toggle('light');
-  }
-});
-},{"./base":"js/views/base.js"}],"js/views/onscroll.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getHeight = void 0;
-
-var _base = require("./base");
-
-function addLoader() {
-  _base.appElement.loader.classList.add('show');
-
-  setTimeout(function () {
-    _base.appElement.loader.classList.remove('show');
-  }, 5000);
-}
-
-var getHeight = function getHeight(height) {
-  window.addEventListener('scroll', function () {
-    var scroll_To = window.pageYOffset;
-    addSearchBar(scroll_To);
-
-    if (height == scroll_To) {
-      // ADD LOADER 
-      addLoader();
-    }
-  });
-};
-
-exports.getHeight = getHeight;
-getHeight();
-
-// ADD THE TOP SEARCH BAR WHEN THE BODY SCROLL REACHES 320
-function addSearchBar(value) {
-  if (value >= 320) {
-    addSearchInput();
-  } else {
-    removeSearchInput();
-  }
-} // ADD THE HEADER SEARCH INPUT
-
-
-var addSearchInput = function addSearchInput() {
-  _base.appElement.topForm.classList.add('show');
-
-  _base.appElement.header.classList.add('header__color');
-}; // REMOVE THE HEADER SEARCH INPUT
-
-
-var removeSearchInput = function removeSearchInput() {
-  _base.appElement.topForm.classList.remove('show');
-
-  _base.appElement.header.classList.remove('header__color');
-};
-},{"./base":"js/views/base.js"}],"../node_modules/whatwg-fetch/fetch.js":[function(require,module,exports) {
+},{}],"../node_modules/whatwg-fetch/fetch.js":[function(require,module,exports) {
 
 "use strict";
 
@@ -3633,46 +3564,30 @@ var Pictures = /*#__PURE__*/function () {
 }();
 
 exports.Pictures = Pictures;
-},{"pexels":"../node_modules/pexels/dist/main.module.js","./Search":"js/model/Search.js"}],"js/views/search_views.js":[function(require,module,exports) {
+},{"pexels":"../node_modules/pexels/dist/main.module.js","./Search":"js/model/Search.js"}],"js/views/ImageDOM.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addLoader = void 0;
+exports.imagesDOM = imagesDOM;
 
-var _base = require("./base");
-
-var _displayCuratedPhotos = require("./displayCuratedPhotos");
-
-// ON CLICK OF THE SEARCH BUTTON
-_base.appElement.curatedLoader.classList.add('show');
-
-var addLoader = function addLoader(photos) {
-  setTimeout(function () {
-    _base.appElement.curatedLoader.classList.remove('show');
-
-    setTimeout(function () {
-      (0, _displayCuratedPhotos.displayPhotos)(photos);
-    });
-  }, 4000);
-};
-
-exports.addLoader = addLoader;
-},{"./base":"js/views/base.js","./displayCuratedPhotos":"js/views/displayCuratedPhotos.js"}],"js/views/displayCuratedPhotos.js":[function(require,module,exports) {
+function imagesDOM(photos) {
+  //src ="${images.src.original}"
+  var photoGrid = photos.photos.map(function (images) {
+    return "\n    <div   class='relative dynamic__div' style='grid-row-end: span ".concat(Math.ceil(images.height / 1000), "'>\n    <img  id=").concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "' class=\"dynamic__images\" />\n    \n    <div class='absolute top-0 left-0 w-full h-full overlay'>\n    <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-4  text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n    <a href=\"").concat(images.url, "\" class=\"fa fa-download absolute bottom-2 right-4 text-gray-100\"></a>\n    </div>\n    </div>\n    \n    ");
+  }).join('');
+  return photoGrid;
+}
+},{}],"js/views/nextPage.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.fetchNextPage = fetchNextPage;
-exports.nextPage = exports.displayPhotos = void 0;
-
-var _base = require("./base");
 
 var _axios = _interopRequireDefault(require("axios"));
-
-var _search_views = require("./search_views");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3680,28 +3595,143 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function fetchNextPage(_x) {
+  return _fetchNextPage.apply(this, arguments);
+}
+
+function _fetchNextPage() {
+  _fetchNextPage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(url) {
+    var key, search_images;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
+            _context.prev = 1;
+            _context.next = 4;
+            return (0, _axios.default)("".concat(url, " "), {
+              headers: {
+                Authorization: key
+              }
+            });
+
+          case 4:
+            search_images = _context.sent;
+            return _context.abrupt("return", search_images);
+
+          case 8:
+            _context.prev = 8;
+            _context.t0 = _context["catch"](1);
+            throw _context.t0;
+
+          case 11:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[1, 8]]);
+  }));
+  return _fetchNextPage.apply(this, arguments);
+}
+},{"axios":"../node_modules/axios/index.js"}],"js/views/onscroll.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.InfiniteScroll = exports.getHeight = void 0;
+
+var _base = require("./base");
+
+function addLoader() {
+  _base.appElement.loader.classList.add('show');
+
+  setTimeout(function () {
+    _base.appElement.loader.classList.remove('show');
+  }, 5000);
+}
+
+var getHeight = function getHeight(height) {
+  window.addEventListener('scroll', function () {
+    var scroll_To = window.pageYOffset;
+    addSearchBar(scroll_To);
+
+    if (height == scroll_To) {
+      // ADD LOADER 
+      addLoader();
+    }
+  });
+};
+
+exports.getHeight = getHeight;
+getHeight();
+
+// ADD THE TOP SEARCH BAR WHEN THE BODY SCROLL REACHES 320
+function addSearchBar(value) {
+  if (value >= 320) {
+    addSearchInput();
+  } else {
+    removeSearchInput();
+  }
+} // ADD THE HEADER SEARCH INPUT
+
+
+var addSearchInput = function addSearchInput() {
+  _base.appElement.topForm.classList.add('show');
+
+  _base.appElement.header.classList.add('header__color');
+}; // REMOVE THE HEADER SEARCH INPUT
+
+
+var removeSearchInput = function removeSearchInput() {
+  _base.appElement.topForm.classList.remove('show');
+
+  _base.appElement.header.classList.remove('header__color');
+};
+
+var InfiniteScroll = function InfiniteScroll(page) {
+  window.addEventListener('scroll', function () {
+    var _document$documentEle = document.documentElement,
+        scrollTop = _document$documentEle.scrollTop,
+        scrollHeight = _document$documentEle.scrollHeight,
+        clientHeight = _document$documentEle.clientHeight;
+
+    if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
+      return page;
+    }
+  });
+};
+
+exports.InfiniteScroll = InfiniteScroll;
+},{"./base":"js/views/base.js"}],"js/views/displayCuratedPhotos.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.displayPhotos = void 0;
+
+var _base = require("./base");
+
+var _ImageDOM = require("./ImageDOM");
+
+var _nextPage = require("./nextPage");
+
+var _onscroll = require("./onscroll");
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 var displayPhotos = function displayPhotos(photos) {
-  var photoGrid = photos.photos.map(function (images) {
-    // console.log(images);
-    // 
-    return "\n     <div class='relative'>\n     <img src = \"".concat(images.src.original, "\" id=").concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "\n      ' class=\"dynamic__images\" />\n\n      <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.potographer_url, "\" class=\"absolute bottom-2 left-4  text-gray-300\" target=\"blank\">").concat(images.photographer, "</a>\n            <a href=\"").concat(images.url, "\" class=\"fa fa-download absolute bottom-2 right-4 text-red-500\"></a>\n              </div>\n     </div>\n    \n    ");
-  }).join('');
-  _base.appElement.imageGrid.innerHTML += photoGrid;
-}; // INFINITE SCROLL FUNCTIONALITY
+  _base.appElement.imageGrid.innerHTML += (0, _ImageDOM.imagesDOM)(photos);
+  var forFetch = handleFetchPage(photos.next_page); // INFINITE SCROLL FUNCTIONALITY
+
+  (0, _onscroll.InfiniteScroll)(forFetch);
+}; // LINK TO NEXT PAGE AND THE BUTTON ELEMENT
 
 
 exports.displayPhotos = displayPhotos;
-window.addEventListener('scroll', function () {
-  var _document$documentEle = document.documentElement,
-      scrollTop = _document$documentEle.scrollTop,
-      scrollHeight = _document$documentEle.scrollHeight,
-      clientHeight = _document$documentEle.clientHeight;
-
-  if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
-    // fetchNextPage(photos.next_page)
-    handleFetchPage(photos.next_page);
-  }
-}); // LINK TO NEXT PAGE AND THE BUTTON ELEMENT
 
 var handleFetchPage = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(next) {
@@ -3711,11 +3741,11 @@ var handleFetchPage = /*#__PURE__*/function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return fetchNextPage(next);
+            return (0, _nextPage.fetchNextPage)(next);
 
           case 2:
             data = _context.sent;
-            (0, _search_views.addLoader)(data.data);
+            addLoader(data.data);
 
           case 4:
           case "end":
@@ -3728,72 +3758,25 @@ var handleFetchPage = /*#__PURE__*/function () {
   return function handleFetchPage(_x) {
     return _ref.apply(this, arguments);
   };
-}(); // NEXT PAGE DATA HANDLING
-
-
-function fetchNextPage(_x2) {
-  return _fetchNextPage.apply(this, arguments);
-} // ADD TO THE DOM
-
-
-function _fetchNextPage() {
-  _fetchNextPage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(url) {
-    var key, search_images;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
-            _context3.prev = 1;
-            _context3.next = 4;
-            return (0, _axios.default)("".concat(url, " "), {
-              headers: {
-                Authorization: key
-              }
-            });
-
-          case 4:
-            search_images = _context3.sent;
-            return _context3.abrupt("return", search_images);
-
-          case 8:
-            _context3.prev = 8;
-            _context3.t0 = _context3["catch"](1);
-            throw _context3.t0;
-
-          case 11:
-          case "end":
-            return _context3.stop();
-        }
-      }
-    }, _callee3, null, [[1, 8]]);
-  }));
-  return _fetchNextPage.apply(this, arguments);
-}
-
-var nextPage = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(page) {
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            return _context2.abrupt("return", page);
-
-          case 1:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-
-  return function nextPage(_x3) {
-    return _ref2.apply(this, arguments);
-  };
 }();
 
-exports.nextPage = nextPage;
-},{"./base":"js/views/base.js","axios":"../node_modules/axios/index.js","./search_views":"js/views/search_views.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
+var addLoader = function addLoader(photos) {
+  _base.appElement.curatedLoader.classList.add('show'); // console.log(photos);
+
+
+  setTimeout(function () {
+    _base.appElement.curatedLoader.classList.remove('show');
+
+    setTimeout(function () {
+      displayPhotos(photos);
+    });
+  }, 4000);
+}; // ADD TO THE DOM
+// const nextPage = async (page) => {
+//   return page;
+// };
+// export { fetchNextPage, nextPage };
+},{"./base":"js/views/base.js","./ImageDOM":"js/views/ImageDOM.js","./nextPage":"js/views/nextPage.js","./onscroll":"js/views/onscroll.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3839,16 +3822,7 @@ var fetchGetPhoto = /*#__PURE__*/function () {
   return function fetchGetPhoto(_x) {
     return _ref.apply(this, arguments);
   };
-}(); // searchedImages(url)
-// const fetchGetPhoto = async (id) => {
-//     try {
-//         console.log(getPhoto)
-//     } catch (error) {
-//         throw error
-//     }
-// }
-// fetchGetPhoto()
-
+}();
 
 exports.fetchGetPhoto = fetchGetPhoto;
 },{"axios":"../node_modules/axios/index.js","./Search":"js/model/Search.js"}],"js/views/largerScreenViews.js":[function(require,module,exports) {
@@ -3899,85 +3873,38 @@ exports.displaySearchPhotos = void 0;
 
 var _base = require("./base");
 
-var _displayCuratedPhotos = require("./displayCuratedPhotos");
+var _nextPage = require("./nextPage");
 
-var _search_views = require("./search_views");
+var _ImageDOM = require("./ImageDOM");
+
+var _onscroll = require("./onscroll");
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 var displaySearchPhotos = function displaySearchPhotos(photos) {
-  var photoGrid = photos.photos.map(function (images) {
-    return "\n        <div class='relative'>\n        <img src=\"".concat(images.src.original, "\" loading=\"lazy\" style=\"background-color:").concat(images.avg_color, "\" id=").concat(images.id, " />\n        <div class='absolute top-0 left-0 w-full h-full overlay'>\n            <a href=\"").concat(images.potographer_url, "\" class=\"absolute bottom-2 left-4  text-gray-300\" target=\"blank\">").concat(images.photographer, "</a>\n            <a href=\"").concat(images.url, "\" class=\"fa fa-download absolute bottom-2 right-4 text-red-500\"></a>\n              </div>\n     </div>\n        </div>\n    ");
-  }).join('');
-  _base.appElement.searchedGrid.innerHTML = photoGrid; // let lazyloadImages = document.querySelectorAll(".relative");
-  // const imageObserver = new IntersectionObserver(function (entries, observer) {
-  //     entries.forEach(function (entry) {
-  //         if (entry.isIntersecting) {
-  //             let image = entry.target;
-  //             image.src = image.dataset.src;
-  //             // image.classList.remove("lazy");
-  //             imageObserver.unobserve(image);
-  //         }
-  //     });
-  // });
-  // lazyloadImages.forEach((image) => {
-  //     imageObserver.observe(image);
-  // });
-  // PAGINATION SECTION OF SEARCH PAGE
-  // if (photos.next_page || photos.prev_page) {
-  //     appElement.pagination.innerHTML = `
-  //     ${photos.prev_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more prev">Prev</button>` : ''}
-  //     ${photos.next_page ? `<button type="button" class="p-4 mx-1 bg-red-900 mt-4 text-lg text-white text-bold shadow-sm rounded-sm hover:bg-red-500 transition-all load__more next">Next</button>` : ''}
-  //     `;
-  //     const loadMore = document.querySelectorAll('.load__more');
-  //     allButton(loadMore, photos);
-  // } else appElement.pagination.innerHTML = '';
-
-  window.addEventListener('scroll', function () {
-    var _document$documentEle = document.documentElement,
-        scrollTop = _document$documentEle.scrollTop,
-        scrollHeight = _document$documentEle.scrollHeight,
-        clientHeight = _document$documentEle.clientHeight;
-
-    if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
-      // fetchNextPage(photos.next_page)
-      getPage(photos.next_page);
-    }
-  });
-}; // GET PREV OR NEXT BUTTON WHEN THE IMAGE LOADS
-// const allButton = (buttons, pageNumber) => {
-//     buttons.forEach(btns => {
-//         btns.addEventListener('click', (e) => {
-//             const targetButtons = e.currentTarget.classList;
-//             if (targetButtons.contains('next')) {
-//                 // GET THE NEXT PAGE
-//             } else if (targetButtons.contains('prev')) {
-//                 // GET THE PREV PAGE
-//                 getPage(pageNumber.prev_page);
-//             }
-//         });
-//     });
-// };
-
+  _base.appElement.searchedGrid.innerHTML = (0, _ImageDOM.imagesDOM)(photos);
+};
 
 exports.displaySearchPhotos = displaySearchPhotos;
 
 var getPage = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(page) {
-    var pageData;
+    var pageData, data;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return (0, _displayCuratedPhotos.fetchNextPage)(page);
+            return (0, _nextPage.fetchNextPage)(page);
 
           case 2:
             pageData = _context.sent;
+            data = pageData.data;
+            displaySearchPhotos(data);
 
-          case 3:
+          case 5:
           case "end":
             return _context.stop();
         }
@@ -3988,17 +3915,39 @@ var getPage = /*#__PURE__*/function () {
   return function getPage(_x) {
     return _ref.apply(this, arguments);
   };
-}();
-},{"./base":"js/views/base.js","./displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./search_views":"js/views/search_views.js"}],"js/index.js":[function(require,module,exports) {
+}(); // const photoGrid = photos.photos.map(images => {
+//     return `
+//     <div class='relative'>
+//     <img src="${images.src.original}" loading="lazy" style="background-color:${images.avg_color}" id=${images.id} />
+//     <div class='absolute top-0 left-0 w-full h-full overlay'>
+//         <a href="${images.potographer_url}" class="absolute bottom-2 left-4  text-gray-300" target="blank">${images.photographer}</a>
+//         <a href="${images.url}" class="fa fa-download absolute bottom-2 right-4 text-red-500"></a>
+//           </div>
+//  </div>
+//     </div>
+// `;
+// }).join('');
+// appElement.searchedGrid.innerHTML = photoGrid;
+// let lazyloadImages = document.querySelectorAll(".relative");
+// const imageObserver = new IntersectionObserver(function (entries, observer) {
+//     entries.forEach(function (entry) {
+//         if (entry.isIntersecting) {
+//             let image = entry.target;
+//             image.src = image.dataset.src;
+//             // image.classList.remove("lazy");
+//             imageObserver.unobserve(image);
+//         }
+//     });
+// });
+// lazyloadImages.forEach((image) => {
+//     imageObserver.observe(image);
+// });
+},{"./base":"js/views/base.js","./nextPage":"js/views/nextPage.js","./ImageDOM":"js/views/ImageDOM.js","./onscroll":"js/views/onscroll.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
 
 var _base = require("./views/base");
-
-var _theme = _interopRequireDefault(require("./views/theme"));
-
-var _onscroll = _interopRequireWildcard(require("./views/onscroll"));
 
 var _FetchData = require("./model/FetchData");
 
@@ -4010,15 +3959,7 @@ var _largeScreen = require("./model/largeScreen");
 
 var _largerScreenViews = require("./views/largerScreenViews");
 
-var _search_views = require("./views/search_views");
-
 var _displaySearched = require("./views/displaySearched");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -4046,7 +3987,7 @@ var inputFunt = function inputFunt(item) {
   var searchedValue = item.children[0].value;
 
   if (searchedValue == '') {
-    alert('Please input a searched term!');
+    alert('Please input a search term!');
   } else {
     // GET THE QUERY RESULTS
     resolvedSearchedValue(searchedValue); // INPUT VALUE SET TO EMPTY
@@ -4133,7 +4074,7 @@ var collectData = function collectData(data) {
 
 _base.appElement.section.forEach(function (cur) {
   cur.addEventListener('click', function (e) {
-    var targetedImage = e.target.parentElement.children[0].id; // console.log(targetedImage);
+    var targetedImage = e.target.parentElement.children[0].id;
 
     if (targetedImage) {
       // GET THE IMAGE
@@ -4179,7 +4120,7 @@ var getSelectedImage = /*#__PURE__*/function () {
     return _ref3.apply(this, arguments);
   };
 }();
-},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./views/theme":"js/views/theme.js","./views/onscroll":"js/views/onscroll.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js","./views/largerScreenViews":"js/views/largerScreenViews.js","./views/search_views":"js/views/search_views.js","./views/displaySearched":"js/views/displaySearched.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","./views/base":"js/views/base.js","./model/FetchData":"js/model/FetchData.js","./views/displayCuratedPhotos":"js/views/displayCuratedPhotos.js","./model/Search":"js/model/Search.js","./model/largeScreen":"js/model/largeScreen.js","./views/largerScreenViews":"js/views/largerScreenViews.js","./views/displaySearched":"js/views/displaySearched.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -4207,7 +4148,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51096" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62481" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

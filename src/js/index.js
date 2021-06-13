@@ -1,13 +1,10 @@
 import 'regenerator-runtime/runtime';
 import { appElement } from './views/base';
-import theme from './views/theme';
-import onsroll, { getHeight } from './views/onscroll';
-import { curatedData, Pictures } from './model/FetchData';
+import { Pictures } from './model/FetchData';
 import { displayPhotos } from './views/displayCuratedPhotos';
-import { fetchFunt, searchedImages } from './model/Search';
+import { searchedImages } from './model/Search';
 import { fetchGetPhoto } from './model/largeScreen';
 import { displayLargePhoto, emptyImage } from './views/largerScreenViews';
-import { addLoader } from './views/search_views';
 import { displaySearchPhotos } from './views/displaySearched';
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 
@@ -34,7 +31,7 @@ const inputFunt = (item) => {
     const searchedValue = item.children[0].value;
 
     if (searchedValue == '') {
-        alert('Please input a searched term!');
+        alert('Please input a search term!');
     } else {
 
         // GET THE QUERY RESULTS
@@ -110,8 +107,6 @@ const collectData = (data) => {
 appElement.section.forEach(cur => {
     cur.addEventListener('click', (e) => {
         const targetedImage = e.target.parentElement.children[0].id;
-        // console.log(targetedImage);
-
 
         if (targetedImage) {
 

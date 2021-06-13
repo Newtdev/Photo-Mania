@@ -13,13 +13,13 @@ const displayLargePhoto = (data) => {
     return `<img
   src=${photo.src.original}
   id="${photo.id}"
-  />`
-  }).join('')
+  />`;
+  }).join('');
   appElement.largeImageContainer.innerHTML = largePhoto;
 
-}
+};
 
-export { displayLargePhoto }
+export { displayLargePhoto };
 
 const emptyImage = (large_photo) => {
 
@@ -30,11 +30,11 @@ const emptyImage = (large_photo) => {
 
       appElement.largeImage.classList.remove('large__visible');
 
-      large_photo.length == 1 ? large_photo.pop() : large_photo.unshift()
+      large_photo.length == 1 ? large_photo.pop() : large_photo.unshift();
 
     }
 
   });
-}
+};
 
-export { emptyImage }
+export { emptyImage };

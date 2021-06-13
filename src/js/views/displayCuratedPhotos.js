@@ -1,48 +1,15 @@
 import { appElement } from './base';
-import axios from 'axios';
-import { addLoader } from './search_views';
+import { imagesDOM } from './ImageDOM';
+import { fetchNextPage } from './nextPage';
+import { InfiniteScroll } from './onscroll';
 
 export const displayPhotos = (photos) => {
+  appElement.imageGrid.innerHTML += imagesDOM(photos);
 
-
-  const photoGrid = photos.photos.map(images => {
-    // console.log(images);
-    // 
-
-    return `
-     <div class='relative'>
-     <img src = "${images.src.original}" id=${images.id} loading="lazy" style='background-color:${images.avg_color}
-      ' class="dynamic__images" />
-
-      <div class='absolute top-0 left-0 w-full h-full overlay'>
-            <a href="${images.potographer_url}" class="absolute bottom-2 left-4  text-gray-300" target="blank">${images.photographer}</a>
-            <a href="${images.url}" class="fa fa-download absolute bottom-2 right-4 text-red-500"></a>
-              </div>
-     </div>
-    
-    `;
-
-  }).join('');
-
-  appElement.imageGrid.innerHTML += photoGrid;
-
-
+  const forFetch = handleFetchPage(photos.next_page);
+  // INFINITE SCROLL FUNCTIONALITY
+  InfiniteScroll(forFetch);
 };
-
-
-// INFINITE SCROLL FUNCTIONALITY
-window.addEventListener('scroll', () => {
-  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-
-  if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
-
-    // fetchNextPage(photos.next_page)
-    handleFetchPage(photos.next_page);
-
-
-  }
-
-});
 
 
 
@@ -54,37 +21,28 @@ const handleFetchPage = async (next) => {
   const data = await fetchNextPage(next);
 
   addLoader(data.data);
-
-
 };
 
-// NEXT PAGE DATA HANDLING
-async function fetchNextPage(url) {
-  const key = "563492ad6f91700001000001daeef4427b934c0ba9ef6ee1f8784f08";
 
-  try {
-    const search_images = await axios(`${url} `, {
-      headers: {
-        Authorization: key
-      }
+
+const addLoader = (photos) => {
+  appElement.curatedLoader.classList.add('show');
+  // console.log(photos);
+  setTimeout(() => {
+    appElement.curatedLoader.classList.remove('show');
+    setTimeout(() => {
+      displayPhotos(photos);
     });
 
-    // nextPage(search_images);
-    return search_images;
-
-
-  } catch (error) {
-    throw error;
-
-  }
-
-}
-
-// ADD TO THE DOM
-const nextPage = async (page) => {
-  return page;
-
+  }, 4000);
 };
 
-export { fetchNextPage, nextPage };
+
+// ADD TO THE DOM
+// const nextPage = async (page) => {
+//   return page;
+
+// };
+
+// export { fetchNextPage, nextPage };
 
