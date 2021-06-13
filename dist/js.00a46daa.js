@@ -3633,77 +3633,7 @@ function _fetchNextPage() {
   }));
   return _fetchNextPage.apply(this, arguments);
 }
-},{"axios":"../node_modules/axios/index.js"}],"js/views/onscroll.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.InfiniteScroll = exports.getHeight = void 0;
-
-var _base = require("./base");
-
-function addLoader() {
-  _base.appElement.loader.classList.add('show');
-
-  setTimeout(function () {
-    _base.appElement.loader.classList.remove('show');
-  }, 5000);
-}
-
-var getHeight = function getHeight(height) {
-  window.addEventListener('scroll', function () {
-    var scroll_To = window.pageYOffset;
-    addSearchBar(scroll_To);
-
-    if (height == scroll_To) {
-      // ADD LOADER 
-      addLoader();
-    }
-  });
-};
-
-exports.getHeight = getHeight;
-getHeight();
-
-// ADD THE TOP SEARCH BAR WHEN THE BODY SCROLL REACHES 320
-function addSearchBar(value) {
-  if (value >= 320) {
-    addSearchInput();
-  } else {
-    removeSearchInput();
-  }
-} // ADD THE HEADER SEARCH INPUT
-
-
-var addSearchInput = function addSearchInput() {
-  _base.appElement.topForm.classList.add('show');
-
-  _base.appElement.header.classList.add('header__color');
-}; // REMOVE THE HEADER SEARCH INPUT
-
-
-var removeSearchInput = function removeSearchInput() {
-  _base.appElement.topForm.classList.remove('show');
-
-  _base.appElement.header.classList.remove('header__color');
-};
-
-var InfiniteScroll = function InfiniteScroll(page) {
-  window.addEventListener('scroll', function () {
-    var _document$documentEle = document.documentElement,
-        scrollTop = _document$documentEle.scrollTop,
-        scrollHeight = _document$documentEle.scrollHeight,
-        clientHeight = _document$documentEle.clientHeight;
-
-    if (scrollTop + clientHeight === scrollHeight && photos.next_page) {
-      return page;
-    }
-  });
-};
-
-exports.InfiniteScroll = InfiniteScroll;
-},{"./base":"js/views/base.js"}],"js/views/displayCuratedPhotos.js":[function(require,module,exports) {
+},{"axios":"../node_modules/axios/index.js"}],"js/views/displayCuratedPhotos.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3717,21 +3647,25 @@ var _ImageDOM = require("./ImageDOM");
 
 var _nextPage = require("./nextPage");
 
-var _onscroll = require("./onscroll");
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 var displayPhotos = function displayPhotos(photos) {
   _base.appElement.imageGrid.innerHTML += (0, _ImageDOM.imagesDOM)(photos);
-  var forFetch = handleFetchPage(photos.next_page); // INFINITE SCROLL FUNCTIONALITY
-
-  (0, _onscroll.InfiniteScroll)(forFetch);
-}; // LINK TO NEXT PAGE AND THE BUTTON ELEMENT
-
+};
 
 exports.displayPhotos = displayPhotos;
+window.addEventListener('scroll', function () {
+  var _document$documentEle = document.documentElement,
+      scrollTop = _document$documentEle.scrollTop,
+      scrollHeight = _document$documentEle.scrollHeight,
+      clientHeight = _document$documentEle.clientHeight;
+
+  if (scrollTop + clientHeight >= scrollHeight - 5) {
+    handleFetchPage(photos.next_page);
+  }
+}); // LINK TO NEXT PAGE AND THE BUTTON ELEMENT
 
 var handleFetchPage = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(next) {
@@ -3760,10 +3694,9 @@ var handleFetchPage = /*#__PURE__*/function () {
   };
 }();
 
+_base.appElement.curatedLoader.classList.add('show');
+
 var addLoader = function addLoader(photos) {
-  _base.appElement.curatedLoader.classList.add('show'); // console.log(photos);
-
-
   setTimeout(function () {
     _base.appElement.curatedLoader.classList.remove('show');
 
@@ -3776,7 +3709,7 @@ var addLoader = function addLoader(photos) {
 //   return page;
 // };
 // export { fetchNextPage, nextPage };
-},{"./base":"js/views/base.js","./ImageDOM":"js/views/ImageDOM.js","./nextPage":"js/views/nextPage.js","./onscroll":"js/views/onscroll.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
+},{"./base":"js/views/base.js","./ImageDOM":"js/views/ImageDOM.js","./nextPage":"js/views/nextPage.js"}],"js/model/largeScreen.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3863,6 +3796,61 @@ var emptyImage = function emptyImage(large_photo) {
 };
 
 exports.emptyImage = emptyImage;
+},{"./base":"js/views/base.js"}],"js/views/onscroll.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getHeight = void 0;
+
+var _base = require("./base");
+
+function addLoader() {
+  _base.appElement.loader.classList.add('show');
+
+  setTimeout(function () {
+    _base.appElement.loader.classList.remove('show');
+  }, 5000);
+}
+
+var getHeight = function getHeight(height) {
+  window.addEventListener('scroll', function () {
+    var scroll_To = window.pageYOffset;
+    addSearchBar(scroll_To);
+
+    if (height == scroll_To) {
+      // ADD LOADER 
+      addLoader();
+    }
+  });
+};
+
+exports.getHeight = getHeight;
+getHeight();
+
+// ADD THE TOP SEARCH BAR WHEN THE BODY SCROLL REACHES 320
+function addSearchBar(value) {
+  if (value >= 320) {
+    addSearchInput();
+  } else {
+    removeSearchInput();
+  }
+} // ADD THE HEADER SEARCH INPUT
+
+
+var addSearchInput = function addSearchInput() {
+  _base.appElement.topForm.classList.add('show');
+
+  _base.appElement.header.classList.add('header__color');
+}; // REMOVE THE HEADER SEARCH INPUT
+
+
+var removeSearchInput = function removeSearchInput() {
+  _base.appElement.topForm.classList.remove('show');
+
+  _base.appElement.header.classList.remove('header__color');
+};
 },{"./base":"js/views/base.js"}],"js/views/displaySearched.js":[function(require,module,exports) {
 "use strict";
 
@@ -3883,8 +3871,20 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+(0, _onscroll.getHeight)();
+
 var displaySearchPhotos = function displaySearchPhotos(photos) {
   _base.appElement.searchedGrid.innerHTML = (0, _ImageDOM.imagesDOM)(photos);
+  window.addEventListener('scroll', function () {
+    var _document$documentEle = document.documentElement,
+        scrollTop = _document$documentEle.scrollTop,
+        scrollHeight = _document$documentEle.scrollHeight,
+        clientHeight = _document$documentEle.clientHeight;
+
+    if (scrollTop + clientHeight >= scrollHeight) {
+      getPage(photos.next_page);
+    }
+  });
 };
 
 exports.displaySearchPhotos = displaySearchPhotos;
@@ -3901,8 +3901,10 @@ var getPage = /*#__PURE__*/function () {
 
           case 2:
             pageData = _context.sent;
-            data = pageData.data;
-            displaySearchPhotos(data);
+            setTimeout(function () {
+              console.log('ok');
+            }, 4000);
+            data = pageData.data; // displaySearchPhotos(data);
 
           case 5:
           case "end":

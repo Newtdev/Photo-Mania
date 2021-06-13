@@ -9,6 +9,9 @@
   padding: 0;
   box-sizing: border-box;
 }
+html {
+  height: 100vh;
+}
 body {
   @apply min-h-screen bg-white;
 }
@@ -49,6 +52,9 @@ header {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+}
+.section {
+  overflow-y: auto;
 }
 .image__container .search__container {
   min-height: 100vh;

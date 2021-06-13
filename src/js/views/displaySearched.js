@@ -1,21 +1,35 @@
 import { appElement } from './base';
 import { fetchNextPage } from './nextPage';
 import { imagesDOM } from './ImageDOM';
-import { InfiniteScroll } from './onscroll';
+import { getHeight } from './onscroll';
 
+getHeight();
 
 
 export const displaySearchPhotos = (photos) => {
     appElement.searchedGrid.innerHTML = imagesDOM(photos);
+
+    window.addEventListener('scroll', () => {
+        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+        if (scrollTop + clientHeight >= scrollHeight) {
+            getPage(photos.next_page);
+        }
+
+    });
+
 };
 
 
 
 const getPage = async (page) => {
     const pageData = await fetchNextPage(page);
-    const { data } = pageData;
+    setTimeout(() => {
+        console.log('ok');
 
-    displaySearchPhotos(data);
+    }, 4000);
+    const { data } = pageData;
+    // displaySearchPhotos(data);
 };
 
 

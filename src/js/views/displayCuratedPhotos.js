@@ -1,15 +1,20 @@
 import { appElement } from './base';
 import { imagesDOM } from './ImageDOM';
 import { fetchNextPage } from './nextPage';
-import { InfiniteScroll } from './onscroll';
+
 
 export const displayPhotos = (photos) => {
   appElement.imageGrid.innerHTML += imagesDOM(photos);
 
-  const forFetch = handleFetchPage(photos.next_page);
-  // INFINITE SCROLL FUNCTIONALITY
-  InfiniteScroll(forFetch);
 };
+window.addEventListener('scroll', () => {
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+  if (scrollTop + clientHeight >= scrollHeight - 5) {
+    handleFetchPage(photos.next_page);
+  }
+
+});
 
 
 
@@ -19,18 +24,19 @@ export const displayPhotos = (photos) => {
 
 const handleFetchPage = async (next) => {
   const data = await fetchNextPage(next);
-
   addLoader(data.data);
 };
+appElement.curatedLoader.classList.add('show');
 
 
 
 const addLoader = (photos) => {
-  appElement.curatedLoader.classList.add('show');
-  // console.log(photos);
+
+
   setTimeout(() => {
     appElement.curatedLoader.classList.remove('show');
     setTimeout(() => {
+
       displayPhotos(photos);
     });
 

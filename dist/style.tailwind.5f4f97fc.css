@@ -31185,6 +31185,10 @@ video {
   box-sizing: border-box;
 }
 
+html {
+  height: 100vh;
+}
+
 body {
   --tw-bg-opacity: 1;
   background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
@@ -31237,6 +31241,10 @@ header {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+.section {
+  overflow-y: auto;
 }
 
 .image__container .search__container {

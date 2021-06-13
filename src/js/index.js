@@ -6,6 +6,7 @@ import { searchedImages } from './model/Search';
 import { fetchGetPhoto } from './model/largeScreen';
 import { displayLargePhoto, emptyImage } from './views/largerScreenViews';
 import { displaySearchPhotos } from './views/displaySearched';
+
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 
 // APP STATE
