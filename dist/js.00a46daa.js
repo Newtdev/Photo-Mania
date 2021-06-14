@@ -3573,9 +3573,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.imagesDOM = imagesDOM;
 
 function imagesDOM(photos) {
-  //src ="${images.src.original}"
+  //
   var photoGrid = photos.photos.map(function (images) {
-    return "\n    <div   class='relative dynamic__div' style='grid-row-end: span ".concat(Math.ceil(images.height / 1000), "'>\n    <img  id=").concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "' class=\"dynamic__images\" />\n    \n    <div class='absolute top-0 left-0 w-full h-full overlay'>\n    <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-4  text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n    <a href=\"").concat(images.url, "\" class=\"fa fa-download absolute bottom-2 right-4 text-gray-100\"></a>\n    </div>\n    </div>\n    \n    ");
+    return "\n    <div   class='relative dynamic__div' style='grid-row-end: span ".concat(Math.ceil(images.height / 1000), "'>\n    <img src =\"").concat(images.src.original, "\"  id=").concat(images.id, " loading=\"lazy\" style='background-color:").concat(images.avg_color, "' class=\"dynamic__images\" />\n    \n    <div class='absolute top-0 left-0 w-full h-full overlay'>\n    <a href=\"").concat(images.photographer_url, "\" class=\"absolute bottom-2 left-4  text-gray-100\" target=\"blank\">").concat(images.photographer, "</a>\n    <a href=\"").concat(images.url, "\" class=\"fa fa-download absolute bottom-2 right-4 text-gray-100\"></a>\n    </div>\n    </div>\n    \n    ");
   }).join('');
   return photoGrid;
 }
