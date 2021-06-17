@@ -2,21 +2,14 @@ import { appElement } from './base';
 import { fetchNextPage } from './nextPage';
 import { imagesDOM } from './ImageDOM';
 import { getHeight } from './onscroll';
+import { infiniteScroll } from './infiniteScroll';
 
 getHeight();
 
 
 export const displaySearchPhotos = (photos) => {
     appElement.searchedGrid.innerHTML = imagesDOM(photos);
-
-    window.addEventListener('scroll', () => {
-        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-
-        if (scrollTop + clientHeight >= scrollHeight) {
-            getPage(photos.next_page);
-        }
-
-    });
+    infiniteScroll(getPage(photos.next_page));
 
 };
 
@@ -24,12 +17,11 @@ export const displaySearchPhotos = (photos) => {
 
 const getPage = async (page) => {
     const pageData = await fetchNextPage(page);
-    setTimeout(() => {
-        console.log('ok');
-
-    }, 4000);
     const { data } = pageData;
-    // displaySearchPhotos(data);
+    setTimeout(() => {
+
+        displaySearchPhotos(data);
+    }, 1000);
 };
 
 

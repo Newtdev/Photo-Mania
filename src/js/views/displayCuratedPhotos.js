@@ -1,20 +1,16 @@
 import { appElement } from './base';
 import { imagesDOM } from './ImageDOM';
 import { fetchNextPage } from './nextPage';
+import { infiniteScroll } from './infiniteScroll';
 
 
 export const displayPhotos = (photos) => {
   appElement.imageGrid.innerHTML += imagesDOM(photos);
 
+  infiniteScroll(handleFetchPage(photos.next_page));
 };
-window.addEventListener('scroll', () => {
-  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
-  if (scrollTop + clientHeight >= scrollHeight - 5) {
-    handleFetchPage(photos.next_page);
-  }
 
-});
 
 
 
